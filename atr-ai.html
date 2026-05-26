@@ -1,0 +1,1936 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ATR AI — Strategic AI Audit, Automation & Transformation — ATRBA</title>
+<meta name="description" content="ATR AI by ATRBA: Every AI engagement begins with a diagnostic AI Audit. We design, deploy, and govern practical AI systems that reduce manual work, improve operational efficiency, and drive measurable business growth.">
+<meta name="keywords" content="AI audit, business AI strategy, AI automation, AI consulting, workflow automation, AI transformation, enterprise AI, AI implementation, operational efficiency, AI systems">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="_shared.css">
+<style>
+body { padding-top: 68px; }
+
+/* ── Tokens ─────────────────────────────────────────────────── */
+:root {
+  --navy:        #0d1b2a;
+  --navy-mid:    #122035;
+  --navy-light:  #1a2f47;
+  --navy-dark:   #08111c;
+  --gold:        #c9a84c;
+  --gold-light:  #e0c378;
+  --gold-dim:    rgba(201,168,76,.15);
+  --gold-glow:   rgba(201,168,76,.06);
+  --cream:       #f9f6f0;
+  --cream-dark:  #f2ede3;
+  --white:       #ffffff;
+  --text-body:   #3a3a3a;
+  --text-muted:  #6b6b6b;
+  --text-light:  #999;
+  --border:      rgba(201,168,76,.18);
+  --border-soft: rgba(0,0,0,0.07);
+  --border-navy: rgba(255,255,255,.08);
+  --radius:      4px;
+  --font-serif:  'DM Serif Display', serif;
+  --font-sans:   'Inter', sans-serif;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   HERO
+══════════════════════════════════════════════════════════════ */
+.ai-hero {
+  background: var(--navy-dark);
+  position: relative;
+  overflow: hidden;
+  padding: 100px 24px 88px;
+  text-align: center;
+}
+.ai-hero::before {
+  content: '';
+  position: absolute; inset: 0;
+  background:
+    radial-gradient(ellipse 70% 60% at 50% 0%,   rgba(201,168,76,.07) 0%, transparent 65%),
+    radial-gradient(ellipse 40% 40% at 15% 80%,  rgba(108,110,245,.05) 0%, transparent 60%),
+    radial-gradient(ellipse 40% 40% at 85% 80%,  rgba(45,212,160,.04) 0%, transparent 60%);
+  pointer-events: none;
+}
+/* Subtle grid overlay */
+.ai-hero::after {
+  content: '';
+  position: absolute; inset: 0;
+  background-image:
+    linear-gradient(rgba(255,255,255,.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,.02) 1px, transparent 1px);
+  background-size: 60px 60px;
+  pointer-events: none;
+  mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 0%, transparent 100%);
+}
+.ai-hero .inner {
+  max-width: 800px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 1;
+}
+.hero-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: rgba(201,168,76,.1);
+  border: 1px solid rgba(201,168,76,.25);
+  color: var(--gold-light);
+  font-size: .68rem;
+  font-weight: 600;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  padding: 7px 16px;
+  border-radius: 999px;
+  margin-bottom: 28px;
+}
+.hero-eyebrow::before {
+  content: '';
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--gold);
+  animation: pulse-dot 2s ease-in-out infinite;
+}
+@keyframes pulse-dot {
+  0%,100% { opacity: 1; transform: scale(1); }
+  50%      { opacity: .5; transform: scale(.7); }
+}
+.ai-hero h1 {
+  font-family: var(--font-serif);
+  font-size: clamp(2.4rem, 5.5vw, 4.2rem);
+  font-weight: 400;
+  color: #fff;
+  letter-spacing: -.025em;
+  line-height: 1.08;
+  margin-bottom: 24px;
+}
+.ai-hero h1 em {
+  font-style: italic;
+  color: var(--gold-light);
+}
+.ai-hero .hero-sub {
+  font-size: 1.05rem;
+  font-weight: 300;
+  color: rgba(255,255,255,.6);
+  line-height: 1.75;
+  max-width: 580px;
+  margin: 0 auto 44px;
+}
+.hero-actions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  flex-wrap: wrap;
+  margin-bottom: 60px;
+}
+.btn-gold {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--gold);
+  color: var(--navy);
+  font-size: .8rem;
+  font-weight: 600;
+  letter-spacing: .07em;
+  text-transform: uppercase;
+  padding: 14px 30px;
+  border-radius: 2px;
+  text-decoration: none;
+  transition: background .2s, transform .15s;
+}
+.btn-gold:hover { background: var(--gold-light); transform: translateY(-1px); }
+.btn-ghost-light {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid rgba(255,255,255,.2);
+  color: rgba(255,255,255,.75);
+  font-size: .8rem;
+  font-weight: 500;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  padding: 13px 26px;
+  border-radius: 2px;
+  text-decoration: none;
+  transition: border-color .2s, color .2s;
+}
+.btn-ghost-light:hover { border-color: var(--gold); color: var(--gold-light); }
+
+/* Hero stats strip */
+.hero-stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0;
+  background: rgba(255,255,255,.04);
+  border: 1px solid var(--border-navy);
+  border-radius: 8px;
+  overflow: hidden;
+  max-width: 700px;
+  margin: 0 auto;
+}
+.hero-stat {
+  padding: 22px 16px;
+  text-align: center;
+  border-right: 1px solid var(--border-navy);
+}
+.hero-stat:last-child { border-right: none; }
+.hero-stat-num {
+  font-family: var(--font-serif);
+  font-size: 1.8rem;
+  color: var(--gold);
+  line-height: 1;
+  margin-bottom: 5px;
+}
+.hero-stat-label {
+  font-size: .7rem;
+  color: rgba(255,255,255,.4);
+  letter-spacing: .06em;
+  line-height: 1.4;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   POSITIONING STATEMENT
+══════════════════════════════════════════════════════════════ */
+.position-band {
+  background: var(--cream);
+  padding: 72px 24px;
+}
+.position-band .inner {
+  max-width: 960px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 72px;
+  align-items: center;
+}
+.section-eyebrow {
+  font-size: .68rem;
+  font-weight: 600;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--gold);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+.section-eyebrow::before {
+  content: '';
+  display: block;
+  width: 24px; height: 1px;
+  background: var(--gold);
+}
+.section-h2 {
+  font-family: var(--font-serif);
+  font-size: clamp(1.75rem, 3vw, 2.5rem);
+  font-weight: 400;
+  color: var(--navy);
+  letter-spacing: -.02em;
+  line-height: 1.15;
+  margin-bottom: 16px;
+}
+.gold-rule { width: 48px; height: 2px; background: var(--gold); margin: 20px 0 24px; }
+.body-text { font-size: .93rem; line-height: 1.78; color: var(--text-muted); }
+.body-text + .body-text { margin-top: 14px; }
+
+.position-pillars {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.pillar {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  background: var(--white);
+  border: 1px solid var(--border-soft);
+  border-radius: 6px;
+  padding: 18px 20px;
+  transition: box-shadow .2s;
+}
+.pillar:hover { box-shadow: 0 4px 24px rgba(0,0,0,.07); }
+.pillar-icon {
+  width: 38px; height: 38px;
+  background: var(--navy);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  flex-shrink: 0;
+}
+.pillar-text h5 {
+  font-size: .88rem;
+  font-weight: 600;
+  color: var(--navy);
+  margin-bottom: 3px;
+  letter-spacing: -.01em;
+}
+.pillar-text p { font-size: .8rem; color: var(--text-muted); line-height: 1.55; margin: 0; }
+
+/* ══════════════════════════════════════════════════════════════
+   AI AUDIT SECTION
+══════════════════════════════════════════════════════════════ */
+.audit-section {
+  background: var(--navy);
+  padding: 88px 24px;
+  position: relative;
+  overflow: hidden;
+}
+.audit-section::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse 60% 70% at 50% 0%, rgba(201,168,76,.05) 0%, transparent 70%);
+  pointer-events: none;
+}
+.audit-section .inner {
+  max-width: 960px;
+  margin: 0 auto;
+  position: relative;
+}
+.audit-section .section-h2 { color: #fff; max-width: 600px; }
+.audit-section .body-text  { color: rgba(255,255,255,.6); max-width: 640px; }
+
+/* Mandatory badge */
+.mandatory-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(201,168,76,.12);
+  border: 1px solid rgba(201,168,76,.3);
+  color: var(--gold-light);
+  font-size: .7rem;
+  font-weight: 700;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  padding: 8px 16px;
+  border-radius: 3px;
+  margin-bottom: 24px;
+}
+
+/* Audit process steps */
+.audit-steps {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 0;
+  margin-top: 56px;
+  position: relative;
+}
+.audit-steps::before {
+  content: '';
+  position: absolute;
+  top: 27px; left: 10%; right: 10%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--gold), var(--gold-light), var(--gold), transparent);
+  opacity: .3;
+}
+.audit-step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 0 12px;
+  position: relative;
+  z-index: 1;
+}
+.step-circle {
+  width: 54px; height: 54px;
+  border-radius: 50%;
+  background: var(--navy-mid);
+  border: 1px solid rgba(201,168,76,.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+  transition: border-color .2s, background .2s;
+}
+.audit-step:hover .step-circle {
+  background: rgba(201,168,76,.1);
+  border-color: var(--gold);
+}
+.step-num {
+  font-family: var(--font-serif);
+  font-size: 1.2rem;
+  color: var(--gold);
+}
+.audit-step h5 {
+  font-size: .82rem;
+  font-weight: 600;
+  color: #fff;
+  margin-bottom: 8px;
+  letter-spacing: -.01em;
+}
+.audit-step p { font-size: .76rem; color: rgba(255,255,255,.45); line-height: 1.55; }
+
+/* Audit findings grid */
+.audit-findings {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-top: 56px;
+}
+.finding-card {
+  background: rgba(255,255,255,.04);
+  border: 1px solid rgba(255,255,255,.08);
+  border-radius: 6px;
+  padding: 24px;
+  transition: border-color .2s, background .2s;
+}
+.finding-card:hover {
+  border-color: rgba(201,168,76,.3);
+  background: rgba(255,255,255,.06);
+}
+.finding-card .f-icon { font-size: 1.5rem; margin-bottom: 12px; }
+.finding-card h5 { font-size: .88rem; font-weight: 600; color: #fff; margin-bottom: 8px; }
+.finding-card p { font-size: .8rem; color: rgba(255,255,255,.5); line-height: 1.6; margin: 0; }
+
+/* ══════════════════════════════════════════════════════════════
+   SERVICES / IMPLEMENTATION
+══════════════════════════════════════════════════════════════ */
+.services-section {
+  background: var(--white);
+  padding: 88px 24px;
+}
+.services-section .inner { max-width: 960px; margin: 0 auto; }
+
+.service-tiers {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  margin-top: 48px;
+}
+.service-tier-card {
+  display: grid;
+  grid-template-columns: 280px 1fr auto;
+  gap: 0;
+  border: 1px solid var(--border-soft);
+  border-radius: 6px;
+  overflow: hidden;
+  transition: box-shadow .2s, border-color .2s;
+}
+.service-tier-card:hover {
+  box-shadow: 0 8px 40px rgba(0,0,0,.09);
+  border-color: rgba(201,168,76,.25);
+}
+.stc-left {
+  background: var(--navy);
+  padding: 32px 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  justify-content: center;
+}
+.stc-step {
+  font-size: .65rem;
+  font-weight: 700;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+.stc-left h3 {
+  font-family: var(--font-serif);
+  font-size: 1.2rem;
+  font-weight: 400;
+  color: #fff;
+  margin: 0;
+  line-height: 1.25;
+}
+.stc-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: rgba(201,168,76,.12);
+  border: 1px solid rgba(201,168,76,.25);
+  color: var(--gold-light);
+  font-size: .68rem;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 999px;
+  width: fit-content;
+}
+.stc-middle {
+  padding: 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  border-right: 1px solid var(--border-soft);
+}
+.stc-middle p { font-size: .875rem; line-height: 1.72; color: var(--text-muted); margin: 0; }
+.stc-delivers {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.stc-delivers-label {
+  font-size: .64rem;
+  font-weight: 700;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--text-light);
+  margin-bottom: 2px;
+}
+.deliver-item {
+  font-size: .8rem;
+  color: var(--text-body);
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  line-height: 1.4;
+}
+.deliver-item::before {
+  content: '→';
+  color: var(--gold);
+  font-weight: 700;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+.stc-right {
+  padding: 32px 28px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 20px;
+  min-width: 160px;
+  text-align: center;
+}
+.stc-price {
+  font-family: var(--font-serif);
+  font-size: 1.1rem;
+  color: var(--navy);
+  line-height: 1.2;
+}
+.stc-price span {
+  display: block;
+  font-family: var(--font-sans);
+  font-size: .7rem;
+  color: var(--text-light);
+  font-weight: 500;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  margin-top: 3px;
+}
+.stc-timeline {
+  font-size: .75rem;
+  color: var(--text-muted);
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.stc-timeline strong { font-size: .88rem; color: var(--text-body); display: block; }
+.btn-navy-sm {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--navy);
+  color: #fff;
+  font-size: .75rem;
+  font-weight: 600;
+  letter-spacing: .07em;
+  text-transform: uppercase;
+  padding: 10px 18px;
+  border-radius: 2px;
+  text-decoration: none;
+  transition: background .2s;
+  white-space: nowrap;
+}
+.btn-navy-sm:hover { background: var(--navy-light); }
+
+/* ══════════════════════════════════════════════════════════════
+   USE CASES
+══════════════════════════════════════════════════════════════ */
+.usecases-section {
+  background: var(--cream);
+  padding: 88px 24px;
+}
+.usecases-section .inner { max-width: 960px; margin: 0 auto; }
+.usecases-section .section-h2 { color: var(--navy); }
+
+.uc-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-top: 48px;
+}
+.uc-card {
+  background: var(--white);
+  border: 1px solid var(--border-soft);
+  border-radius: 6px;
+  padding: 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  transition: box-shadow .2s, border-color .2s, transform .15s;
+  position: relative;
+  overflow: hidden;
+}
+.uc-card::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 2px;
+  background: var(--gold);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform .3s ease;
+}
+.uc-card:hover::after  { transform: scaleX(1); }
+.uc-card:hover { box-shadow: 0 6px 28px rgba(0,0,0,.08); transform: translateY(-2px); }
+.uc-number {
+  font-size: .64rem;
+  font-weight: 700;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+.uc-icon { font-size: 1.6rem; }
+.uc-card h4 {
+  font-size: .95rem;
+  font-weight: 600;
+  color: var(--navy);
+  margin: 0;
+  line-height: 1.25;
+  letter-spacing: -.01em;
+}
+.uc-card .uc-desc {
+  font-size: .82rem;
+  color: var(--text-muted);
+  line-height: 1.65;
+  margin: 0;
+  flex: 1;
+}
+.uc-result {
+  background: var(--cream);
+  border-radius: 4px;
+  padding: 8px 12px;
+  font-size: .76rem;
+  font-weight: 600;
+  color: var(--navy);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.uc-result::before { content: '↑'; color: #2dd4a0; font-weight: 700; }
+
+/* ══════════════════════════════════════════════════════════════
+   INDUSTRY SOLUTIONS
+══════════════════════════════════════════════════════════════ */
+.industry-section {
+  background: var(--navy-mid);
+  padding: 88px 24px;
+}
+.industry-section .inner { max-width: 960px; margin: 0 auto; }
+.industry-section .section-h2  { color: #fff; }
+.industry-section .section-eyebrow { color: var(--gold); }
+.industry-section .body-text { color: rgba(255,255,255,.55); max-width: 580px; }
+
+.ind-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-top: 48px;
+}
+.ind-card {
+  background: rgba(255,255,255,.04);
+  border: 1px solid rgba(255,255,255,.07);
+  border-radius: 6px;
+  padding: 28px;
+  transition: border-color .2s, background .2s;
+}
+.ind-card:hover {
+  border-color: rgba(201,168,76,.3);
+  background: rgba(255,255,255,.06);
+}
+.ind-icon { font-size: 1.6rem; margin-bottom: 14px; }
+.ind-card h4 {
+  font-size: .92rem;
+  font-weight: 600;
+  color: #fff;
+  margin-bottom: 10px;
+  letter-spacing: -.01em;
+}
+.ind-card p { font-size: .8rem; color: rgba(255,255,255,.5); line-height: 1.65; margin: 0; }
+.ind-card ul {
+  list-style: none;
+  padding: 0; margin: 12px 0 0;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+.ind-card li {
+  font-size: .77rem;
+  color: rgba(255,255,255,.55);
+  display: flex;
+  align-items: flex-start;
+  gap: 7px;
+}
+.ind-card li::before {
+  content: '·';
+  color: var(--gold);
+  font-size: 1.1rem;
+  line-height: 1;
+  flex-shrink: 0;
+  margin-top: -1px;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   ROI CALCULATOR
+══════════════════════════════════════════════════════════════ */
+.roi-section {
+  background: var(--navy-dark);
+  padding: 88px 24px;
+  position: relative;
+  overflow: hidden;
+}
+.roi-section::before {
+  content: '';
+  position: absolute; inset: 0;
+  background:
+    radial-gradient(ellipse 50% 60% at 0% 50%,   rgba(201,168,76,.05) 0%, transparent 70%),
+    radial-gradient(ellipse 50% 60% at 100% 50%,  rgba(108,110,245,.04) 0%, transparent 70%);
+  pointer-events: none;
+}
+.roi-section .inner { max-width: 960px; margin: 0 auto; position: relative; }
+.roi-section .section-h2   { color: #fff; }
+.roi-section .section-eyebrow { color: var(--gold); }
+.roi-section .body-text    { color: rgba(255,255,255,.55); max-width: 560px; }
+
+.roi-calc {
+  background: rgba(255,255,255,.03);
+  border: 1px solid rgba(255,255,255,.08);
+  border-radius: 10px;
+  padding: 40px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  align-items: start;
+  margin-top: 48px;
+}
+.roi-inputs { display: flex; flex-direction: column; gap: 24px; }
+.roi-input-group {}
+.roi-label {
+  font-size: .7rem;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,.45);
+  font-weight: 600;
+  margin-bottom: 8px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.roi-label .val {
+  color: var(--gold-light);
+  font-family: var(--font-serif);
+  font-size: .95rem;
+  letter-spacing: 0;
+  font-weight: 400;
+}
+input[type=range] {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 4px;
+  background: rgba(255,255,255,.12);
+  border-radius: 2px;
+  outline: none;
+  cursor: pointer;
+}
+input[type=range]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 18px; height: 18px;
+  background: var(--gold);
+  border-radius: 50%;
+  cursor: pointer;
+  transition: transform .2s;
+}
+input[type=range]::-webkit-slider-thumb:hover { transform: scale(1.2); }
+.roi-select {
+  background: rgba(255,255,255,.07);
+  border: 1px solid rgba(255,255,255,.12);
+  color: #fff;
+  padding: 10px 14px;
+  border-radius: 4px;
+  font-size: .85rem;
+  width: 100%;
+  appearance: none;
+  cursor: pointer;
+  font-family: var(--font-sans);
+}
+.roi-disclaimer {
+  font-size: .72rem;
+  color: rgba(255,255,255,.25);
+  line-height: 1.6;
+  margin-top: 8px;
+}
+
+/* Results panel */
+.roi-results {
+  background: rgba(255,255,255,.04);
+  border: 1px solid rgba(255,255,255,.1);
+  border-radius: 8px;
+  padding: 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+.roi-result-item { padding: 16px 0; }
+.roi-result-item + .roi-result-item { border-top: 1px solid rgba(255,255,255,.07); }
+.roi-result-label {
+  font-size: .65rem;
+  letter-spacing: .15em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,.35);
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+.roi-result-val {
+  font-family: var(--font-serif);
+  font-size: 1.9rem;
+  color: var(--gold);
+  line-height: 1;
+  margin-bottom: 6px;
+}
+.roi-result-val.big {
+  font-size: 2.4rem;
+  color: #fff;
+}
+.roi-bar {
+  height: 6px;
+  background: rgba(255,255,255,.07);
+  border-radius: 3px;
+  overflow: hidden;
+}
+.roi-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--gold), var(--gold-light));
+  border-radius: 3px;
+  transition: width .6s cubic-bezier(0.19,1,0.22,1);
+}
+
+/* ══════════════════════════════════════════════════════════════
+   OUTCOMES / PROOF
+══════════════════════════════════════════════════════════════ */
+.outcomes-section {
+  background: var(--white);
+  padding: 88px 24px;
+}
+.outcomes-section .inner { max-width: 960px; margin: 0 auto; }
+.outcomes-section .section-h2 { color: var(--navy); }
+
+.outcomes-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-top: 48px;
+}
+.outcome-card {
+  border: 1px solid var(--border-soft);
+  border-radius: 6px;
+  padding: 28px 20px;
+  text-align: center;
+  transition: box-shadow .2s;
+  position: relative;
+  overflow: hidden;
+}
+.outcome-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: var(--gold);
+}
+.outcome-card:hover { box-shadow: 0 6px 28px rgba(0,0,0,.07); }
+.outcome-num {
+  font-family: var(--font-serif);
+  font-size: 2.6rem;
+  color: var(--navy);
+  letter-spacing: -.03em;
+  line-height: 1;
+  margin-bottom: 8px;
+}
+.outcome-num sub {
+  font-size: 1.2rem;
+  vertical-align: baseline;
+  color: var(--gold);
+}
+.outcome-label {
+  font-size: .82rem;
+  color: var(--text-muted);
+  line-height: 1.45;
+}
+
+/* Why AI fails / contrast */
+.why-section {
+  background: var(--cream);
+  padding: 88px 24px;
+}
+.why-section .inner { max-width: 960px; margin: 0 auto; }
+.why-section .section-h2 { color: var(--navy); }
+
+.why-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  margin-top: 48px;
+}
+.why-card {
+  border-radius: 6px;
+  padding: 32px;
+}
+.why-card.problem {
+  background: #fff;
+  border: 1px solid var(--border-soft);
+}
+.why-card.solution {
+  background: var(--navy);
+}
+.why-card.result {
+  background: #fff;
+  border: 1px solid var(--border-soft);
+}
+.why-icon { font-size: 1.6rem; margin-bottom: 16px; }
+.why-card h4 {
+  font-size: .95rem;
+  font-weight: 600;
+  margin-bottom: 12px;
+  letter-spacing: -.01em;
+}
+.why-card.problem h4  { color: var(--navy); }
+.why-card.solution h4 { color: #fff; }
+.why-card.result h4   { color: var(--navy); }
+.why-card p {
+  font-size: .85rem;
+  line-height: 1.7;
+  margin: 0;
+}
+.why-card.problem p  { color: var(--text-muted); }
+.why-card.solution p { color: rgba(255,255,255,.6); }
+.why-card.result p   { color: var(--text-muted); }
+
+/* ══════════════════════════════════════════════════════════════
+   FAQ (SEO / AEO optimized)
+══════════════════════════════════════════════════════════════ */
+.faq-section {
+  background: var(--white);
+  padding: 88px 24px;
+}
+.faq-section .inner {
+  max-width: 800px;
+  margin: 0 auto;
+}
+.faq-section .section-h2 { color: var(--navy); text-align: center; }
+.faq-section .gold-rule   { margin: 20px auto 16px; }
+.faq-section .body-text   { text-align: center; max-width: 560px; margin: 0 auto 48px; }
+
+.faq-list { display: flex; flex-direction: column; gap: 0; }
+.faq-item {
+  border-bottom: 1px solid var(--border-soft);
+}
+.faq-item:first-child { border-top: 1px solid var(--border-soft); }
+.faq-q {
+  width: 100%;
+  text-align: left;
+  background: none;
+  border: none;
+  padding: 22px 0;
+  cursor: pointer;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  font-family: var(--font-sans);
+}
+.faq-q-text {
+  font-size: .95rem;
+  font-weight: 600;
+  color: var(--navy);
+  line-height: 1.4;
+}
+.faq-chevron {
+  width: 20px; height: 20px;
+  border: 1px solid var(--border-soft);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  font-size: .7rem;
+  color: var(--text-muted);
+  transition: transform .2s, background .2s, border-color .2s;
+  margin-top: 2px;
+}
+.faq-item.open .faq-chevron {
+  transform: rotate(45deg);
+  background: var(--navy);
+  border-color: var(--navy);
+  color: #fff;
+}
+.faq-a {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height .35s ease;
+}
+.faq-a-inner {
+  padding: 0 0 22px;
+  font-size: .88rem;
+  line-height: 1.78;
+  color: var(--text-muted);
+}
+.faq-item.open .faq-a { max-height: 400px; }
+
+/* ══════════════════════════════════════════════════════════════
+   FINAL CTA
+══════════════════════════════════════════════════════════════ */
+.final-cta {
+  background: var(--navy);
+  padding: 96px 24px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.final-cta::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse 80% 60% at 50% 100%, rgba(201,168,76,.08) 0%, transparent 70%);
+  pointer-events: none;
+}
+.final-cta .inner { max-width: 680px; margin: 0 auto; position: relative; }
+.final-cta .cta-eyebrow {
+  font-size: .68rem;
+  font-weight: 600;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 20px;
+}
+.final-cta h2 {
+  font-family: var(--font-serif);
+  font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+  font-weight: 400;
+  color: #fff;
+  letter-spacing: -.02em;
+  line-height: 1.15;
+  margin-bottom: 18px;
+}
+.final-cta p {
+  font-size: .95rem;
+  color: rgba(255,255,255,.55);
+  line-height: 1.75;
+  margin-bottom: 40px;
+}
+.cta-stack {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+.cta-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+.cta-note {
+  font-size: .75rem;
+  color: rgba(255,255,255,.3);
+  letter-spacing: .04em;
+}
+
+/* ── REVEAL ──────────────────────────────────────────────────── */
+.reveal {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity .55s ease, transform .55s ease;
+}
+.reveal.visible       { opacity: 1; transform: translateY(0); }
+.reveal-delay-1       { transition-delay: .08s; }
+.reveal-delay-2       { transition-delay: .16s; }
+.reveal-delay-3       { transition-delay: .24s; }
+.reveal-delay-4       { transition-delay: .32s; }
+
+/* ── RESPONSIVE ─────────────────────────────────────────────── */
+@media (max-width: 900px) {
+  .position-band .inner   { grid-template-columns: 1fr; gap: 40px; }
+  .audit-steps            { grid-template-columns: 1fr 1fr; gap: 28px; }
+  .audit-steps::before    { display: none; }
+  .audit-findings         { grid-template-columns: 1fr 1fr; }
+  .service-tier-card      { grid-template-columns: 1fr; }
+  .stc-left               { padding: 24px; }
+  .stc-right              { padding: 24px; border-left: none; border-top: 1px solid var(--border-soft); flex-direction: row; align-items: center; justify-content: space-between; }
+  .uc-grid                { grid-template-columns: 1fr 1fr; }
+  .ind-grid               { grid-template-columns: 1fr 1fr; }
+  .outcomes-grid          { grid-template-columns: 1fr 1fr; }
+  .why-grid               { grid-template-columns: 1fr; }
+  .roi-calc               { grid-template-columns: 1fr; }
+}
+@media (max-width: 600px) {
+  .hero-stats             { grid-template-columns: 1fr 1fr; }
+  .hero-stat:nth-child(2) { border-right: none; }
+  .hero-stat:nth-child(3) { border-top: 1px solid var(--border-navy); }
+  .audit-steps            { grid-template-columns: 1fr; }
+  .audit-findings         { grid-template-columns: 1fr; }
+  .uc-grid                { grid-template-columns: 1fr; }
+  .ind-grid               { grid-template-columns: 1fr; }
+  .outcomes-grid          { grid-template-columns: 1fr 1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo">
+      <div class="nav-logo-main">Above The Rest</div>
+      <div class="nav-logo-sub">Business Advisors &nbsp;·&nbsp; ATRBA</div>
+    </a>
+    <div class="nav-links">
+      <a href="services.html"           class="hide-mobile">Services</a>
+      <a href="atr-ai.html"             class="active hide-mobile">ATR AI</a>
+      <a href="atr-education.html"      class="hide-mobile">Education</a>
+      <a href="industry-solutions.html" class="hide-mobile">Industries</a>
+      <a href="case-studies.html"       class="hide-mobile">Case Studies</a>
+      <a href="resources.html"          class="hide-mobile">Resources</a>
+      <a href="about.html"              class="hide-mobile">About</a>
+      <a href="contact.html" class="nav-cta">Book a Call</a>
+    </div>
+  </div>
+</nav>
+<a href="https://wa.me/18560000000" class="whatsapp-float" target="_blank" aria-label="Chat on WhatsApp">💬</a>
+
+
+<!-- ════════════════════════════════════════════════════════════
+     HERO
+════════════════════════════════════════════════════════════ -->
+<section class="ai-hero">
+  <div class="inner">
+    <div class="hero-eyebrow">ATR AI Division — ATRBA</div>
+    <h1>AI That Actually<br><em>Changes</em> How You Operate</h1>
+    <p class="hero-sub">Most companies collect AI tools. We build AI systems — diagnosed, designed, and deployed around your specific operations. Every engagement begins with an AI Audit. No exceptions.</p>
+    <div class="hero-actions">
+      <a href="contact.html" class="btn-gold">Book Your AI Audit →</a>
+      <a href="#services" class="btn-ghost-light">View Services</a>
+    </div>
+    <div class="hero-stats">
+      <div class="hero-stat">
+        <div class="hero-stat-num">90</div>
+        <div class="hero-stat-label">Days to first measurable outcome</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-num">38%</div>
+        <div class="hero-stat-label">Avg. reduction in manual task hours</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-num">15+</div>
+        <div class="hero-stat-label">AI use cases per enterprise program</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-num">4.2x</div>
+        <div class="hero-stat-label">Average 3-year ROI on implementation</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ════════════════════════════════════════════════════════════
+     POSITIONING
+════════════════════════════════════════════════════════════ -->
+<section class="position-band">
+  <div class="inner">
+    <div class="reveal">
+      <div class="section-eyebrow">Our Position</div>
+      <h2 class="section-h2">We Don't Sell AI Tools. We Build Decision Systems.</h2>
+      <div class="gold-rule"></div>
+      <p class="body-text">The market is flooded with AI tools and vendors promising transformation. Most deliver software. None of them fix the processes the software sits on top of. That is the core problem.</p>
+      <p class="body-text">ATR AI is the operational intelligence division of ATRBA. We approach artificial intelligence the same way a seasoned operations leader approaches any business problem — diagnose first, then design a solution, then execute it with discipline. We do not begin implementation until we understand your workflows, your team, your data maturity, and your specific objectives.</p>
+      <p class="body-text">The result is AI that your team actually uses, producing measurable outcomes within 90 days, and compounding in value as your organization's capabilities mature.</p>
+    </div>
+    <div class="position-pillars reveal reveal-delay-1">
+      <div class="pillar">
+        <div class="pillar-icon">🔍</div>
+        <div class="pillar-text">
+          <h5>Diagnose Before Prescribing</h5>
+          <p>Every engagement begins with an AI Audit. We map your operations, identify automation opportunities, and design a roadmap before any tools are selected.</p>
+        </div>
+      </div>
+      <div class="pillar">
+        <div class="pillar-icon">🏗</div>
+        <div class="pillar-text">
+          <h5>Fix Process Before Automating It</h5>
+          <p>Automating a broken workflow makes the problem faster. We remediate the process first, then build automation on a solid foundation.</p>
+        </div>
+      </div>
+      <div class="pillar">
+        <div class="pillar-icon">📊</div>
+        <div class="pillar-text">
+          <h5>Measure What Matters</h5>
+          <p>Every deployment is tied to baseline KPIs. We track productivity gains, cost reductions, and time recaptured — not tool adoption metrics.</p>
+        </div>
+      </div>
+      <div class="pillar">
+        <div class="pillar-icon">🔄</div>
+        <div class="pillar-text">
+          <h5>Build Organizational Capability</h5>
+          <p>We train your team, document every system, and build internal governance — so the capability stays inside your organization after we leave.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ════════════════════════════════════════════════════════════
+     AI AUDIT — The Mandatory First Step
+════════════════════════════════════════════════════════════ -->
+<section class="audit-section" id="audit">
+  <div class="inner">
+    <div class="mandatory-badge">⬤ &nbsp;Mandatory Starting Point</div>
+    <div class="section-eyebrow reveal">AI Audit</div>
+    <h2 class="section-h2 reveal">Every AI Engagement Begins<br>With an AI Audit</h2>
+    <div class="gold-rule reveal"></div>
+    <p class="body-text reveal">
+      We do not quote automation packages before understanding your organization. The AI Audit is a structured diagnostic that maps your current operations across five critical dimensions — revealing exactly where AI creates value and where it would create noise. This is not a sales pitch. It is a genuine assessment that gives you clarity regardless of whether you engage us further.
+    </p>
+    <p class="body-text reveal" style="margin-top:14px">
+      In one focused week, we examine your data quality and accessibility, your current technology stack, the maturity of your documented processes, your team's readiness to adopt AI-assisted workflows, and your leadership team's understanding of AI governance requirements. The output is a prioritized action plan — specific, sequenced, and built around your actual situation.
+    </p>
+
+    <!-- Process steps -->
+    <div class="audit-steps reveal">
+      <div class="audit-step">
+        <div class="step-circle"><span class="step-num">1</span></div>
+        <h5>Operations Mapping</h5>
+        <p>Document and analyze every core workflow across departments to identify manual, repetitive, and error-prone processes.</p>
+      </div>
+      <div class="audit-step">
+        <div class="step-circle"><span class="step-num">2</span></div>
+        <h5>Data Readiness Review</h5>
+        <p>Assess your data quality, storage structure, and accessibility — the foundation every AI system depends on.</p>
+      </div>
+      <div class="audit-step">
+        <div class="step-circle"><span class="step-num">3</span></div>
+        <h5>Tech Stack Analysis</h5>
+        <p>Map your current software ecosystem and identify integration points, gaps, and redundancies relevant to AI deployment.</p>
+      </div>
+      <div class="audit-step">
+        <div class="step-circle"><span class="step-num">4</span></div>
+        <h5>ROI Prioritization</h5>
+        <p>Score every automation opportunity by estimated value, implementation complexity, and organizational readiness.</p>
+      </div>
+      <div class="audit-step">
+        <div class="step-circle"><span class="step-num">5</span></div>
+        <h5>Strategic Roadmap</h5>
+        <p>Deliver a sequenced AI implementation plan with clear milestones, investment requirements, and projected outcomes.</p>
+      </div>
+    </div>
+
+    <!-- What the audit finds -->
+    <div class="audit-findings reveal">
+      <div class="finding-card">
+        <div class="f-icon">⚙️</div>
+        <h5>Automation Opportunities</h5>
+        <p>Specific workflows where AI can eliminate manual effort, reduce processing time, and decrease error rates — scored by business impact.</p>
+      </div>
+      <div class="finding-card">
+        <div class="f-icon">💸</div>
+        <h5>Revenue Optimization Gaps</h5>
+        <p>Bottlenecks in your sales pipeline, customer lifecycle, or pricing processes where AI-assisted decision-making recovers measurable revenue.</p>
+      </div>
+      <div class="finding-card">
+        <div class="f-icon">🔧</div>
+        <h5>Operational Bottlenecks</h5>
+        <p>Handoff failures, approval delays, and reporting lags that compound across departments and limit your organization's throughput.</p>
+      </div>
+      <div class="finding-card">
+        <div class="f-icon">📋</div>
+        <h5>Workflow Documentation Gaps</h5>
+        <p>Processes that live in people's heads rather than systems — the single most common barrier to successful AI implementation.</p>
+      </div>
+      <div class="finding-card">
+        <div class="f-icon">🔗</div>
+        <h5>Integration Failures</h5>
+        <p>Disconnected tools, manual data transfers, and duplicate entry points that create friction, errors, and invisible time costs across your team.</p>
+      </div>
+      <div class="finding-card">
+        <div class="f-icon">📈</div>
+        <h5>Scalability Constraints</h5>
+        <p>Processes and systems that require headcount to scale — and how AI-enabled infrastructure eliminates the linear relationship between growth and cost.</p>
+      </div>
+    </div>
+
+    <div style="text-align:center;margin-top:52px">
+      <a href="contact.html" class="btn-gold">Request an AI Audit →</a>
+      <p style="font-size:.78rem;color:rgba(255,255,255,.3);margin-top:14px">Complimentary for qualifying organizations. 5-business-day turnaround.</p>
+    </div>
+  </div>
+</section>
+
+
+<!-- ════════════════════════════════════════════════════════════
+     SERVICES
+════════════════════════════════════════════════════════════ -->
+<section class="services-section" id="services">
+  <div class="inner">
+    <div class="section-eyebrow reveal">AI Services</div>
+    <h2 class="section-h2 reveal">Three Implementation Paths.<br>One Starting Point.</h2>
+    <div class="gold-rule reveal"></div>
+    <p class="body-text reveal">Following the AI Audit, clients engage one of three structured implementation programs — selected based on organizational size, complexity, and strategic objectives identified during the assessment.</p>
+
+    <div class="service-tiers reveal">
+
+      <!-- Tier 1 -->
+      <div class="service-tier-card">
+        <div class="stc-left">
+          <div class="stc-step">Step 01 · Prerequisite</div>
+          <h3>AI Readiness Audit</h3>
+          <div class="stc-badge">⬤ Complimentary</div>
+        </div>
+        <div class="stc-middle">
+          <p>A comprehensive diagnostic of your organization's AI readiness across data quality, process documentation, technology infrastructure, leadership alignment, and governance maturity. The output is a written assessment and prioritized roadmap delivered within five business days — at no cost to qualifying organizations.</p>
+          <p>This step is not optional. The audit defines the scope of every subsequent engagement. It ensures we never deploy AI solutions in search of problems.</p>
+          <div class="stc-delivers">
+            <div class="stc-delivers-label">Deliverables</div>
+            <div class="deliver-item">AI maturity scorecard across 5 dimensions</div>
+            <div class="deliver-item">Prioritized list of automation opportunities with ROI estimates</div>
+            <div class="deliver-item">Written assessment of data and process readiness</div>
+            <div class="deliver-item">Recommended implementation path with timeline and investment range</div>
+          </div>
+        </div>
+        <div class="stc-right">
+          <div class="stc-price">Complimentary<span>Qualifying organizations</span></div>
+          <div class="stc-timeline"><strong>5 Business Days</strong>Turnaround</div>
+          <a href="contact.html" class="btn-navy-sm">Request Audit</a>
+        </div>
+      </div>
+
+      <!-- Tier 2 -->
+      <div class="service-tier-card">
+        <div class="stc-left">
+          <div class="stc-step">Step 02 · Growth</div>
+          <h3>AI Automation Foundations</h3>
+          <div class="stc-badge">From $12,500</div>
+        </div>
+        <div class="stc-middle">
+          <p>Five AI-powered automation systems deployed across your highest-impact workflows — selected based on audit findings, not default templates. Each automation is scoped, built, tested, documented, and transferred to your team with hands-on training included. This is not a software subscription. It is a built-to-spec operational system.</p>
+          <p>Typical automations include: intelligent lead qualification and CRM population, automated client onboarding sequences, AI-assisted reporting and dashboard generation, email response routing, and document processing systems. The specific five are determined by your audit findings.</p>
+          <div class="stc-delivers">
+            <div class="stc-delivers-label">Deliverables</div>
+            <div class="deliver-item">5 production-ready AI automations, live and operational</div>
+            <div class="deliver-item">Full technical documentation and workflow diagrams</div>
+            <div class="deliver-item">AI governance policy and usage guidelines</div>
+            <div class="deliver-item">Team training program with adoption confirmation</div>
+            <div class="deliver-item">Baseline ROI measurement report at 90-day mark</div>
+          </div>
+        </div>
+        <div class="stc-right">
+          <div class="stc-price">From $12,500<span>Investment</span></div>
+          <div class="stc-timeline"><strong>8–14 Weeks</strong>Timeline</div>
+          <a href="contact.html" class="btn-navy-sm">Get a Quote</a>
+        </div>
+      </div>
+
+      <!-- Tier 3 -->
+      <div class="service-tier-card">
+        <div class="stc-left">
+          <div class="stc-step">Step 03 · Enterprise</div>
+          <h3>Enterprise AI Transformation</h3>
+          <div class="stc-badge">From $28,000</div>
+        </div>
+        <div class="stc-middle">
+          <p>Organization-wide AI infrastructure built across every business function. This is a comprehensive transformation program that deploys 15+ AI use cases, unifies your technology architecture, and builds an internal AI Center of Excellence — a standing capability that continues operating after our engagement ends. Designed for organizations with $5M+ revenue that are serious about AI as a strategic competitive advantage, not a cost-reduction exercise.</p>
+          <p>The program includes executive decision-support dashboards, department-level automation systems, a unified data infrastructure, and a governance framework that keeps AI deployment compliant, auditable, and aligned with organizational objectives.</p>
+          <div class="stc-delivers">
+            <div class="stc-delivers-label">Deliverables</div>
+            <div class="deliver-item">15+ AI use cases deployed across all business functions</div>
+            <div class="deliver-item">Executive decision-support dashboard, live and integrated</div>
+            <div class="deliver-item">Internal AI Center of Excellence — staffed, documented, operational</div>
+            <div class="deliver-item">Unified data architecture and technology stack rationalization</div>
+            <div class="deliver-item">Enterprise AI governance framework and compliance documentation</div>
+            <div class="deliver-item">Org-wide adoption program and department-level training</div>
+          </div>
+        </div>
+        <div class="stc-right">
+          <div class="stc-price">From $28,000<span>Investment</span></div>
+          <div class="stc-timeline"><strong>14–24 Weeks</strong>Timeline</div>
+          <a href="contact.html" class="btn-navy-sm">Schedule a Call</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ════════════════════════════════════════════════════════════
+     USE CASES
+════════════════════════════════════════════════════════════ -->
+<section class="usecases-section">
+  <div class="inner">
+    <div class="section-eyebrow reveal">Real-World Applications</div>
+    <h2 class="section-h2 reveal">AI Automation Use Cases<br>That Produce Measurable Results</h2>
+    <div class="gold-rule reveal"></div>
+    <p class="body-text reveal">These are the specific automation systems we build and deploy for clients — not hypothetical capabilities, but operational systems producing measurable outcomes across industries today.</p>
+
+    <div class="uc-grid">
+
+      <div class="uc-card reveal reveal-delay-1">
+        <div class="uc-number">Use Case · 01</div>
+        <div class="uc-icon">💬</div>
+        <h4>Customer Support Automation</h4>
+        <p class="uc-desc">AI-powered support systems that handle tier-1 inquiries, route complex cases to the right agents, and maintain full conversation context across channels. Built on your existing knowledge base and integrated with your CRM — not a generic chatbot layered on top of your website.</p>
+        <div class="uc-result">60–80% of tier-1 tickets resolved without human intervention</div>
+      </div>
+
+      <div class="uc-card reveal reveal-delay-2">
+        <div class="uc-number">Use Case · 02</div>
+        <div class="uc-icon">🎯</div>
+        <h4>Sales Pipeline Automation</h4>
+        <p class="uc-desc">Intelligent lead qualification that scores inbound leads against your ideal customer profile, populates your CRM automatically, sequences follow-up communications, and alerts your sales team only when human judgment is required. Eliminates the gap between marketing and sales without additional headcount.</p>
+        <div class="uc-result">3–5× faster lead response time. 40% reduction in unworked leads.</div>
+      </div>
+
+      <div class="uc-card reveal reveal-delay-3">
+        <div class="uc-number">Use Case · 03</div>
+        <div class="uc-icon">⚙️</div>
+        <h4>Internal Workflow Automation</h4>
+        <p class="uc-desc">Cross-functional process automation that eliminates manual handoffs between departments. Approvals, notifications, status updates, and data transfers triggered automatically based on business logic — reducing the administrative burden that compounds invisibly across every team in your organization.</p>
+        <div class="uc-result">Avg. 12–18 hours per employee per month recaptured</div>
+      </div>
+
+      <div class="uc-card reveal reveal-delay-1">
+        <div class="uc-number">Use Case · 04</div>
+        <div class="uc-icon">📊</div>
+        <h4>AI-Powered Reporting & Analytics</h4>
+        <p class="uc-desc">Automated reporting systems that pull from multiple data sources, generate executive summaries, flag anomalies, and deliver insight-ready dashboards on schedule — without a single manual export or spreadsheet. Your leadership team arrives at every meeting already briefed.</p>
+        <div class="uc-result">8–15 hours of manual reporting work eliminated per week</div>
+      </div>
+
+      <div class="uc-card reveal reveal-delay-2">
+        <div class="uc-number">Use Case · 05</div>
+        <div class="uc-icon">🧠</div>
+        <h4>AI Knowledge Base for Teams</h4>
+        <p class="uc-desc">An internal AI assistant trained on your company documentation, SOPs, product information, and policies. Employees get instant, accurate answers to operational questions — reducing interruptions to senior staff and accelerating onboarding for new hires by an average of 40%.</p>
+        <div class="uc-result">40% faster new hire onboarding. Measurable reduction in internal escalations.</div>
+      </div>
+
+      <div class="uc-card reveal reveal-delay-3">
+        <div class="uc-number">Use Case · 06</div>
+        <div class="uc-icon">🚀</div>
+        <h4>Automated Client Onboarding</h4>
+        <p class="uc-desc">End-to-end onboarding workflows that collect information, trigger contract delivery, provision account access, schedule kickoff calls, and communicate proactively with new clients — without manual coordination. Delivers a premium client experience while reducing the operational load on your team by 70%.</p>
+        <div class="uc-result">70% reduction in manual onboarding coordination time</div>
+      </div>
+
+      <div class="uc-card reveal reveal-delay-1">
+        <div class="uc-number">Use Case · 07</div>
+        <div class="uc-icon">🔗</div>
+        <h4>CRM Workflow Automation</h4>
+        <p class="uc-desc">Intelligent CRM management that maintains contact records, logs interactions automatically, triggers follow-up sequences based on engagement signals, and keeps your pipeline data accurate without requiring your team to update it manually. Your CRM becomes a real-time intelligence system, not a data entry burden.</p>
+        <div class="uc-result">CRM data accuracy improves from ~60% to 95%+ within 60 days</div>
+      </div>
+
+      <div class="uc-card reveal reveal-delay-2">
+        <div class="uc-number">Use Case · 08</div>
+        <div class="uc-icon">✉️</div>
+        <h4>AI Email Response Systems</h4>
+        <p class="uc-desc">Intelligent email triage, drafting, and routing systems that categorize inbound messages, draft contextually accurate responses for team review, and route inquiries to the correct department with relevant context attached. Eliminates inbox overload without sacrificing response quality or personalization.</p>
+        <div class="uc-result">55–65% reduction in email processing time across teams</div>
+      </div>
+
+      <div class="uc-card reveal reveal-delay-3">
+        <div class="uc-number">Use Case · 09</div>
+        <div class="uc-icon">📅</div>
+        <h4>Appointment Scheduling Automation</h4>
+        <p class="uc-desc">Fully automated scheduling systems that handle multi-party coordination, send confirmations and reminders, manage reschedules, and integrate with your team's calendars in real time. Eliminates the back-and-forth email chains that drain collective hours from your client-facing teams every week.</p>
+        <div class="uc-result">Near-zero scheduling overhead. 30% reduction in no-shows.</div>
+      </div>
+
+      <div class="uc-card reveal reveal-delay-1">
+        <div class="uc-number">Use Case · 10</div>
+        <div class="uc-icon">📄</div>
+        <h4>AI Document Processing</h4>
+        <p class="uc-desc">Intelligent document ingestion systems that extract, classify, and route information from contracts, invoices, applications, and forms — eliminating manual data entry and document review. Integrates directly with your existing systems and flags exceptions for human review with full context provided.</p>
+        <div class="uc-result">85–95% reduction in manual document processing time</div>
+      </div>
+
+      <div class="uc-card reveal reveal-delay-2">
+        <div class="uc-number">Use Case · 11</div>
+        <div class="uc-icon">🏭</div>
+        <h4>AI Operations Management</h4>
+        <p class="uc-desc">Predictive operations systems that monitor KPIs, identify performance anomalies before they become problems, automate routine management reporting, and surface decision-relevant insights to leadership in real time. Transforms operations from reactive to anticipatory — at every level of the organization.</p>
+        <div class="uc-result">Proactive issue identification 48–72 hours earlier than manual review</div>
+      </div>
+
+      <div class="uc-card reveal reveal-delay-3" style="background:var(--navy);border-color:transparent;justify-content:center;align-items:flex-start">
+        <div class="uc-icon" style="font-size:1.4rem">✦</div>
+        <h4 style="color:#fff;font-size:.95rem">Need a use case not listed here?</h4>
+        <p class="uc-desc" style="color:rgba(255,255,255,.55)">Every AI system we build is tailored to your specific workflows. If your use case isn't above, the AI Audit will surface it — and we'll build it.</p>
+        <a href="contact.html" style="color:var(--gold);font-size:.78rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;text-decoration:none;margin-top:8px">Start with an Audit →</a>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ════════════════════════════════════════════════════════════
+     INDUSTRIES
+════════════════════════════════════════════════════════════ -->
+<section class="industry-section">
+  <div class="inner">
+    <div class="section-eyebrow reveal">Industry Solutions</div>
+    <h2 class="section-h2 reveal">AI Systems Built for<br>How Your Industry Actually Works</h2>
+    <div class="gold-rule reveal"></div>
+    <p class="body-text reveal">Generic AI implementations fail because they ignore the operational realities of specific industries. Our audit methodology is calibrated to the workflows, compliance requirements, and data environments of the industries we serve.</p>
+
+    <div class="ind-grid">
+      <div class="ind-card reveal reveal-delay-1">
+        <div class="ind-icon">⚖️</div>
+        <h4>Professional Services</h4>
+        <p>Law firms, accounting practices, and consulting businesses where billable hours, document management, and client communication are the operational core.</p>
+        <ul>
+          <li>Automated document review and extraction</li>
+          <li>Intelligent client intake and qualification</li>
+          <li>AI-assisted billing and time tracking</li>
+          <li>Knowledge management and precedent retrieval</li>
+        </ul>
+      </div>
+      <div class="ind-card reveal reveal-delay-2">
+        <div class="ind-icon">🏥</div>
+        <h4>Healthcare & Wellness</h4>
+        <p>Patient intake, scheduling, compliance documentation, and care coordination — where AI reduces administrative burden without compromising clinical quality.</p>
+        <ul>
+          <li>Patient intake and pre-visit automation</li>
+          <li>Appointment scheduling and reminder systems</li>
+          <li>Insurance verification and prior authorization workflows</li>
+          <li>Compliance documentation and audit trail generation</li>
+        </ul>
+      </div>
+      <div class="ind-card reveal reveal-delay-3">
+        <div class="ind-icon">💹</div>
+        <h4>Financial Services</h4>
+        <p>For financial advisors, lenders, and fintech operators managing high-volume client relationships, regulatory documentation, and data-intensive processes.</p>
+        <ul>
+          <li>AI-assisted client onboarding and KYC automation</li>
+          <li>Automated financial report generation</li>
+          <li>Intelligent CRM and client communication management</li>
+          <li>Regulatory document processing and compliance tracking</li>
+        </ul>
+      </div>
+      <div class="ind-card reveal reveal-delay-1">
+        <div class="ind-icon">🏗</div>
+        <h4>Real Estate & Construction</h4>
+        <p>High-touch client relationships, complex project coordination, and document-heavy transactions that benefit immediately from intelligent automation.</p>
+        <ul>
+          <li>Lead qualification and follow-up automation</li>
+          <li>Contract and document processing</li>
+          <li>Project status reporting and stakeholder communication</li>
+          <li>Vendor coordination and approval workflow automation</li>
+        </ul>
+      </div>
+      <div class="ind-card reveal reveal-delay-2">
+        <div class="ind-icon">🚚</div>
+        <h4>Logistics & Operations</h4>
+        <p>For businesses managing physical operations, vendor relationships, and complex coordination challenges where AI improves throughput and reduces error rates.</p>
+        <ul>
+          <li>Automated order processing and fulfillment tracking</li>
+          <li>AI-assisted vendor communication and procurement</li>
+          <li>Operations performance monitoring and anomaly detection</li>
+          <li>Predictive scheduling and capacity planning</li>
+        </ul>
+      </div>
+      <div class="ind-card reveal reveal-delay-3">
+        <div class="ind-icon">🛒</div>
+        <h4>E-Commerce & Retail</h4>
+        <p>High-volume customer interactions, inventory management, and marketing operations where AI scales personalization without scaling headcount.</p>
+        <ul>
+          <li>Intelligent customer support and returns processing</li>
+          <li>Automated marketing segmentation and campaign triggers</li>
+          <li>AI-powered inventory and demand forecasting</li>
+          <li>Personalized customer journey automation</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ════════════════════════════════════════════════════════════
+     ROI CALCULATOR
+════════════════════════════════════════════════════════════ -->
+<section class="roi-section">
+  <div class="inner">
+    <div class="section-eyebrow reveal">Interactive Tool</div>
+    <h2 class="section-h2 reveal">Estimate the Economic Value<br>of AI Automation in Your Business</h2>
+    <div class="gold-rule reveal"></div>
+    <p class="body-text reveal">These estimates are based on observed ATRBA client outcomes, not vendor marketing figures. Conservative assumptions. Real numbers. Adjust for your organization and see what a properly implemented AI program could mean for your bottom line.</p>
+
+    <div class="roi-calc reveal">
+      <div class="roi-inputs">
+        <div class="roi-input-group">
+          <div class="roi-label">Team Size <span class="val" id="sizeVal">25 employees</span></div>
+          <input type="range" min="5" max="200" value="25" step="5" id="roiSize" oninput="updateROI()">
+        </div>
+        <div class="roi-input-group">
+          <div class="roi-label">Estimated Inefficiency <span class="val" id="ineffVal">30%</span></div>
+          <input type="range" min="10" max="60" value="30" step="5" id="roiIneff" oninput="updateROI()">
+        </div>
+        <div class="roi-input-group">
+          <div class="roi-label">Average Annual Salary <span class="val" id="salaryVal">$65,000</span></div>
+          <input type="range" min="35000" max="150000" value="65000" step="5000" id="roiSalary" oninput="updateROI()">
+        </div>
+        <div class="roi-input-group">
+          <div class="roi-label" style="display:block;margin-bottom:8px">Primary Industry</div>
+          <select class="roi-select" id="roiIndustry" onchange="updateROI()">
+            <option value="1.0">Professional Services</option>
+            <option value="0.9">Healthcare / Wellness</option>
+            <option value="1.1">Financial Services</option>
+            <option value="1.05">Logistics & Supply Chain</option>
+            <option value="0.95">Real Estate & Construction</option>
+            <option value="1.0">E-Commerce & Retail</option>
+          </select>
+        </div>
+        <p class="roi-disclaimer">Conservative estimates derived from observed ATR AI client outcomes over 90-day implementation periods. Actual results vary based on process maturity, implementation quality, and organizational adoption. A formal AI Audit will produce precise projections for your specific situation.</p>
+        <a href="contact.html" class="btn-gold" style="text-align:center;justify-content:center">Get a Precise Assessment →</a>
+      </div>
+
+      <div class="roi-results">
+        <div class="roi-result-item">
+          <div class="roi-result-label">Annual Productivity Gain</div>
+          <div class="roi-result-val" id="roiProductivity">$142,800</div>
+          <div class="roi-bar"><div class="roi-bar-fill" id="roiBar1" style="width:55%"></div></div>
+        </div>
+        <div class="roi-result-item">
+          <div class="roi-result-label">Estimated Annual Cost Reduction</div>
+          <div class="roi-result-val" id="roiCostReduction">$87,500</div>
+          <div class="roi-bar"><div class="roi-bar-fill" id="roiBar2" style="width:35%"></div></div>
+        </div>
+        <div class="roi-result-item">
+          <div class="roi-result-label">Projected 3-Year Net Value</div>
+          <div class="roi-result-val big" id="roi3Year">$762,000</div>
+        </div>
+        <div class="roi-result-item">
+          <div class="roi-result-label">Estimated Investment Payback</div>
+          <div class="roi-result-val" id="roiPayback">4.2 months</div>
+        </div>
+        <div class="roi-result-item" style="padding-top:8px">
+          <div style="font-size:.72rem;color:rgba(255,255,255,.25);line-height:1.6">
+            These are model estimates. Your AI Audit will produce a precise, data-driven projection specific to your organization's workflows and operational maturity.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ════════════════════════════════════════════════════════════
+     OUTCOMES
+════════════════════════════════════════════════════════════ -->
+<section class="outcomes-section">
+  <div class="inner">
+    <div class="section-eyebrow reveal">Business Outcomes</div>
+    <h2 class="section-h2 reveal">What a Properly Implemented<br>AI Program Produces</h2>
+    <div class="gold-rule reveal"></div>
+    <p class="body-text reveal">Not capabilities. Not features. These are the operational and financial outcomes organizations experience after completing an ATR AI engagement — tracked against the baselines established during the audit phase.</p>
+
+    <div class="outcomes-grid reveal">
+      <div class="outcome-card">
+        <div class="outcome-num">38<sub>%</sub></div>
+        <div class="outcome-label">Average reduction in manual task hours within 90 days of deployment</div>
+      </div>
+      <div class="outcome-card">
+        <div class="outcome-num">4.2<sub>×</sub></div>
+        <div class="outcome-label">Average 3-year ROI across ATR AI client engagements</div>
+      </div>
+      <div class="outcome-card">
+        <div class="outcome-num">60<sub>%</sub></div>
+        <div class="outcome-label">Reduction in tier-1 support volume in customer-facing automations</div>
+      </div>
+      <div class="outcome-card">
+        <div class="outcome-num">$0</div>
+        <div class="outcome-label">Additional headcount required to support 2× revenue growth post-implementation</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ════════════════════════════════════════════════════════════
+     WHY AI FAILS
+════════════════════════════════════════════════════════════ -->
+<section class="why-section">
+  <div class="inner">
+    <div class="section-eyebrow reveal">Our Approach</div>
+    <h2 class="section-h2 reveal">Why Most AI Implementations<br>Fail to Produce ROI</h2>
+    <div class="gold-rule reveal"></div>
+    <p class="body-text reveal">The majority of enterprise AI projects are abandoned within 18 months. Not because AI doesn't work — but because implementation is treated as a technology deployment rather than an operational transformation. Understanding why most fail is essential to understanding how we prevent it.</p>
+
+    <div class="why-grid reveal">
+      <div class="why-card problem">
+        <div class="why-icon">⚠️</div>
+        <h4>The Common Failure Pattern</h4>
+        <p>Organizations purchase AI tools and deploy them on top of undocumented, inconsistent processes — then wonder why the results are inconsistent. Automation amplifies what is already present. If the process is broken, the automation runs faster and breaks more efficiently.</p>
+        <p style="margin-top:12px">The other common failure: tool selection precedes diagnosis. Teams choose the software, then try to justify the purchase. The result is AI that solves the problem the vendor designed it to solve, not the problem the organization actually has.</p>
+      </div>
+      <div class="why-card solution">
+        <div class="why-icon">🎯</div>
+        <h4>How ATR AI Prevents It</h4>
+        <p style="color:rgba(255,255,255,.65)">The AI Audit establishes ground truth before any tool is selected or any scope is proposed. We map the workflows, assess the data, and identify the specific gaps — then design a solution that addresses the actual problem.</p>
+        <p style="margin-top:12px;color:rgba(255,255,255,.65)">Where processes need remediation before they can be automated, we fix them first. Where data quality needs improvement before AI can act on it reliably, we address that before deployment. Sequence is everything in AI implementation.</p>
+        <p style="margin-top:12px;color:rgba(255,255,255,.65)">Every system we build is documented, trained, and transferred — not managed by us indefinitely. The capability stays in your organization.</p>
+      </div>
+      <div class="why-card result">
+        <div class="why-icon">📈</div>
+        <h4>The Operational Outcome</h4>
+        <p>AI deployments that generate measurable results within the first 90 days. Systems your team understands and actively uses — not tools that sit in a tab and get mentioned in quarterly reviews without data to back them up.</p>
+        <p style="margin-top:12px">And critically: organizational AI capability that compounds over time. Each deployment increases your team's fluency with AI-assisted workflows, improving adoption rates for subsequent systems and accelerating the value of the entire program.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ════════════════════════════════════════════════════════════
+     FAQ — SEO / AEO OPTIMIZED
+════════════════════════════════════════════════════════════ -->
+<section class="faq-section">
+  <div class="inner">
+    <div class="section-eyebrow" style="justify-content:center;margin-bottom:14px">Frequently Asked Questions</div>
+    <h2 class="section-h2" style="text-align:center">Everything You Need to Know<br>Before Starting</h2>
+    <div class="gold-rule" style="margin-left:auto;margin-right:auto"></div>
+    <p class="body-text" style="text-align:center;max-width:560px;margin:0 auto 48px">Common questions from business leaders evaluating AI implementation. If yours isn't here, ask us directly.</p>
+
+    <div class="faq-list">
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)" aria-expanded="false">
+          <span class="faq-q-text">What is an AI Audit and why is it mandatory before any AI implementation?</span>
+          <span class="faq-chevron">+</span>
+        </button>
+        <div class="faq-a"><div class="faq-a-inner">
+          An AI Audit is a structured diagnostic of your organization's readiness to implement artificial intelligence effectively. It examines five dimensions: your data quality and accessibility, your current technology stack, the maturity of your documented processes, your team's readiness to adopt AI-assisted workflows, and your leadership team's understanding of AI governance. We require it before every engagement because we have found — consistently — that organizations which skip this step build solutions to the wrong problems. The audit ensures the AI we deploy addresses your actual operational constraints, not the constraints we assumed you had. It is typically completed within five business days and is complimentary for qualifying organizations.
+        </div></div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)" aria-expanded="false">
+          <span class="faq-q-text">How is ATR AI different from hiring a software vendor or buying an AI tool?</span>
+          <span class="faq-chevron">+</span>
+        </button>
+        <div class="faq-a"><div class="faq-a-inner">
+          Software vendors sell tools. ATR AI diagnoses operational problems and builds systems designed to solve them. The distinction matters enormously in practice. A vendor will deploy their product and train your team to use it. We will first determine whether that type of tool is appropriate for your situation — and if it isn't, we won't recommend it. Our deliverable is a working operational system tied to measurable outcomes, not a software subscription. We also fix the processes the AI will sit on top of, document everything, train your team thoroughly, and establish governance protocols. When we finish, the capability is inside your organization — not dependent on our continued involvement.
+        </div></div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)" aria-expanded="false">
+          <span class="faq-q-text">How long does it take to see measurable results from AI automation?</span>
+          <span class="faq-chevron">+</span>
+        </button>
+        <div class="faq-a"><div class="faq-a-inner">
+          For clients who complete the AI Foundations program (5 automation systems), we target measurable operational outcomes within the first 90 days of deployment — typically a reduction in manual task hours, faster customer response times, or improved data accuracy in the systems we've automated. We establish baseline measurements during the audit phase so that the 90-day outcome is compared against documented prior performance, not estimated. Enterprise transformation programs take longer due to scale, but interim milestones are established at the program design phase so results are visible throughout the engagement.
+        </div></div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)" aria-expanded="false">
+          <span class="faq-q-text">What does an AI automation implementation cost for a small or mid-sized business?</span>
+          <span class="faq-chevron">+</span>
+        </button>
+        <div class="faq-a"><div class="faq-a-inner">
+          The AI Automation Foundations program — five production-ready automations deployed across your highest-impact workflows — starts at $12,500. The precise investment depends on the complexity of the workflows identified during your audit, the number of systems that require integration, and the extent of process remediation needed before automation can be applied. The AI Audit is complimentary for qualifying organizations and produces a written proposal with a specific investment range before you make any commitment. The Enterprise AI Transformation program starts at $28,000 and scales based on organizational size and program scope.
+        </div></div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)" aria-expanded="false">
+          <span class="faq-q-text">Does my business need technical staff to maintain the AI systems after they're deployed?</span>
+          <span class="faq-chevron">+</span>
+        </button>
+        <div class="faq-a"><div class="faq-a-inner">
+          No. Every system we build is documented in plain language, with operational guides your existing team can follow without technical expertise. We design AI systems to be managed by the business users who interact with them daily — not maintained by a developer. Training is included in every engagement, and our documentation covers routine management, common troubleshooting scenarios, and the process for requesting modifications. For organizations that prefer ongoing support, we offer a maintenance agreement — but it is not required for most clients.
+        </div></div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)" aria-expanded="false">
+          <span class="faq-q-text">Which industries benefit most from AI automation?</span>
+          <span class="faq-chevron">+</span>
+        </button>
+        <div class="faq-a"><div class="faq-a-inner">
+          Every industry benefits, but the highest ROI tends to appear in organizations with high volumes of repetitive, rules-based processes — professional services (law, accounting, consulting), financial services, healthcare administration, real estate, and logistics consistently show strong results. The determining factor is not industry but operational profile: organizations with high administrative workloads, manual data handling, complex client communication requirements, or significant reporting burdens are typically excellent candidates for AI automation regardless of sector. The AI Audit determines fit precisely rather than by industry category.
+        </div></div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)" aria-expanded="false">
+          <span class="faq-q-text">What AI tools and platforms does ATR AI use?</span>
+          <span class="faq-chevron">+</span>
+        </button>
+        <div class="faq-a"><div class="faq-a-inner">
+          We are tool-agnostic by design. The platforms and tools we use are selected based on your existing technology stack, your team's technical capability, and the specific automation requirements identified in the audit — not based on vendor partnerships or preferred defaults. We have deployment experience across the major AI and automation platforms including OpenAI, Anthropic, Make, Zapier, n8n, and a range of industry-specific integrations. The audit phase includes a full review of your current stack to identify integration points and tool selections that minimize friction and maximize compatibility with systems you already use.
+        </div></div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)" aria-expanded="false">
+          <span class="faq-q-text">How do you ensure AI systems are secure and compliant with data regulations?</span>
+          <span class="faq-chevron">+</span>
+        </button>
+        <div class="faq-a"><div class="faq-a-inner">
+          Every ATR AI engagement includes a governance framework — a set of documented policies, access controls, and audit trail mechanisms that govern how AI systems interact with your data. For industries with specific regulatory requirements (HIPAA, GDPR, SOC 2, financial compliance frameworks), we design AI architectures that operate within those constraints from day one, not retrofitted for compliance after deployment. We also document data flows for every system we build so you have a clear picture of how information moves through your AI infrastructure — essential for audit and regulatory purposes.
+        </div></div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ════════════════════════════════════════════════════════════
+     FINAL CTA
+════════════════════════════════════════════════════════════ -->
+<section class="final-cta">
+  <div class="inner">
+    <div class="cta-eyebrow">Ready to Begin?</div>
+    <h2>Start with an AI Audit.<br>See What's Actually Possible.</h2>
+    <p>A complimentary AI Audit gives you a diagnostic map of your organization's automation opportunities, prioritized by business impact, with a written roadmap and investment range — before you commit to anything. Most clients receive their audit within five business days.</p>
+    <div class="cta-stack">
+      <div class="cta-row">
+        <a href="contact.html" class="btn-gold">Book Your AI Audit →</a>
+        <a href="contact.html" class="btn-ghost-light">Speak with an Advisor</a>
+      </div>
+      <div class="cta-note">Complimentary for qualifying organizations &nbsp;·&nbsp; 5-business-day turnaround &nbsp;·&nbsp; No commitment required</div>
+    </div>
+  </div>
+</section>
+
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <h3>Above The Rest Business Advisors</h3>
+        <div style="font-size:.65rem;letter-spacing:.15em;text-transform:uppercase;color:var(--gold);font-weight:500;margin-top:.2rem">ATRBA</div>
+        <p>Building businesses that last — by giving growth-stage founders access to the operational infrastructure, strategic expertise, and AI capability historically reserved for large enterprises.</p>
+        <div class="footer-tagline">People. Processes. Profits.</div>
+      </div>
+      <div class="footer-col">
+        <h5>Services</h5>
+        <a href="services.html">Advisory Platform</a>
+        <a href="services.html">Fractional COO</a>
+        <a href="atr-ai.html">AI Automation</a>
+        <a href="services.html">Africa Market Entry</a>
+        <a href="atr-education.html">ATR Academy</a>
+      </div>
+      <div class="footer-col">
+        <h5>Company</h5>
+        <a href="about.html">About Us</a>
+        <a href="case-studies.html">Case Studies</a>
+        <a href="resources.html">Resources</a>
+        <a href="industry-solutions.html">Industries</a>
+        <a href="contact.html">Careers</a>
+      </div>
+      <div class="footer-col">
+        <h5>Connect</h5>
+        <a href="contact.html">Book a Call</a>
+        <a href="https://wa.me/18560000000" target="_blank">WhatsApp</a>
+        <a href="#">LinkedIn</a>
+        <a href="#">Camden, NJ — HQ</a>
+        <a href="#">Lagos, Nigeria</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 Above The Rest Business Advisors, LLC · All rights reserved</span>
+      <div class="footer-bottom-links">
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms of Service</a>
+        <a href="#">Accessibility</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script>
+/* ── ROI Calculator ────────────────────────────────────────── */
+function updateROI() {
+  const size   = parseInt(document.getElementById('roiSize').value);
+  const ineff  = parseInt(document.getElementById('roiIneff').value);
+  const salary = parseInt(document.getElementById('roiSalary').value);
+  const mult   = parseFloat(document.getElementById('roiIndustry').value);
+
+  document.getElementById('sizeVal').textContent   = size + ' employees';
+  document.getElementById('ineffVal').textContent  = ineff + '%';
+  document.getElementById('salaryVal').textContent = '$' + salary.toLocaleString();
+
+  const totalPayroll     = size * salary;
+  const ineffCost        = totalPayroll * (ineff / 100);
+  const productivityGain = Math.round(ineffCost * 0.42 * mult);
+  const costReduction    = Math.round(totalPayroll * 0.08 * mult);
+  const annualBenefit    = productivityGain + costReduction;
+  const investment       = Math.max(12500, Math.min(28000, size * 600));
+  const payback          = Math.round((investment / annualBenefit) * 12 * 10) / 10;
+  const threeYear        = Math.round(annualBenefit * 3.4 - investment);
+
+  document.getElementById('roiProductivity').textContent  = '$' + productivityGain.toLocaleString();
+  document.getElementById('roiCostReduction').textContent = '$' + costReduction.toLocaleString();
+  document.getElementById('roi3Year').textContent         = '$' + threeYear.toLocaleString();
+  document.getElementById('roiPayback').textContent       = payback + ' months';
+
+  const maxB = totalPayroll * 0.6;
+  document.getElementById('roiBar1').style.width = Math.min(90, Math.round((productivityGain / maxB) * 100)) + '%';
+  document.getElementById('roiBar2').style.width = Math.min(90, Math.round((costReduction    / maxB) * 100)) + '%';
+}
+
+/* ── FAQ Accordion ─────────────────────────────────────────── */
+function toggleFaq(btn) {
+  const item     = btn.closest('.faq-item');
+  const isOpen   = item.classList.contains('open');
+  const chevron  = btn.querySelector('.faq-chevron');
+
+  // Close all
+  document.querySelectorAll('.faq-item.open').forEach(el => {
+    el.classList.remove('open');
+    el.querySelector('.faq-q').setAttribute('aria-expanded', 'false');
+  });
+
+  // Open clicked if it was closed
+  if (!isOpen) {
+    item.classList.add('open');
+    btn.setAttribute('aria-expanded', 'true');
+  }
+}
+
+/* ── Scroll reveal ─────────────────────────────────────────── */
+function observeReveal() {
+  const els = document.querySelectorAll('.reveal:not(.visible)');
+  if (!('IntersectionObserver' in window)) {
+    els.forEach(el => el.classList.add('visible'));
+    return;
+  }
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        obs.unobserve(e.target);
+      }
+    });
+  }, { threshold: .1, rootMargin: '0px 0px -40px 0px' });
+  els.forEach(el => obs.observe(el));
+}
+
+window.addEventListener('load', () => { observeReveal(); updateROI(); });
+window.addEventListener('scroll', observeReveal, { passive: true });
+</script>
+
+</body>
+</html>

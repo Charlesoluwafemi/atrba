@@ -1,0 +1,863 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>ATRBA CRM v1.1 — Above The Rest Business Advisors</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;900&family=DM+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --navy: #1B2A4A;
+    --navy-light: #243660;
+    --navy-dark: #111d33;
+    --gold: #C9933A;
+    --gold-light: #e0aa52;
+    --gold-faint: rgba(201,147,58,0.12);
+    --charcoal: #2C2C2C;
+    --slate: #6B6B6B;
+    --white: #FFFFFF;
+    --cream: #FAF7F2;
+    --border: rgba(27,42,74,0.12);
+    --border-gold: rgba(201,147,58,0.3);
+    --danger: #c0392b;
+    --success: #1a7f4b;
+    --warning: #d68910;
+    --sidebar-w: 220px;
+    --header-h: 58px;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--cream); color: var(--charcoal); height: 100vh; overflow: hidden; font-size: 14px; }
+
+  #privacy-banner { display: none; position: fixed; top: 0; left: 0; right: 0; z-index: 9999; background: var(--gold); color: var(--navy-dark); font-family: 'DM Sans', sans-serif; font-weight: 600; font-size: 12px; text-align: center; padding: 6px; letter-spacing: 0.08em; text-transform: uppercase; }
+  #privacy-banner.active { display: block; }
+
+  .layout { display: flex; height: 100vh; }
+
+  .sidebar { width: var(--sidebar-w); background: var(--navy); display: flex; flex-direction: column; flex-shrink: 0; z-index: 100; overflow: hidden; }
+  .sidebar-logo { padding: 18px 16px 14px; border-bottom: 1px solid rgba(255,255,255,0.08); }
+  .sidebar-logo .wordmark { font-family: 'Playfair Display', Georgia, serif; font-weight: 700; font-size: 15px; color: var(--white); letter-spacing: 0.02em; line-height: 1.2; }
+  .sidebar-logo .tagline { font-size: 10px; color: var(--gold); letter-spacing: 0.12em; text-transform: uppercase; margin-top: 3px; }
+  .sidebar-nav { flex: 1; overflow-y: auto; padding: 12px 0; }
+  .sidebar-nav::-webkit-scrollbar { width: 0; }
+  .nav-section { padding: 8px 14px 4px; font-size: 9px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(255,255,255,0.35); }
+  .nav-item { display: flex; align-items: center; gap: 10px; padding: 9px 16px; cursor: pointer; color: rgba(255,255,255,0.68); font-size: 13px; font-weight: 400; transition: all 0.15s; border-left: 3px solid transparent; }
+  .nav-item:hover { color: var(--white); background: rgba(255,255,255,0.06); }
+  .nav-item.active { color: var(--white); background: rgba(201,147,58,0.15); border-left-color: var(--gold); font-weight: 500; }
+  .nav-item .icon { font-size: 14px; width: 18px; text-align: center; flex-shrink: 0; }
+  .nav-badge { margin-left: auto; background: var(--gold); color: var(--navy-dark); font-size: 9px; font-weight: 700; padding: 2px 6px; border-radius: 10px; }
+  .sidebar-user { padding: 12px 16px; border-top: 1px solid rgba(255,255,255,0.08); display: flex; align-items: center; gap: 10px; }
+  .user-avatar { width: 32px; height: 32px; background: var(--gold); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: 'Playfair Display', serif; font-size: 13px; font-weight: 700; color: var(--navy-dark); flex-shrink: 0; }
+  .user-info .name { font-size: 12px; font-weight: 500; color: var(--white); }
+  .user-info .role { font-size: 10px; color: var(--gold); }
+
+  .main { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+  .header { height: var(--header-h); background: var(--white); border-bottom: 1px solid var(--border); display: flex; align-items: center; padding: 0 24px; gap: 16px; flex-shrink: 0; }
+  .header-title { font-family: 'Playfair Display', serif; font-size: 18px; font-weight: 700; color: var(--navy); flex: 1; }
+  .header-title span { color: var(--gold); }
+  .header-actions { display: flex; align-items: center; gap: 10px; }
+
+  .btn { display: inline-flex; align-items: center; gap: 6px; padding: 8px 16px; border-radius: 6px; font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 500; cursor: pointer; border: none; transition: all 0.15s; }
+  .btn-primary { background: var(--navy); color: var(--white); }
+  .btn-primary:hover { background: var(--navy-light); }
+  .btn-gold { background: var(--gold); color: var(--navy-dark); }
+  .btn-gold:hover { background: var(--gold-light); }
+  .btn-outline { background: transparent; color: var(--navy); border: 1.5px solid var(--border); }
+  .btn-outline:hover { border-color: var(--navy); background: var(--cream); }
+  .btn-sm { padding: 5px 12px; font-size: 12px; }
+
+  .privacy-btn { display: flex; align-items: center; gap: 6px; padding: 6px 12px; border-radius: 6px; border: 1.5px solid var(--border-gold); background: var(--gold-faint); color: var(--gold); font-size: 12px; font-weight: 600; cursor: pointer; transition: all 0.15s; letter-spacing: 0.03em; }
+  .privacy-btn:hover { background: var(--gold); color: var(--navy-dark); border-color: var(--gold); }
+  .privacy-btn.active { background: var(--gold); color: var(--navy-dark); }
+
+  .content { flex: 1; overflow-y: auto; padding: 24px; }
+  .content::-webkit-scrollbar { width: 6px; }
+  .content::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+  .card { background: var(--white); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
+  .card-header { padding: 16px 20px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+  .card-title { font-family: 'Playfair Display', serif; font-size: 15px; font-weight: 600; color: var(--navy); }
+  .card-body { padding: 20px; }
+
+  .grid { display: grid; gap: 16px; }
+  .grid-4 { grid-template-columns: repeat(4, 1fr); }
+  .grid-3 { grid-template-columns: repeat(3, 1fr); }
+  .grid-2 { grid-template-columns: repeat(2, 1fr); }
+
+  .stat-card { background: var(--white); border: 1px solid var(--border); border-radius: 10px; padding: 18px 20px; position: relative; overflow: hidden; }
+  .stat-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: var(--gold); }
+  .stat-label { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: var(--slate); }
+  .stat-value { font-family: 'Playfair Display', serif; font-size: 26px; font-weight: 700; color: var(--navy); margin: 6px 0 4px; line-height: 1; }
+  .stat-sub { font-size: 12px; color: var(--slate); }
+  .stat-icon { position: absolute; right: 16px; top: 16px; font-size: 22px; opacity: 0.15; }
+
+  .badge { display: inline-flex; align-items: center; padding: 3px 9px; border-radius: 20px; font-size: 11px; font-weight: 600; letter-spacing: 0.03em; }
+  .badge-a { background: #e8f5e9; color: #2e7d32; }
+  .badge-b { background: #e3f2fd; color: #1565c0; }
+  .badge-c { background: #fff3e0; color: #e65100; }
+  .badge-d { background: #fce4ec; color: #880e4f; }
+  .badge-active { background: #e8f5e9; color: #2e7d32; }
+  .badge-hold { background: #fafafa; color: #616161; border: 1px solid #e0e0e0; }
+  .badge-gold { background: var(--gold-faint); color: var(--gold); border: 1px solid var(--border-gold); }
+  .badge-navy { background: rgba(27,42,74,0.08); color: var(--navy); }
+  .badge-success { background: #e8f5e9; color: #2e7d32; }
+  .badge-danger { background: #fce4ec; color: #c62828; }
+  .badge-warning { background: #fff8e1; color: #f57f17; }
+
+  .table-wrap { overflow-x: auto; }
+  table { width: 100%; border-collapse: collapse; }
+  th { text-align: left; padding: 10px 14px; font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--slate); border-bottom: 1px solid var(--border); white-space: nowrap; }
+  td { padding: 12px 14px; border-bottom: 1px solid var(--border); font-size: 13px; color: var(--charcoal); vertical-align: middle; }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: var(--cream); }
+  .td-name { font-weight: 500; color: var(--navy); }
+  .td-mono { font-family: 'JetBrains Mono', monospace; font-size: 12px; }
+
+  .kanban { display: flex; gap: 14px; overflow-x: auto; padding-bottom: 8px; }
+  .kanban::-webkit-scrollbar { height: 6px; }
+  .kanban::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+  .kanban-col { min-width: 220px; background: var(--cream); border-radius: 10px; padding: 12px; flex-shrink: 0; }
+  .kanban-col-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+  .kanban-col-title { font-size: 12px; font-weight: 600; color: var(--navy); text-transform: uppercase; letter-spacing: 0.06em; }
+  .kanban-col-count { font-size: 11px; color: var(--slate); background: var(--border); padding: 2px 7px; border-radius: 10px; font-weight: 600; }
+  .kanban-card { background: var(--white); border: 1px solid var(--border); border-radius: 8px; padding: 12px; margin-bottom: 8px; cursor: pointer; transition: all 0.15s; border-left: 3px solid transparent; }
+  .kanban-card:hover { border-color: var(--navy); box-shadow: 0 2px 8px rgba(27,42,74,0.1); }
+  .kanban-card.seg-a { border-left-color: #43a047; }
+  .kanban-card.seg-b { border-left-color: #1976d2; }
+  .kanban-card.seg-c { border-left-color: #ef6c00; }
+  .kanban-card.seg-d { border-left-color: #c62828; }
+  .kc-company { font-size: 12px; font-weight: 600; color: var(--navy); margin-bottom: 3px; }
+  .kc-service { font-size: 11px; color: var(--slate); margin-bottom: 8px; }
+  .kc-meta { display: flex; align-items: center; justify-content: space-between; }
+  .kc-value { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 600; color: var(--navy); }
+
+  .form-group { margin-bottom: 16px; }
+  .form-label { display: block; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--slate); margin-bottom: 6px; }
+  .form-control { width: 100%; padding: 9px 12px; border: 1.5px solid var(--border); border-radius: 6px; font-family: 'DM Sans', sans-serif; font-size: 13px; color: var(--charcoal); background: var(--white); transition: border-color 0.15s; outline: none; }
+  .form-control:focus { border-color: var(--navy); }
+
+  .tabs { display: flex; gap: 0; border-bottom: 1px solid var(--border); margin-bottom: 20px; }
+  .tab { padding: 10px 18px; font-size: 13px; font-weight: 500; color: var(--slate); cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -1px; transition: all 0.15s; white-space: nowrap; }
+  .tab:hover { color: var(--navy); }
+  .tab.active { color: var(--navy); border-bottom-color: var(--gold); font-weight: 600; }
+
+  .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(17,29,51,0.55); z-index: 1000; align-items: center; justify-content: center; backdrop-filter: blur(2px); }
+  .modal-overlay.open { display: flex; }
+  .modal { background: var(--white); border-radius: 12px; width: 520px; max-width: 95vw; max-height: 85vh; overflow-y: auto; box-shadow: 0 20px 60px rgba(17,29,51,0.25); }
+  .modal-header { padding: 20px 24px 16px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
+  .modal-title { font-family: 'Playfair Display', serif; font-size: 18px; font-weight: 700; color: var(--navy); }
+  .modal-close { font-size: 20px; cursor: pointer; color: var(--slate); background: none; border: none; line-height: 1; }
+  .modal-body { padding: 20px 24px; }
+  .modal-footer { padding: 16px 24px; border-top: 1px solid var(--border); display: flex; gap: 10px; justify-content: flex-end; }
+
+  .search-bar { display: flex; align-items: center; gap: 8px; background: var(--cream); border: 1.5px solid var(--border); border-radius: 6px; padding: 7px 12px; font-size: 13px; color: var(--slate); width: 220px; }
+  .search-bar input { background: none; border: none; outline: none; font-family: 'DM Sans', sans-serif; font-size: 13px; color: var(--charcoal); width: 100%; }
+
+  .progress-bar { background: var(--border); border-radius: 4px; height: 6px; overflow: hidden; }
+  .progress-fill { height: 100%; background: var(--gold); border-radius: 4px; }
+
+  .timeline { padding-left: 16px; border-left: 2px solid var(--border); }
+  .timeline-item { position: relative; padding: 0 0 16px 20px; }
+  .timeline-dot { position: absolute; left: -25px; top: 3px; width: 10px; height: 10px; border-radius: 50%; background: var(--gold); border: 2px solid var(--white); box-shadow: 0 0 0 2px var(--gold); }
+  .timeline-label { font-size: 11px; color: var(--slate); margin-bottom: 2px; }
+  .timeline-text { font-size: 13px; color: var(--charcoal); font-weight: 500; }
+
+  .task-board { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+  .task-col { background: var(--cream); border-radius: 8px; padding: 10px; min-height: 200px; }
+  .task-col-header { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--slate); margin-bottom: 10px; display: flex; align-items: center; justify-content: space-between; }
+  .task-card { background: var(--white); border: 1px solid var(--border); border-radius: 7px; padding: 10px; margin-bottom: 8px; font-size: 12px; cursor: pointer; transition: all 0.15s; }
+  .task-card:hover { box-shadow: 0 2px 8px rgba(27,42,74,0.1); }
+  .task-title { font-weight: 600; color: var(--navy); margin-bottom: 4px; }
+  .task-meta { color: var(--slate); font-size: 11px; display: flex; gap: 8px; align-items: center; }
+  .priority-h { color: var(--danger); font-weight: 700; }
+  .priority-m { color: var(--warning); font-weight: 700; }
+  .priority-l { color: var(--success); font-weight: 700; }
+
+  .bar-chart { display: flex; align-items: flex-end; gap: 8px; }
+  .bar-item { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 4px; }
+  .bar { width: 100%; background: var(--gold); border-radius: 4px 4px 0 0; min-height: 4px; }
+  .bar-label { font-size: 9px; color: var(--slate); text-align: center; white-space: nowrap; }
+  .bar-val { font-size: 9px; font-weight: 700; color: var(--navy); }
+
+  .compliance-flag { display: flex; align-items: center; gap: 8px; padding: 10px 14px; background: #fff8e1; border: 1px solid #f9a825; border-radius: 8px; margin-bottom: 8px; font-size: 12px; }
+  .compliance-flag .flag-icon { font-size: 16px; }
+  .health-score { display: flex; align-items: center; gap: 10px; }
+  .health-circle { width: 42px; height: 42px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; }
+  .health-good { background: #e8f5e9; color: #2e7d32; }
+  .health-mid { background: #fff3e0; color: #ef6c00; }
+
+  .footer-bar { padding: 8px 24px; background: var(--white); border-top: 1px solid var(--border); display: flex; align-items: center; gap: 16px; font-size: 11px; color: var(--slate); flex-shrink: 0; }
+  .footer-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--success); }
+
+  .ai-panel { position: fixed; right: 20px; bottom: 20px; width: 340px; background: var(--navy); border-radius: 12px; box-shadow: 0 12px 40px rgba(17,29,51,0.4); z-index: 500; overflow: hidden; display: none; flex-direction: column; }
+  .ai-panel.open { display: flex; }
+  .ai-panel-header { padding: 14px 16px; background: var(--navy-dark); display: flex; align-items: center; gap: 10px; border-bottom: 1px solid rgba(255,255,255,0.08); }
+  .ai-panel-title { font-family: 'Playfair Display', serif; font-size: 14px; font-weight: 600; color: var(--white); flex: 1; }
+  .ai-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--gold); animation: pulse 2s infinite; }
+  @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.4; } }
+  .ai-close { color: rgba(255,255,255,0.5); cursor: pointer; background: none; border: none; font-size: 18px; }
+  .ai-messages { padding: 14px; height: 260px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; }
+  .ai-messages::-webkit-scrollbar { width: 0; }
+  .ai-msg { padding: 10px 12px; border-radius: 8px; font-size: 12px; line-height: 1.5; max-width: 85%; white-space: pre-wrap; }
+  .ai-msg-ai { background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.9); align-self: flex-start; }
+  .ai-msg-user { background: var(--gold); color: var(--navy-dark); align-self: flex-end; font-weight: 500; }
+  .ai-input-row { padding: 12px; border-top: 1px solid rgba(255,255,255,0.08); display: flex; gap: 8px; }
+  .ai-input { flex: 1; background: rgba(255,255,255,0.1); border: none; border-radius: 6px; color: var(--white); font-family: 'DM Sans', sans-serif; font-size: 12px; padding: 8px 10px; outline: none; }
+  .ai-input::placeholder { color: rgba(255,255,255,0.35); }
+  .ai-send { background: var(--gold); border: none; border-radius: 6px; color: var(--navy-dark); font-size: 14px; padding: 8px 10px; cursor: pointer; }
+  .ai-fab { position: fixed; right: 20px; bottom: 20px; width: 48px; height: 48px; border-radius: 50%; background: var(--navy); color: var(--white); border: none; font-size: 20px; cursor: pointer; box-shadow: 0 6px 20px rgba(17,29,51,0.35); display: flex; align-items: center; justify-content: center; z-index: 499; transition: all 0.15s; }
+  .ai-fab:hover { background: var(--gold); color: var(--navy-dark); transform: scale(1.05); }
+
+  .flex { display: flex; }
+  .items-center { align-items: center; }
+  .justify-between { justify-content: space-between; }
+  .gap-8 { gap: 8px; }
+  .gap-16 { gap: 16px; }
+  .mt-16 { margin-top: 16px; }
+  .mb-16 { margin-bottom: 16px; }
+  .mb-4 { margin-bottom: 4px; }
+  .text-slate { color: var(--slate); }
+  .text-navy { color: var(--navy); }
+  .text-gold { color: var(--gold); }
+  .fw-600 { font-weight: 600; }
+  .fs-12 { font-size: 12px; }
+  .fs-13 { font-size: 13px; }
+  .font-mono { font-family: 'JetBrains Mono', monospace; }
+
+  .page { display: none; }
+  .page.active { display: block; }
+
+  .section-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; }
+  .section-title { font-family: 'Playfair Display', serif; font-size: 20px; font-weight: 700; color: var(--navy); }
+  .section-sub { font-size: 13px; color: var(--slate); margin-top: 2px; }
+
+  .alert { padding: 12px 16px; border-radius: 8px; font-size: 13px; margin-bottom: 12px; display: flex; align-items: flex-start; gap: 10px; }
+  .alert-warning { background: #fff8e1; border: 1px solid #f9a825; color: #5f3500; }
+  .alert-info { background: rgba(27,42,74,0.06); border: 1px solid rgba(27,42,74,0.15); color: var(--navy); }
+  .alert-success { background: #e8f5e9; border: 1px solid #66bb6a; color: #1b5e20; }
+  .alert-danger { background: #fce4ec; border: 1px solid #ef9a9a; color: #880e4f; }
+</style>
+</head>
+<body>
+
+<div id="privacy-banner">🔒 PRIVACY MODE ACTIVE — All client data anonymized for demo/screenshare</div>
+
+<div class="layout">
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <div class="wordmark">Above The Rest<br>Business Advisors</div>
+      <div class="tagline">People. Processes. Profits.</div>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="nav-section">Core</div>
+      <div class="nav-item active" onclick="navigate('dashboard')"><span class="icon">⊞</span> Dashboard</div>
+      <div class="nav-item" onclick="navigate('contacts')"><span class="icon">👤</span> Contacts <span class="nav-badge">4</span></div>
+      <div class="nav-item" onclick="navigate('companies')"><span class="icon">🏢</span> Companies</div>
+      <div class="nav-item" onclick="navigate('pipeline')"><span class="icon">⚡</span> Pipeline</div>
+      <div class="nav-section">Delivery</div>
+      <div class="nav-item" onclick="navigate('engagements')"><span class="icon">🎯</span> Engagements</div>
+      <div class="nav-item" onclick="navigate('projects')"><span class="icon">📋</span> Projects</div>
+      <div class="nav-item" onclick="navigate('documents')"><span class="icon">📁</span> Documents</div>
+      <div class="nav-section">Finance & People</div>
+      <div class="nav-item" onclick="navigate('financial')"><span class="icon">💰</span> Financial</div>
+      <div class="nav-item" onclick="navigate('team')"><span class="icon">👥</span> Team</div>
+      <div class="nav-section">Intelligence</div>
+      <div class="nav-item" onclick="navigate('reports')"><span class="icon">📊</span> Reports</div>
+      <div class="nav-item" onclick="navigate('ai')"><span class="icon">✨</span> AI Assist</div>
+    </nav>
+    <div class="sidebar-user">
+      <div class="user-avatar">S</div>
+      <div class="user-info">
+        <div class="name">Stewart</div>
+        <div class="role">Admin · Camden HQ</div>
+      </div>
+    </div>
+  </aside>
+
+  <div class="main">
+    <header class="header">
+      <div class="header-title" id="header-title">Executive <span>Dashboard</span></div>
+      <div class="header-actions">
+        <div class="search-bar"><span>🔍</span><input type="text" placeholder="Search CRM…" id="global-search" oninput="handleSearch(this.value)"/></div>
+        <button class="btn btn-primary btn-sm" onclick="openModal('add-contact-modal')">+ Add Contact</button>
+        <button class="privacy-btn" id="privacy-btn" onclick="togglePrivacy()">🔒 Privacy Mode</button>
+      </div>
+    </header>
+
+    <div class="content" id="main-content">
+
+      <!-- DASHBOARD -->
+      <div class="page active" id="page-dashboard">
+        <div class="grid grid-4 mb-16">
+          <div class="stat-card"><div class="stat-label">Pipeline Value</div><div class="stat-value" data-pii="financial">$847K</div><div class="stat-sub">Across 6 service lines</div><div class="stat-icon">⚡</div></div>
+          <div class="stat-card"><div class="stat-label">Active Clients</div><div class="stat-value">12</div><div class="stat-sub">4 in onboarding</div><div class="stat-icon">🎯</div></div>
+          <div class="stat-card"><div class="stat-label">MRR</div><div class="stat-value" data-pii="financial">$38,400</div><div class="stat-sub">+12% vs last month</div><div class="stat-icon">💰</div></div>
+          <div class="stat-card"><div class="stat-label">Overdue Invoices</div><div class="stat-value" style="color:var(--danger)">3</div><div class="stat-sub" data-pii="financial">$14,200 outstanding</div><div class="stat-icon">⚠️</div></div>
+        </div>
+        <div class="grid mb-16" style="grid-template-columns:2fr 1fr;">
+          <div class="card">
+            <div class="card-header"><span class="card-title">Pipeline by Service Line</span><span class="badge badge-gold">Live</span></div>
+            <div class="card-body">
+              <div class="bar-chart" style="height:120px">
+                <div class="bar-item"><div class="bar-val">$210K</div><div class="bar" style="height:100%"></div><div class="bar-label">AI Auto</div></div>
+                <div class="bar-item"><div class="bar-val">$185K</div><div class="bar" style="height:88%;background:var(--navy)"></div><div class="bar-label">Fin. Adv</div></div>
+                <div class="bar-item"><div class="bar-val">$142K</div><div class="bar" style="height:68%;background:#5c7cba"></div><div class="bar-label">HR</div></div>
+                <div class="bar-item"><div class="bar-val">$98K</div><div class="bar" style="height:47%;background:var(--gold-light)"></div><div class="bar-label">Mkt & Sales</div></div>
+                <div class="bar-item"><div class="bar-val">$134K</div><div class="bar" style="height:64%;background:#8b6fd4"></div><div class="bar-label">Frac. CSuite</div></div>
+                <div class="bar-item"><div class="bar-val">$78K</div><div class="bar" style="height:37%;background:#2e7d32"></div><div class="bar-label">Cross-Border</div></div>
+              </div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-header"><span class="card-title">ICP Breakdown</span></div>
+            <div class="card-body" style="display:flex;flex-direction:column;gap:12px">
+              <div><div class="flex items-center justify-between mb-4"><span class="fs-12 fw-600">Seg A (Pre–$1M)</span><span class="fs-12 fw-600">8</span></div><div class="progress-bar"><div class="progress-fill" style="width:32%;background:#43a047"></div></div></div>
+              <div><div class="flex items-center justify-between mb-4"><span class="fs-12 fw-600">Seg B ($1M–$5M)</span><span class="fs-12 fw-600">11</span></div><div class="progress-bar"><div class="progress-fill" style="width:44%;background:#1976d2"></div></div></div>
+              <div><div class="flex items-center justify-between mb-4"><span class="fs-12 fw-600">Seg C ($5M–$20M)</span><span class="fs-12 fw-600">6</span></div><div class="progress-bar"><div class="progress-fill" style="width:24%;background:#ef6c00"></div></div></div>
+              <div><div class="flex items-center justify-between mb-4"><span class="fs-12 fw-600">Seg D ($20M+)</span><span class="fs-12 fw-600">3</span></div><div class="progress-bar"><div class="progress-fill" style="width:12%;background:#c62828"></div></div></div>
+            </div>
+          </div>
+        </div>
+        <div class="grid grid-2">
+          <div class="card">
+            <div class="card-header"><span class="card-title">Recent Activity</span></div>
+            <div class="card-body">
+              <div class="timeline">
+                <div class="timeline-item"><div class="timeline-dot"></div><div class="timeline-label">2 hours ago</div><div class="timeline-text" data-pii="name">Adaeze Okafor — Deal moved to Proposal stage</div></div>
+                <div class="timeline-item"><div class="timeline-dot" style="background:var(--navy)"></div><div class="timeline-label">Yesterday</div><div class="timeline-text" data-pii="name">BrightPath Logistics — Onboarding complete</div></div>
+                <div class="timeline-item"><div class="timeline-dot" style="background:#43a047"></div><div class="timeline-label">2 days ago</div><div class="timeline-text" data-pii="financial">Invoice ATRBA-INV-2026-0041 — $12,500 paid</div></div>
+                <div class="timeline-item"><div class="timeline-dot" style="background:var(--danger)"></div><div class="timeline-label">3 days ago</div><div class="timeline-text" data-pii="name">Marcus Webb — Retainer renewal alert (30 days)</div></div>
+              </div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-header"><span class="card-title">My Tasks</span><button class="btn btn-outline btn-sm" onclick="navigate('projects')">View All</button></div>
+            <div class="card-body" style="padding:0">
+              <table><tbody>
+                <tr><td><span class="td-name" data-pii="name">Send SOW — Nexus Group</span></td><td><span class="badge badge-danger">High</span></td><td class="text-slate fs-12">Today</td></tr>
+                <tr><td><span class="td-name">AI Receptionist QA</span></td><td><span class="badge badge-warning">Med</span></td><td class="text-slate fs-12">Apr 25</td></tr>
+                <tr><td><span class="td-name" data-pii="name">Review W-8BEN — Kola Adeyemi</span></td><td><span class="badge badge-danger">High</span></td><td class="text-slate fs-12">Apr 24</td></tr>
+                <tr><td><span class="td-name">Cross-border compliance review</span></td><td><span class="badge badge-navy">Low</span></td><td class="text-slate fs-12">Apr 28</td></tr>
+              </tbody></table>
+            </div>
+          </div>
+        </div>
+        <div class="alert alert-warning mt-16">⚠️ <strong>Retainer Alert:</strong> <span data-pii="name">Marcus Webb Consulting</span> retainer expires in <strong>30 days</strong> (May 23, 2026). Renewal task auto-assigned to you.</div>
+      </div>
+
+      <!-- CONTACTS -->
+      <div class="page" id="page-contacts">
+        <div class="section-header">
+          <div><div class="section-title">Contacts</div><div class="section-sub">All prospects, clients, and partners</div></div>
+          <button class="btn btn-primary" onclick="openModal('add-contact-modal')">+ New Contact</button>
+        </div>
+        <div class="card">
+          <div class="card-header">
+            <div class="flex gap-8">
+              <select class="form-control" style="width:140px;padding:6px 10px"><option>All Segments</option><option>Segment A</option><option>Segment B</option><option>Segment C</option><option>Segment D</option></select>
+              <select class="form-control" style="width:160px;padding:6px 10px"><option>All Sources</option><option>AI Receptionist</option><option>Referral</option><option>Inbound</option><option>Cold Outreach</option></select>
+            </div>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Name</th><th>Company</th><th>Role</th><th>ICP Seg</th><th>Lead Source</th><th>Location</th><th>Owner</th><th>Actions</th></tr></thead>
+              <tbody id="contacts-tbody">
+                <tr><td><div class="td-name" data-pii="name">Adaeze Okafor</div><div class="text-slate fs-12" data-pii="email">adaeze.o@brightpath.ng</div></td><td data-pii="name">BrightPath Logistics</td><td><span class="badge badge-navy">Decision Maker</span></td><td><span class="badge badge-c">Seg C</span></td><td>AI Receptionist</td><td>Lagos, NG 🇳🇬</td><td>Stewart</td><td><button class="btn btn-outline btn-sm">View</button></td></tr>
+                <tr><td><div class="td-name" data-pii="name">Marcus Webb</div><div class="text-slate fs-12" data-pii="email">marcus@webbconsult.com</div></td><td data-pii="name">Webb Consulting Group</td><td><span class="badge badge-navy">Champion</span></td><td><span class="badge badge-b">Seg B</span></td><td>Referral</td><td>Camden, NJ 🇺🇸</td><td>Stewart</td><td><button class="btn btn-outline btn-sm">View</button></td></tr>
+                <tr><td><div class="td-name" data-pii="name">Priya Sharma</div><div class="text-slate fs-12" data-pii="email">p.sharma@nexus.io</div></td><td data-pii="name">Nexus Growth Partners</td><td><span class="badge badge-navy">Decision Maker</span></td><td><span class="badge badge-d">Seg D</span></td><td>LinkedIn</td><td>New York, NY 🇺🇸</td><td>Stewart</td><td><button class="btn btn-outline btn-sm">View</button></td></tr>
+                <tr><td><div class="td-name" data-pii="name">Kola Adeyemi</div><div class="text-slate fs-12" data-pii="email">kola@foundry.ng</div></td><td data-pii="name">Foundry Africa</td><td><span class="badge badge-navy">Decision Maker</span></td><td><span class="badge badge-a">Seg A</span></td><td>Cold Outreach</td><td>Lagos, NG 🇳🇬</td><td>Stewart</td><td><button class="btn btn-outline btn-sm">View</button></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- COMPANIES -->
+      <div class="page" id="page-companies">
+        <div class="section-header">
+          <div><div class="section-title">Companies</div><div class="section-sub">Organization records and cross-border flags</div></div>
+          <button class="btn btn-primary" onclick="openModal('add-company-modal')">+ New Company</button>
+        </div>
+        <div class="card">
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Company</th><th>Industry</th><th>ICP Seg</th><th>Revenue</th><th>Markets</th><th>Cross-Border</th><th>Health</th></tr></thead>
+              <tbody>
+                <tr><td><div class="td-name" data-pii="name">BrightPath Logistics</div></td><td>Logistics & Supply Chain</td><td><span class="badge badge-c">Seg C</span></td><td class="td-mono" data-pii="financial">$8.2M</td><td>🇳🇬 Nigeria · 🇺🇸 US</td><td><span class="badge badge-danger">🚩 Flagged</span></td><td><div class="health-score"><div class="health-circle health-good" style="width:32px;height:32px;font-size:11px">87</div></div></td></tr>
+                <tr><td><div class="td-name" data-pii="name">Webb Consulting Group</div></td><td>Management Consulting</td><td><span class="badge badge-b">Seg B</span></td><td class="td-mono" data-pii="financial">$2.4M</td><td>🇺🇸 US</td><td><span class="badge badge-success">Clear</span></td><td><div class="health-score"><div class="health-circle health-mid" style="width:32px;height:32px;font-size:11px">62</div></div></td></tr>
+                <tr><td><div class="td-name" data-pii="name">Nexus Growth Partners</div></td><td>Private Equity</td><td><span class="badge badge-d">Seg D</span></td><td class="td-mono" data-pii="financial">$45M</td><td>🇺🇸 US · 🇬🇧 UK</td><td><span class="badge badge-success">Clear</span></td><td><div class="health-score"><div class="health-circle health-good" style="width:32px;height:32px;font-size:11px">91</div></div></td></tr>
+                <tr><td><div class="td-name" data-pii="name">Foundry Africa</div></td><td>Tech / SaaS</td><td><span class="badge badge-a">Seg A</span></td><td class="td-mono" data-pii="financial">$340K</td><td>🇳🇬 Nigeria</td><td><span class="badge badge-danger">🚩 Flagged</span></td><td><div class="health-score"><div class="health-circle health-good" style="width:32px;height:32px;font-size:11px">78</div></div></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="alert alert-warning mt-16">⚠️ <strong>Cross-Border Compliance:</strong> 2 companies flagged for Nigeria-linked engagements require W-8BEN verification and OFAC screening.</div>
+      </div>
+
+      <!-- PIPELINE -->
+      <div class="page" id="page-pipeline">
+        <div class="section-header">
+          <div><div class="section-title">Pipeline</div><div class="section-sub">All service-line deals — Kanban view</div></div>
+          <div class="flex gap-8">
+            <select class="form-control" style="width:200px;padding:6px 10px"><option>All Service Lines</option><option>AI Automation</option><option>Financial Advisory</option><option>HR Consulting</option><option>Marketing & Sales</option><option>Fractional C-Suite</option><option>Cross-Border Market Entry</option></select>
+            <button class="btn btn-primary" onclick="openModal('add-deal-modal')">+ New Deal</button>
+          </div>
+        </div>
+        <div class="alert alert-info mb-16">🔒 <strong>Paid Diagnostic Gate Active:</strong> Segment C & D deals cannot advance past Diagnostic without Diagnostic Status = Complete.</div>
+        <div class="kanban">
+          <div class="kanban-col">
+            <div class="kanban-col-header"><span class="kanban-col-title">Lead</span><span class="kanban-col-count">4</span></div>
+            <div class="kanban-card seg-a" onclick="openModal('deal-modal')"><div class="kc-company" data-pii="name">Foundry Africa</div><div class="kc-service">AI Automation</div><div class="kc-meta"><span class="kc-value" data-pii="financial">$18,000</span><span class="badge badge-a" style="font-size:9px">Seg A</span></div></div>
+            <div class="kanban-card seg-b"><div class="kc-company" data-pii="name">SkyBridge Partners</div><div class="kc-service">HR Consulting</div><div class="kc-meta"><span class="kc-value" data-pii="financial">$45,000</span><span class="badge badge-b" style="font-size:9px">Seg B</span></div></div>
+          </div>
+          <div class="kanban-col">
+            <div class="kanban-col-header"><span class="kanban-col-title">Diagnostic Scheduled</span><span class="kanban-col-count">3</span></div>
+            <div class="kanban-card seg-c"><div class="kc-company" data-pii="name">BrightPath Logistics</div><div class="kc-service">Cross-Border Market Entry</div><div class="kc-meta"><span class="kc-value" data-pii="financial">$95,000</span><span class="badge badge-c" style="font-size:9px">Seg C</span></div><div style="margin-top:6px"><span class="badge badge-warning" style="font-size:10px">⏳ Diag. Pending</span></div></div>
+            <div class="kanban-card seg-d"><div class="kc-company" data-pii="name">Nexus Growth Partners</div><div class="kc-service">Fractional C-Suite</div><div class="kc-meta"><span class="kc-value" data-pii="financial">$240,000</span><span class="badge badge-d" style="font-size:9px">Seg D</span></div><div style="margin-top:6px"><span class="badge badge-warning" style="font-size:10px">⏳ Diag. Pending</span></div></div>
+          </div>
+          <div class="kanban-col">
+            <div class="kanban-col-header"><span class="kanban-col-title">Proposal</span><span class="kanban-col-count">3</span></div>
+            <div class="kanban-card seg-b"><div class="kc-company" data-pii="name">Webb Consulting</div><div class="kc-service">Financial Advisory</div><div class="kc-meta"><span class="kc-value" data-pii="financial">$72,000</span><span class="badge badge-b" style="font-size:9px">Seg B</span></div></div>
+            <div class="kanban-card seg-c"><div class="kc-company" data-pii="name">TerraScale Inc</div><div class="kc-service">AI Automation</div><div class="kc-meta"><span class="kc-value" data-pii="financial">$115,000</span><span class="badge badge-c" style="font-size:9px">Seg C</span></div><div style="margin-top:6px"><span class="badge badge-success" style="font-size:10px">✓ Diag. Complete</span></div></div>
+          </div>
+          <div class="kanban-col">
+            <div class="kanban-col-header"><span class="kanban-col-title">Negotiation</span><span class="kanban-col-count">2</span></div>
+            <div class="kanban-card seg-d"><div class="kc-company" data-pii="name">Nexus — Financial Adv.</div><div class="kc-service">Financial Advisory</div><div class="kc-meta"><span class="kc-value" data-pii="financial">$180,000</span><span class="badge badge-d" style="font-size:9px">Seg D</span></div></div>
+          </div>
+          <div class="kanban-col">
+            <div class="kanban-col-header"><span class="kanban-col-title">Close Won ✓</span><span class="kanban-col-count">5</span></div>
+            <div class="kanban-card" style="border-left-color:#43a047"><div class="kc-company" data-pii="name">Marcus Webb</div><div class="kc-service">HR Consulting</div><div class="kc-meta"><span class="kc-value" data-pii="financial">$36,000</span><span class="badge badge-b" style="font-size:9px">Seg B</span></div></div>
+            <div class="kanban-card" style="border-left-color:#43a047"><div class="kc-company" data-pii="name">Adaeze — BrightPath</div><div class="kc-service">Cross-Border</div><div class="kc-meta"><span class="kc-value" data-pii="financial">$88,000</span><span class="badge badge-c" style="font-size:9px">Seg C</span></div></div>
+          </div>
+          <div class="kanban-col">
+            <div class="kanban-col-header"><span class="kanban-col-title">Closed Lost</span><span class="kanban-col-count">2</span></div>
+            <div class="kanban-card" style="opacity:0.6"><div class="kc-company" data-pii="name">Apex Ventures</div><div class="kc-service">Fractional C-Suite</div><div class="kc-meta"><span class="kc-value" data-pii="financial">$60,000</span></div><div style="margin-top:4px;font-size:10px;color:var(--danger)">Lost: Price</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ENGAGEMENTS -->
+      <div class="page" id="page-engagements">
+        <div class="section-header">
+          <div><div class="section-title">Engagements</div><div class="section-sub">Active delivery records</div></div>
+          <div class="flex gap-8"><span class="badge badge-active" style="padding:6px 12px">12 Active</span><span class="badge badge-warning" style="padding:6px 12px">4 Onboarding</span></div>
+        </div>
+        <div class="tabs">
+          <div class="tab active" onclick="switchTab(this,'eng-active')">Active (12)</div>
+          <div class="tab" onclick="switchTab(this,'eng-onboarding')">Onboarding (4)</div>
+          <div class="tab" onclick="switchTab(this,'eng-renewal')">Renewal Alerts (2)</div>
+        </div>
+        <div id="eng-active" class="card">
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Engagement</th><th>Client</th><th>Service</th><th>Status</th><th>Health</th><th>Retainer End</th></tr></thead>
+              <tbody>
+                <tr><td class="td-name" data-pii="name">BrightPath — Cross-Border</td><td data-pii="name">BrightPath Logistics</td><td>Cross-Border Market Entry</td><td><span class="badge badge-active">In Progress</span></td><td><div class="health-circle health-good" style="width:32px;height:32px;font-size:11px">87</div></td><td class="text-slate fs-12">Aug 31, 2026</td></tr>
+                <tr><td class="td-name" data-pii="name">Webb — HR Consulting</td><td data-pii="name">Webb Consulting Group</td><td>HR Consulting</td><td><span class="badge badge-warning">Awaiting Client</span></td><td><div class="health-circle health-mid" style="width:32px;height:32px;font-size:11px">62</div></td><td class="text-slate fs-12" style="color:var(--danger);font-weight:600">⚠ May 23, 2026</td></tr>
+                <tr><td class="td-name" data-pii="name">Nexus — Fractional CFO</td><td data-pii="name">Nexus Growth Partners</td><td>Fractional C-Suite</td><td><span class="badge badge-active">In Progress</span></td><td><div class="health-circle health-good" style="width:32px;height:32px;font-size:11px">91</div></td><td class="text-slate fs-12">Dec 31, 2026</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div id="eng-onboarding" style="display:none" class="card"><div class="card-body"><div class="alert alert-info">📋 4 engagements in onboarding. Checklist completion required before status advances to In Progress.</div><div style="margin-top:16px"><div class="flex items-center justify-between mb-16"><div><div class="fw-600" data-pii="name">Foundry Africa — AI Automation</div><div class="text-slate fs-12">Started Apr 18, 2026</div></div><div style="width:200px"><div class="flex items-center justify-between mb-4"><span class="fs-12">Checklist</span><span class="fs-12 fw-600">3/5</span></div><div class="progress-bar"><div class="progress-fill" style="width:60%"></div></div></div></div></div></div></div>
+        <div id="eng-renewal" style="display:none" class="card"><div class="card-body"><div class="alert alert-danger">🔔 2 retainer renewal alerts require attention within 30 days.</div><div class="compliance-flag" style="margin-top:16px"><span class="flag-icon">🔔</span><div><strong data-pii="name">Webb Consulting Group</strong> — Retainer expires <strong>May 23, 2026</strong> (30 days). Monthly: <span data-pii="financial">$3,200</span></div><button class="btn btn-gold btn-sm" style="margin-left:auto">Send Renewal</button></div></div></div>
+      </div>
+
+      <!-- PROJECTS -->
+      <div class="page" id="page-projects">
+        <div class="section-header">
+          <div><div class="section-title">Projects & Tasks</div><div class="section-sub">M10 — Project management across all engagements</div></div>
+          <button class="btn btn-primary" onclick="openModal('add-task-modal')">+ New Task</button>
+        </div>
+        <div class="tabs">
+          <div class="tab active" onclick="switchTab(this,'proj-board')">Task Board</div>
+          <div class="tab" onclick="switchTab(this,'proj-my')">My Tasks</div>
+          <div class="tab" onclick="switchTab(this,'proj-projects')">Projects</div>
+        </div>
+        <div id="proj-board">
+          <div class="task-board">
+            <div class="task-col"><div class="task-col-header"><span>To Do</span><span class="kanban-col-count">4</span></div>
+              <div class="task-card"><div class="task-title" data-pii="name">Send SOW to Nexus Group</div><div class="task-meta"><span class="priority-h">● High</span><span>Apr 24</span><span>Stewart</span></div></div>
+              <div class="task-card"><div class="task-title">Cross-border compliance review</div><div class="task-meta"><span class="priority-h">● High</span><span>Apr 24</span><span>Stewart</span></div></div>
+              <div class="task-card"><div class="task-title">Update retainer invoice template</div><div class="task-meta"><span class="priority-l">● Low</span><span>Apr 28</span><span>Stewart</span></div></div>
+            </div>
+            <div class="task-col"><div class="task-col-header"><span>In Progress</span><span class="kanban-col-count">3</span></div>
+              <div class="task-card"><div class="task-title">AI Receptionist QA testing</div><div class="task-meta"><span class="priority-m">● Med</span><span>Apr 25</span><span>Stewart</span></div></div>
+              <div class="task-card"><div class="task-title" data-pii="name">Onboarding — Foundry Africa</div><div class="task-meta"><span class="priority-h">● High</span><span>Apr 30</span><span>Stewart</span></div></div>
+            </div>
+            <div class="task-col"><div class="task-col-header"><span>Blocked</span><span class="kanban-col-count">1</span></div>
+              <div class="task-card" style="border-left:3px solid var(--danger)"><div class="task-title" data-pii="name">W-8BEN — Kola Adeyemi</div><div class="task-meta"><span class="priority-h">● High</span><span>Blocked: Contractor docs</span></div></div>
+            </div>
+            <div class="task-col"><div class="task-col-header"><span>Done</span><span class="kanban-col-count">7</span></div>
+              <div class="task-card" style="opacity:0.6"><div class="task-title" data-pii="financial">Invoice ATRBA-INV-2026-0041</div><div class="task-meta"><span class="priority-l">● Low</span><span>Apr 22</span></div></div>
+              <div class="task-card" style="opacity:0.6"><div class="task-title" data-pii="name">BrightPath onboarding complete</div><div class="task-meta"><span class="priority-m">● Med</span><span>Apr 21</span></div></div>
+            </div>
+          </div>
+        </div>
+        <div id="proj-my" style="display:none"><div class="card"><div class="alert alert-info" style="margin:16px 20px 0">All tasks assigned to <strong>Stewart</strong>, sorted by due date.</div><div class="table-wrap"><table><thead><tr><th>Task</th><th>Linked To</th><th>Priority</th><th>Due</th><th>Status</th></tr></thead><tbody><tr><td class="td-name" data-pii="name">Send SOW to Nexus</td><td data-pii="name">Nexus — Fractional CFO</td><td><span class="badge badge-danger">High</span></td><td>Apr 24</td><td><span class="badge badge-navy">To Do</span></td></tr><tr><td class="td-name">Cross-border review</td><td>Compliance</td><td><span class="badge badge-danger">High</span></td><td>Apr 24</td><td><span class="badge badge-navy">To Do</span></td></tr><tr><td class="td-name">AI Receptionist QA</td><td>Internal Ops</td><td><span class="badge badge-warning">Med</span></td><td>Apr 25</td><td><span class="badge badge-active">In Progress</span></td></tr></tbody></table></div></div></div>
+        <div id="proj-projects" style="display:none"><div class="grid grid-3"><div class="card"><div class="card-header"><span class="card-title" data-pii="name">BrightPath — Cross-Border</span><span class="badge badge-active">Active</span></div><div class="card-body"><div class="flex items-center justify-between mb-16"><span class="fs-12 text-slate">Progress</span><span class="fs-12 fw-600">6/9 tasks</span></div><div class="progress-bar mb-16"><div class="progress-fill" style="width:67%"></div></div><div class="fs-12 text-slate">Due: Aug 31, 2026 · Owner: Stewart</div></div></div><div class="card"><div class="card-header"><span class="card-title" data-pii="name">Nexus — Fractional CFO</span><span class="badge badge-active">Active</span></div><div class="card-body"><div class="flex items-center justify-between mb-16"><span class="fs-12 text-slate">Progress</span><span class="fs-12 fw-600">2/8 tasks</span></div><div class="progress-bar mb-16"><div class="progress-fill" style="width:25%"></div></div><div class="fs-12 text-slate">Due: Dec 31, 2026 · Owner: Stewart</div></div></div><div class="card"><div class="card-header"><span class="card-title">Internal — AI Ops Setup</span><span class="badge badge-hold">On Hold</span></div><div class="card-body"><div class="flex items-center justify-between mb-16"><span class="fs-12 text-slate">Progress</span><span class="fs-12 fw-600">1/4 tasks</span></div><div class="progress-bar mb-16"><div class="progress-fill" style="width:25%;background:var(--slate)"></div></div><div class="fs-12 text-slate">Due: May 15, 2026 · Owner: Stewart</div></div></div></div></div>
+      </div>
+
+      <!-- DOCUMENTS -->
+      <div class="page" id="page-documents">
+        <div class="section-header">
+          <div><div class="section-title">Document Hub</div><div class="section-sub">Proposals, SOWs, audits, contracts, and deliverables</div></div>
+          <button class="btn btn-primary">+ Upload Document</button>
+        </div>
+        <div class="card">
+          <div class="card-header"><div class="flex gap-8"><select class="form-control" style="width:160px;padding:6px 10px"><option>All Types</option><option>Proposal</option><option>SOW</option><option>Audit/Assessment</option><option>Contract</option><option>Invoice</option></select><select class="form-control" style="width:160px;padding:6px 10px"><option>All Statuses</option><option>Draft</option><option>Sent to Client</option><option>Signed</option></select></div></div>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Document Name</th><th>Type</th><th>Linked To</th><th>Status</th><th>Version</th><th>Updated</th></tr></thead>
+              <tbody>
+                <tr><td class="td-name td-mono fs-12" data-pii="name">ATRBA_Proposal_BrightPath_2026-04-15.docx</td><td><span class="badge badge-navy">Proposal</span></td><td data-pii="name">BrightPath Logistics</td><td><span class="badge badge-success">Signed</span></td><td>v2.0</td><td class="text-slate fs-12">Apr 15, 2026</td></tr>
+                <tr><td class="td-name td-mono fs-12" data-pii="name">ATRBA_SOW_Nexus_FractionalCFO_2026-04-20.docx</td><td><span class="badge badge-gold">SOW</span></td><td data-pii="name">Nexus Growth Partners</td><td><span class="badge badge-warning">Sent to Client</span></td><td>v1.1</td><td class="text-slate fs-12">Apr 20, 2026</td></tr>
+                <tr><td class="td-name td-mono fs-12">ATRBA_Audit_OperationalDiag_Webb_2026-04-10.docx</td><td><span class="badge badge-navy">Audit</span></td><td data-pii="name">Webb Consulting</td><td><span class="badge badge-success">Signed</span></td><td>v1.0</td><td class="text-slate fs-12">Apr 10, 2026</td></tr>
+                <tr><td class="td-name td-mono fs-12" data-pii="name">ATRBA_Contract_FoundryAfrica_2026-04-22.docx</td><td><span class="badge badge-navy">Contract</span></td><td data-pii="name">Foundry Africa</td><td><span class="badge badge-warning">In Review</span></td><td>v1.0</td><td class="text-slate fs-12">Apr 22, 2026</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- FINANCIAL -->
+      <div class="page" id="page-financial">
+        <div class="section-header">
+          <div><div class="section-title">Financial Tracking</div><div class="section-sub">Invoices, retainers, and cross-border compliance</div></div>
+          <button class="btn btn-primary">+ New Invoice</button>
+        </div>
+        <div class="grid grid-3 mb-16">
+          <div class="stat-card"><div class="stat-label">Total Billed (Apr)</div><div class="stat-value" data-pii="financial">$82,400</div><div class="stat-sub">USD · 4 invoices</div></div>
+          <div class="stat-card"><div class="stat-label">Collected</div><div class="stat-value" style="color:var(--success)" data-pii="financial">$68,200</div><div class="stat-sub">83% collection rate</div></div>
+          <div class="stat-card"><div class="stat-label">Overdue</div><div class="stat-value" style="color:var(--danger)" data-pii="financial">$14,200</div><div class="stat-sub">3 invoices · 7–21 days</div></div>
+        </div>
+        <div class="card mb-16">
+          <div class="card-header"><span class="card-title">Invoice Ledger</span></div>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Invoice #</th><th>Client</th><th>Amount</th><th>Currency</th><th>Type</th><th>Due</th><th>Status</th></tr></thead>
+              <tbody>
+                <tr><td class="td-mono fs-12">ATRBA-INV-2026-0041</td><td data-pii="name">BrightPath Logistics</td><td class="td-mono" data-pii="financial">$12,500</td><td>USD</td><td>Retainer</td><td>Apr 15</td><td><span class="badge badge-success">Paid</span></td></tr>
+                <tr><td class="td-mono fs-12">ATRBA-INV-2026-0042</td><td data-pii="name">Nexus Growth Partners</td><td class="td-mono" data-pii="financial">$28,000</td><td>USD</td><td>Milestone</td><td>Apr 30</td><td><span class="badge badge-warning">Sent</span></td></tr>
+                <tr><td class="td-mono fs-12">ATRBA-INV-2026-0043</td><td data-pii="name">Webb Consulting</td><td class="td-mono" data-pii="financial">$3,200</td><td>USD</td><td>Retainer</td><td>Apr 10</td><td><span class="badge badge-danger">Overdue</span></td></tr>
+                <tr><td class="td-mono fs-12">ATRBA-INV-2026-0044</td><td data-pii="name">Foundry Africa</td><td class="td-mono" data-pii="financial">₦2,800,000</td><td>NGN</td><td>One-Time</td><td>Apr 28</td><td><span class="badge badge-navy">Pending</span></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header"><span class="card-title">Cross-Border Compliance Flags</span><span class="badge badge-danger">2 Require Action</span></div>
+          <div class="card-body">
+            <div class="compliance-flag"><span class="flag-icon">🚩</span><div><strong data-pii="name">Foundry Africa (Nigeria)</strong> — <strong>W-8BEN: Pending</strong> · OFAC: ✓ Complete · IRC §§1441/1442 withholding applies.</div><button class="btn btn-outline btn-sm" style="margin-left:auto;flex-shrink:0">Review</button></div>
+            <div class="compliance-flag"><span class="flag-icon">🚩</span><div><strong data-pii="name">BrightPath Logistics (Nigeria)</strong> — <strong>W-8BEN: On File</strong> · OFAC: ✓ · Cross-border Bespoke track.</div><button class="btn btn-outline btn-sm" style="margin-left:auto;flex-shrink:0">Review</button></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TEAM -->
+      <div class="page" id="page-team">
+        <div class="section-header">
+          <div><div class="section-title">Team & Contractors</div><div class="section-sub">Staff, fractional advisors, and Nigeria-based contractors</div></div>
+          <button class="btn btn-primary">+ Add Member</button>
+        </div>
+        <div class="tabs">
+          <div class="tab active" onclick="switchTab(this,'team-staff')">Staff (3)</div>
+          <div class="tab" onclick="switchTab(this,'team-contractors')">Contractors (2)</div>
+        </div>
+        <div id="team-staff" class="card"><div class="table-wrap"><table><thead><tr><th>Name</th><th>Role</th><th>Location</th><th>Service Lines</th><th>Engagements</th></tr></thead><tbody><tr><td class="td-name" data-pii="name">Stewart</td><td><span class="badge badge-gold">Admin</span></td><td>Camden HQ 🇺🇸</td><td>All Lines</td><td>8</td></tr><tr><td class="td-name" data-pii="name">Amara Diallo</td><td><span class="badge badge-navy">Advisor</span></td><td>Lagos 🇳🇬</td><td>Cross-Border · HR</td><td>4</td></tr><tr><td class="td-name" data-pii="name">Jordan Pierce</td><td><span class="badge badge-navy">Analyst</span></td><td>Remote</td><td>AI Automation · Financial</td><td>3</td></tr></tbody></table></div></div>
+        <div id="team-contractors" style="display:none">
+          <div class="card"><div class="table-wrap"><table><thead><tr><th>Name</th><th>Jurisdiction</th><th>Agreement</th><th>W-8BEN</th><th>OFAC</th><th>Availability</th></tr></thead><tbody><tr><td class="td-name" data-pii="name">Kola Adeyemi</td><td>Nigeria 🇳🇬</td><td><span class="badge badge-active">Active</span></td><td><span class="badge badge-warning">Pending</span></td><td>✓</td><td><span class="badge badge-success">Available</span></td></tr><tr><td class="td-name" data-pii="name">Dmitri Volkov</td><td>Russia 🇷🇺</td><td><span class="badge badge-active">Active</span></td><td><span class="badge badge-success">On File</span></td><td>✓</td><td><span class="badge badge-warning">Engaged</span></td></tr></tbody></table></div></div>
+          <div class="alert alert-warning mt-16">⚠️ <strong data-pii="name">Kola Adeyemi</strong> W-8BEN pending. IRC §1441 withholding applies to all payments until form is on file.</div>
+        </div>
+      </div>
+
+      <!-- REPORTS -->
+      <div class="page" id="page-reports">
+        <div class="section-header">
+          <div><div class="section-title">Reports & Intelligence</div><div class="section-sub">Segment funnel, service line performance, revenue forecast</div></div>
+        </div>
+        <div class="grid grid-2 mb-16">
+          <div class="card">
+            <div class="card-header"><span class="card-title">Segment Funnel</span></div>
+            <div class="card-body" style="display:flex;flex-direction:column;gap:10px">
+              <div><div class="flex items-center justify-between mb-4"><span class="fs-12">Lead → Diagnostic</span><span class="fs-12 fw-600 text-gold">58%</span></div><div class="progress-bar"><div class="progress-fill" style="width:58%"></div></div></div>
+              <div><div class="flex items-center justify-between mb-4"><span class="fs-12">Diagnostic → Proposal</span><span class="fs-12 fw-600 text-gold">74%</span></div><div class="progress-bar"><div class="progress-fill" style="width:74%"></div></div></div>
+              <div><div class="flex items-center justify-between mb-4"><span class="fs-12">Proposal → Negotiation</span><span class="fs-12 fw-600 text-gold">61%</span></div><div class="progress-bar"><div class="progress-fill" style="width:61%"></div></div></div>
+              <div><div class="flex items-center justify-between mb-4"><span class="fs-12">Negotiation → Close Won</span><span class="fs-12 fw-600 text-gold">82%</span></div><div class="progress-bar"><div class="progress-fill" style="width:82%"></div></div></div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-header"><span class="card-title">Revenue by Geography</span></div>
+            <div class="card-body" style="display:flex;flex-direction:column;gap:10px">
+              <div class="flex items-center justify-between"><span class="fs-13">🇺🇸 Camden / US</span><span class="fw-600" data-pii="financial">$594K</span></div>
+              <div class="progress-bar"><div class="progress-fill" style="width:70%;background:var(--navy)"></div></div>
+              <div class="flex items-center justify-between"><span class="fs-13">🇳🇬 Lagos / Nigeria</span><span class="fw-600" data-pii="financial">$187K</span></div>
+              <div class="progress-bar"><div class="progress-fill" style="width:22%"></div></div>
+              <div class="flex items-center justify-between"><span class="fs-13">🌐 Other</span><span class="fw-600" data-pii="financial">$66K</span></div>
+              <div class="progress-bar"><div class="progress-fill" style="width:8%;background:var(--slate)"></div></div>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header"><span class="card-title">Service Line Performance</span></div>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Service Line</th><th>Pipeline Value</th><th>Win Rate</th><th>Avg Deal Size</th><th>Avg Cycle (days)</th></tr></thead>
+              <tbody>
+                <tr><td class="td-name">AI Automation</td><td class="td-mono" data-pii="financial">$325K</td><td><span class="badge badge-success">71%</span></td><td class="td-mono" data-pii="financial">$54K</td><td>38</td></tr>
+                <tr><td class="td-name">Financial Advisory</td><td class="td-mono" data-pii="financial">$257K</td><td><span class="badge badge-warning">58%</span></td><td class="td-mono" data-pii="financial">$86K</td><td>52</td></tr>
+                <tr><td class="td-name">HR Consulting</td><td class="td-mono" data-pii="financial">$142K</td><td><span class="badge badge-success">65%</span></td><td class="td-mono" data-pii="financial">$36K</td><td>29</td></tr>
+                <tr><td class="td-name">Fractional C-Suite</td><td class="td-mono" data-pii="financial">$374K</td><td><span class="badge badge-success">78%</span></td><td class="td-mono" data-pii="financial">$125K</td><td>61</td></tr>
+                <tr><td class="td-name">Cross-Border</td><td class="td-mono" data-pii="financial">$166K</td><td><span class="badge badge-warning">52%</span></td><td class="td-mono" data-pii="financial">$88K</td><td>74</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- AI ASSIST -->
+      <div class="page" id="page-ai">
+        <div class="section-header">
+          <div><div class="section-title">AI Assist</div><div class="section-sub">Powered by Claude — your ATRBA intelligence layer</div></div>
+        </div>
+        <div class="card" style="max-width:700px">
+          <div class="card-header"><span class="card-title">✨ Ask your CRM anything</span><div class="ai-dot"></div></div>
+          <div class="card-body">
+            <div id="ai-page-messages" style="min-height:200px;max-height:400px;overflow-y:auto;display:flex;flex-direction:column;gap:12px;margin-bottom:16px;padding:4px">
+              <div style="background:var(--cream);border-radius:10px;padding:14px;font-size:13px;color:var(--charcoal);border-left:3px solid var(--gold);line-height:1.6">
+                👋 Hello, Stewart. I'm your ATRBA AI Assist. I can help you:<br><br>
+                • Draft follow-up emails for stalled deals<br>
+                • Summarize engagement health across your book of business<br>
+                • Flag compliance risks on Nigeria-linked deals<br>
+                • Generate proposal language for any service line<br>
+                • Answer questions about your pipeline, clients, or team<br><br>
+                What would you like to work on?
+              </div>
+            </div>
+            <div style="display:flex;gap:10px">
+              <input type="text" class="form-control" id="ai-page-input" placeholder="e.g. Draft a retainer renewal email for Marcus Webb…" onkeydown="if(event.key==='Enter')sendAIPageMessage()"/>
+              <button class="btn btn-gold" onclick="sendAIPageMessage()">Ask ✨</button>
+            </div>
+            <div style="margin-top:12px;display:flex;flex-wrap:wrap;gap:8px">
+              <button class="btn btn-outline btn-sm" onclick="quickPrompt('Summarize my pipeline health and top risks')">Pipeline health summary</button>
+              <button class="btn btn-outline btn-sm" onclick="quickPrompt('Which Nigeria-linked deals have compliance gaps?')">Compliance gaps</button>
+              <button class="btn btn-outline btn-sm" onclick="quickPrompt('Draft a renewal email for Marcus Webb')">Draft renewal email</button>
+              <button class="btn btn-outline btn-sm" onclick="quickPrompt('Which Segment C and D deals are missing Paid Diagnostic completion?')">Diagnostic gate status</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /content -->
+
+    <footer class="footer-bar">
+      <div class="footer-dot"></div>
+      <span>ATRBA CRM v1.1 · April 2026</span>
+      <span>·</span>
+      <span>Camden, NJ HQ · Lagos, NG Office</span>
+      <span>·</span>
+      <span>People. Processes. Profits.</span>
+      <span style="margin-left:auto;font-family:'JetBrains Mono',monospace;font-size:11px" id="privacy-status">Privacy Mode: OFF</span>
+    </footer>
+  </div><!-- /main -->
+</div><!-- /layout -->
+
+<!-- AI FAB + PANEL -->
+<button class="ai-fab" id="ai-fab" onclick="toggleAIPanel()" title="AI Assist">✨</button>
+<div class="ai-panel" id="ai-panel">
+  <div class="ai-panel-header">
+    <div class="ai-dot"></div>
+    <div class="ai-panel-title">ATRBA AI Assist</div>
+    <button class="ai-close" onclick="toggleAIPanel()">×</button>
+  </div>
+  <div class="ai-messages" id="ai-messages">
+    <div class="ai-msg ai-msg-ai">Hi Stewart! Ask me anything about your pipeline, clients, or compliance. Powered by Claude.</div>
+  </div>
+  <div class="ai-input-row">
+    <input class="ai-input" id="ai-input" placeholder="Ask AI Assist…" onkeydown="if(event.key==='Enter')sendMessage()"/>
+    <button class="ai-send" onclick="sendMessage()">↑</button>
+  </div>
+</div>
+
+<!-- MODALS -->
+<div class="modal-overlay" id="add-contact-modal">
+  <div class="modal">
+    <div class="modal-header"><div class="modal-title">New Contact</div><button class="modal-close" onclick="closeModal('add-contact-modal')">×</button></div>
+    <div class="modal-body">
+      <div class="grid grid-2 gap-16"><div class="form-group"><label class="form-label">First Name *</label><input class="form-control" placeholder="Adaeze"/></div><div class="form-group"><label class="form-label">Last Name *</label><input class="form-control" placeholder="Okafor"/></div></div>
+      <div class="form-group"><label class="form-label">Email *</label><input class="form-control" type="email" placeholder="adaeze@company.com"/></div>
+      <div class="form-group"><label class="form-label">Phone</label><input class="form-control" placeholder="+234 801 000 0000"/></div>
+      <div class="grid grid-2 gap-16"><div class="form-group"><label class="form-label">Company</label><select class="form-control"><option>— Select —</option><option>BrightPath Logistics</option><option>Nexus Growth Partners</option><option>Webb Consulting</option></select></div><div class="form-group"><label class="form-label">Role Type</label><select class="form-control"><option>Decision Maker</option><option>Champion</option><option>Influencer</option><option>Legal</option><option>Finance</option></select></div></div>
+      <div class="grid grid-2 gap-16"><div class="form-group"><label class="form-label">Lead Source *</label><select class="form-control"><option>AI Receptionist</option><option>Referral</option><option>Inbound</option><option>Cold Outreach</option><option>LinkedIn</option><option>Event</option></select></div><div class="form-group"><label class="form-label">ICP Segment</label><select class="form-control"><option>Auto (from company)</option><option>A ($0–$1M)</option><option>B ($1–$5M)</option><option>C ($5–$20M)</option><option>D ($20M+)</option></select></div></div>
+      <div class="grid grid-2 gap-16"><div class="form-group"><label class="form-label">Country</label><input class="form-control" placeholder="Nigeria"/></div><div class="form-group"><label class="form-label">Timezone</label><input class="form-control" placeholder="Africa/Lagos"/></div></div>
+      <div class="form-group"><label class="form-label">Notes</label><textarea class="form-control" rows="3" placeholder="Internal notes…"></textarea></div>
+    </div>
+    <div class="modal-footer"><button class="btn btn-outline" onclick="closeModal('add-contact-modal')">Cancel</button><button class="btn btn-primary" onclick="closeModal('add-contact-modal')">Create Contact</button></div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="add-deal-modal">
+  <div class="modal">
+    <div class="modal-header"><div class="modal-title">New Deal</div><button class="modal-close" onclick="closeModal('add-deal-modal')">×</button></div>
+    <div class="modal-body">
+      <div class="form-group"><label class="form-label">Deal Name *</label><input class="form-control" placeholder="[Company] – [Service Line] – 2026"/></div>
+      <div class="grid grid-2 gap-16"><div class="form-group"><label class="form-label">Company *</label><select class="form-control"><option>— Select —</option><option>BrightPath Logistics</option><option>Nexus Growth Partners</option><option>Webb Consulting</option></select></div><div class="form-group"><label class="form-label">Primary Contact</label><select class="form-control"><option>— Select —</option><option>Adaeze Okafor</option><option>Marcus Webb</option><option>Priya Sharma</option></select></div></div>
+      <div class="grid grid-2 gap-16"><div class="form-group"><label class="form-label">Service Line *</label><select class="form-control"><option>AI Automation</option><option>Financial Advisory</option><option>HR Consulting</option><option>Marketing & Sales</option><option>Fractional C-Suite</option><option>Cross-Border Market Entry</option></select></div><div class="form-group"><label class="form-label">Delivery Track *</label><select class="form-control"><option>Advisory Platform</option><option>Bespoke Consulting</option></select></div></div>
+      <div class="grid grid-2 gap-16"><div class="form-group"><label class="form-label">Deal Value (USD)</label><input class="form-control" type="number" placeholder="0.00"/></div><div class="form-group"><label class="form-label">Monthly Recurring (USD)</label><input class="form-control" type="number" placeholder="0.00"/></div></div>
+      <div class="alert alert-warning">🔒 <strong>Paid Diagnostic Gate:</strong> Segment C/D deals require Diagnostic completion before advancing to Proposal.</div>
+      <div class="form-group"><label class="form-label">Expected Close Date</label><input class="form-control" type="date"/></div>
+    </div>
+    <div class="modal-footer"><button class="btn btn-outline" onclick="closeModal('add-deal-modal')">Cancel</button><button class="btn btn-primary" onclick="closeModal('add-deal-modal')">Create Deal</button></div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="add-task-modal">
+  <div class="modal">
+    <div class="modal-header"><div class="modal-title">New Task</div><button class="modal-close" onclick="closeModal('add-task-modal')">×</button></div>
+    <div class="modal-body">
+      <div class="form-group"><label class="form-label">Task Title *</label><input class="form-control" placeholder="e.g. Send SOW to client…"/></div>
+      <div class="form-group"><label class="form-label">Description</label><textarea class="form-control" rows="2"></textarea></div>
+      <div class="grid grid-2 gap-16"><div class="form-group"><label class="form-label">Priority *</label><select class="form-control"><option>High</option><option>Medium</option><option>Low</option></select></div><div class="form-group"><label class="form-label">Status</label><select class="form-control"><option>To Do</option><option>In Progress</option><option>Blocked</option><option>Done</option></select></div></div>
+      <div class="grid grid-2 gap-16"><div class="form-group"><label class="form-label">Assignee</label><select class="form-control"><option>Stewart</option><option>Amara Diallo</option><option>Jordan Pierce</option><option>Kola Adeyemi (Contractor)</option></select></div><div class="form-group"><label class="form-label">Due Date</label><input class="form-control" type="date"/></div></div>
+      <div class="form-group"><label class="form-label">Link To</label><select class="form-control"><option>— None —</option><option>BrightPath — Cross-Border</option><option>Nexus — Fractional CFO</option><option>Webb — HR</option></select></div>
+    </div>
+    <div class="modal-footer"><button class="btn btn-outline" onclick="closeModal('add-task-modal')">Cancel</button><button class="btn btn-primary" onclick="closeModal('add-task-modal')">Create Task</button></div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="deal-modal">
+  <div class="modal">
+    <div class="modal-header"><div class="modal-title" data-pii="name">Foundry Africa — AI Automation</div><button class="modal-close" onclick="closeModal('deal-modal')">×</button></div>
+    <div class="modal-body">
+      <div class="grid grid-2 gap-16 mb-16">
+        <div><div class="form-label">ICP Segment</div><span class="badge badge-a">Segment A ($0–$1M)</span></div>
+        <div><div class="form-label">Delivery Track</div><span class="badge badge-navy">Advisory Platform</span></div>
+        <div><div class="form-label">Deal Value</div><span class="fw-600" data-pii="financial">$18,000</span></div>
+        <div><div class="form-label">Stage</div><span class="badge badge-gold">Lead</span></div>
+        <div><div class="form-label">Cross-Border</div><span class="badge badge-danger">🚩 Nigeria-linked</span></div>
+        <div><div class="form-label">Lead Source</div>Cold Outreach</div>
+      </div>
+      <div class="compliance-flag"><span>🚩</span><div><strong>Cross-border compliance required.</strong> W-8BEN pending. IRC §1441 withholding flag active.</div></div>
+      <div class="form-group" style="margin-top:16px"><label class="form-label">Move to Stage</label><select class="form-control"><option>Lead</option><option>Discovery</option><option>Proposal</option><option>Negotiation</option><option>Close Won</option><option>Close Lost</option></select></div>
+    </div>
+    <div class="modal-footer"><button class="btn btn-outline" onclick="closeModal('deal-modal')">Close</button><button class="btn btn-gold" onclick="closeModal('deal-modal')">Save Changes</button></div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="add-company-modal">
+  <div class="modal">
+    <div class="modal-header"><div class="modal-title">New Company</div><button class="modal-close" onclick="closeModal('add-company-modal')">×</button></div>
+    <div class="modal-body">
+      <div class="form-group"><label class="form-label">Company Name *</label><input class="form-control" placeholder="Acme Corp LLC"/></div>
+      <div class="grid grid-2 gap-16"><div class="form-group"><label class="form-label">Industry</label><input class="form-control" placeholder="Logistics & Supply Chain"/></div><div class="form-group"><label class="form-label">Entity Type</label><select class="form-control"><option>LLC</option><option>Corporation</option><option>Sole Proprietor</option><option>Partnership</option><option>NGO</option></select></div></div>
+      <div class="form-group"><label class="form-label">Annual Revenue (USD)</label><input class="form-control" type="number" placeholder="0"/><div style="font-size:11px;color:var(--slate);margin-top:4px">ICP segment auto-assigned from revenue</div></div>
+      <div class="form-group"><label class="form-label">Operating Markets</label><div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:4px"><label style="font-size:13px;display:flex;gap:6px;align-items:center"><input type="checkbox" checked/> 🇺🇸 US</label><label style="font-size:13px;display:flex;gap:6px;align-items:center"><input type="checkbox"/> 🇳🇬 Nigeria</label><label style="font-size:13px;display:flex;gap:6px;align-items:center"><input type="checkbox"/> 🇬🇧 UK</label><label style="font-size:13px;display:flex;gap:6px;align-items:center"><input type="checkbox"/> Other</label></div></div>
+      <div class="form-group"><label style="font-size:13px;display:flex;gap:8px;align-items:center"><input type="checkbox" id="cross-border-chk" onchange="document.getElementById('cross-border-note').style.display=this.checked?'block':'none'"/> <strong>Flag for Cross-Border Compliance Review (Nigeria-linked)</strong></label><div id="cross-border-note" style="display:none;margin-top:8px"><div class="alert alert-warning" style="font-size:12px">W-8BEN, IRC §§1441/1442, and OFAC review checklist will be attached to this company record.</div></div></div>
+    </div>
+    <div class="modal-footer"><button class="btn btn-outline" onclick="closeModal('add-company-modal')">Cancel</button><button class="btn btn-primary" onclick="closeModal('add-company-modal')">Create Company</button></div>
+  </div>
+</div>
+
+<script>
+  const pageTitles = {
+    dashboard:'Executive <span>Dashboard</span>',contacts:'Contacts',companies:'Companies',
+    pipeline:'Pipeline',engagements:'Engagements',projects:'Projects <span style="font-size:14px;color:var(--slate)">& Tasks</span>',
+    documents:'Document <span>Hub</span>',financial:'Financial <span>Tracking</span>',
+    team:'Team <span style="font-size:14px;color:var(--slate)">& Contractors</span>',
+    reports:'Reports <span>& Intelligence</span>',ai:'AI <span>Assist</span>'
+  };
+
+  function navigate(page) {
+    document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+    document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+    const t=document.getElementById('page-'+page);
+    if(t) t.classList.add('active');
+    document.querySelectorAll('.nav-item').forEach(n=>{ if(n.getAttribute('onclick')&&n.getAttribute('onclick').includes("'"+page+"'")) n.classList.add('active'); });
+    document.getElementById('header-title').innerHTML=pageTitles[page]||page;
+    document.getElementById('main-content').scrollTop=0;
+  }
+
+  function switchTab(tabEl,targetId) {
+    tabEl.parentElement.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+    tabEl.classList.add('active');
+    ['eng-active','eng-onboarding','eng-renewal','proj-board','proj-my','proj-projects','team-staff','team-contractors'].forEach(id=>{ const el=document.getElementById(id); if(el) el.style.display='none'; });
+    const t=document.getElementById(targetId); if(t) t.style.display='';
+  }
+
+  function openModal(id){document.getElementById(id).classList.add('open');}
+  function closeModal(id){document.getElementById(id).classList.remove('open');}
+  document.querySelectorAll('.modal-overlay').forEach(m=>m.addEventListener('click',e=>{if(e.target===m)m.classList.remove('open');}));
+
+  let privacyActive=false;
+  const masks={name:['Acme Corp','Jordan T.','Client A','TechCo Inc','Northeast US Client','West Africa Region','Client B'],email:['j***@****.com','c***@****.ng'],financial:['$XX,XXX','₦X,XXX,XXX','$XXX,XXX','$X.XM']};
+  function maskText(t){const o=masks[t];return o[Math.floor(Math.random()*o.length)];}
+
+  function togglePrivacy(){
+    privacyActive=!privacyActive;
+    const banner=document.getElementById('privacy-banner'),btn=document.getElementById('privacy-btn'),statusEl=document.getElementById('privacy-status');
+    if(privacyActive){
+      if(!confirm('Activate Privacy Mode? All PII will be anonymized for demo use.')){privacyActive=false;return;}
+      banner.classList.add('active');btn.classList.add('active');btn.textContent='🔓 Exit Privacy';statusEl.textContent='Privacy Mode: ACTIVE';statusEl.style.color='var(--gold)';
+      document.querySelectorAll('[data-pii]').forEach(el=>{if(!el.dataset.original)el.dataset.original=el.textContent;el.textContent=maskText(el.dataset.pii);el.style.opacity='0.7';});
+    } else {
+      if(!confirm('Exit Privacy Mode? Real client data will become visible.')){privacyActive=true;return;}
+      banner.classList.remove('active');btn.classList.remove('active');btn.textContent='🔒 Privacy Mode';statusEl.textContent='Privacy Mode: OFF';statusEl.style.color='';
+      document.querySelectorAll('[data-pii]').forEach(el=>{if(el.dataset.original)el.textContent=el.dataset.original;el.style.opacity='';});
+    }
+  }
+
+  let aiPanelOpen=false;
+  function toggleAIPanel(){aiPanelOpen=!aiPanelOpen;document.getElementById('ai-panel').classList.toggle('open',aiPanelOpen);document.getElementById('ai-fab').style.display=aiPanelOpen?'none':'flex';}
+
+  const SYSTEM=`You are the AI Assist for Above The Rest Business Advisors (ATRBA), a multidisciplinary business consulting firm in Camden, NJ with an office in Lagos, Nigeria. Tagline: "People. Processes. Profits." Serve four client segments: A (Pre-revenue–$1M), B ($1M–$5M), C ($5M–$20M), D ($20M+). Service lines: AI Automation, Financial Advisory, HR Consulting, Marketing & Sales, Fractional C-Suite, Cross-Border Market Entry. Segment C/D require Paid Diagnostic before proposal. Current context: 12 active clients, $847K pipeline, $38.4K MRR, 3 overdue invoices. Nigeria-linked deals require W-8BEN, OFAC screening, IRC §§1441/1442. Contacts: Adaeze Okafor (BrightPath Logistics, Seg C, Lagos), Marcus Webb (Webb Consulting, Seg B, Camden), Priya Sharma (Nexus Growth Partners, Seg D, NY), Kola Adeyemi (Foundry Africa, Seg A, Lagos). Be warm, authoritative, direct, culturally fluent. Use "founder" not "entrepreneur." Oxford comma always. Active voice.`;
+
+  async function askClaude(msg){
+    try{
+      const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1000,system:SYSTEM,messages:[{role:'user',content:msg}]})});
+      const d=await r.json();
+      return d.content&&d.content[0]?d.content[0].text:'Unable to get a response. Please try again.';
+    }catch(e){return 'AI Assist is temporarily unavailable.';}
+  }
+
+  async function sendMessage(){
+    const input=document.getElementById('ai-input'),msg=input.value.trim();if(!msg)return;
+    input.value='';
+    appendMsg('user',msg,'ai-messages');
+    const t=appendMsg('ai','…thinking','ai-messages');
+    t.textContent=await askClaude(msg);
+    document.getElementById('ai-messages').scrollTop=9999;
+  }
+
+  function appendMsg(role,text,containerId){
+    const c=document.getElementById(containerId),d=document.createElement('div');
+    d.className='ai-msg '+(role==='ai'?'ai-msg-ai':'ai-msg-user');
+    d.textContent=text;c.appendChild(d);c.scrollTop=9999;return d;
+  }
+
+  async function sendAIPageMessage(){
+    const input=document.getElementById('ai-page-input'),msg=input.value.trim();if(!msg)return;
+    input.value='';
+    appendPageMsg('user',msg);const t=appendPageMsg('ai','✨ Thinking…');
+    t.textContent=await askClaude(msg);
+    document.getElementById('ai-page-messages').scrollTop=9999;
+  }
+
+  function quickPrompt(text){document.getElementById('ai-page-input').value=text;sendAIPageMessage();}
+
+  function appendPageMsg(role,text){
+    const c=document.getElementById('ai-page-messages'),d=document.createElement('div');
+    d.style.cssText=role==='user'?'background:var(--navy);color:white;padding:12px 16px;border-radius:10px;font-size:13px;align-self:flex-end;max-width:80%;margin-left:auto':'background:var(--cream);border-left:3px solid var(--gold);padding:12px 16px;border-radius:10px;font-size:13px;line-height:1.6;white-space:pre-wrap';
+    d.textContent=text;c.appendChild(d);c.scrollTop=9999;return d;
+  }
+
+  function handleSearch(val){
+    if(!val){document.querySelectorAll('#contacts-tbody tr').forEach(r=>r.style.display='');return;}
+    document.querySelectorAll('#contacts-tbody tr').forEach(r=>{r.style.display=r.textContent.toLowerCase().includes(val.toLowerCase())?'':'none';});
+  }
+
+  // init hidden tabs
+  ['eng-onboarding','eng-renewal','proj-my','proj-projects','team-contractors'].forEach(id=>{const el=document.getElementById(id);if(el)el.style.display='none';});
+</script>
+</body>
+</html>

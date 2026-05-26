@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>All Posts — Meridian Admin</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="admin.css" />
+  <style>
+    .toolbar { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; flex-wrap: wrap; }
+    .search-wrap { position: relative; flex: 1; min-width: 200px; max-width: 320px; }
+    .search-icon { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); width: 15px; height: 15px; stroke: var(--ink-faint); fill: none; stroke-width: 2; }
+    .search-input { width: 100%; padding: 9px 14px 9px 38px; border: 1.5px solid var(--rule); border-radius: var(--radius); font-family: var(--sans); font-size: .875rem; background: var(--paper-card); color: var(--ink); outline: none; transition: border-color .2s, box-shadow .2s; }
+    .search-input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-lt); }
+    .filter-select { padding: 9px 36px 9px 14px; border: 1.5px solid var(--rule); border-radius: var(--radius); font-family: var(--sans); font-size: .875rem; background: var(--paper-card); color: var(--ink); outline: none; cursor: pointer; appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%236b6560' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 12px center; transition: border-color .2s; }
+    .filter-select:focus { border-color: var(--accent); outline: none; }
+    .title-cell { display: flex; flex-direction: column; gap: 2px; }
+    .title-link { font-weight: 500; color: var(--ink); text-decoration: none; transition: color .2s; }
+    .title-link:hover { color: var(--accent); }
+    .title-slug { font-size: .75rem; color: var(--ink-faint); font-family: 'SF Mono', monospace; }
+    .action-cell { display: flex; gap: 6px; align-items: center; }
+    .count-badge { font-size: .8125rem; color: var(--ink-muted); }
+  </style>
+</head>
+<body>
+
+<div id="sidebar-slot"></div>
+
+<div class="main-wrap">
+  <header class="main-header">
+    <h1 class="header-title">All Posts</h1>
+    <div class="header-actions">
+      <a href="editor.html" class="btn btn-primary">
+        <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        New Post
+      </a>
+    </div>
+  </header>
+
+  <div class="main-content">
+    <div class="toolbar">
+      <div class="search-wrap">
+        <svg class="search-icon" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input class="search-input" id="search" placeholder="Search posts…" oninput="applyFilters()" />
+      </div>
+      <select class="filter-select" id="filter-status" onchange="applyFilters()">
+        <option value="all">All statuses</option>
+        <option value="published">Published</option>
+        <option value="draft">Draft</option>
+      </select>
+      <select class="filter-select" id="filter-category" onchange="applyFilters()">
+        <option value="all">All categories</option>
+        <option value="technology">Technology</option>
+        <option value="engineering">Engineering</option>
+        <option value="design">Design</option>
+        <option value="business">Business</option>
+        <option value="general">General</option>
+      </select>
+      <span class="count-badge" id="count-badge"></span>
+    </div>
+
+    <div class="card">
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Post</th>
+              <th>Category</th>
+              <th>Status</th>
+              <th>Featured</th>
+              <th>Read time</th>
+              <th>Date</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="blogs-table-body">
+            <tr><td colspan="7" class="empty-table"><div class="spinner spinner-dark" style="margin:0 auto;"></div></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="admin.js"></script>
+<script>
+  if (!requireAuth()) throw new Error('Not authenticated');
+  renderSidebar('blogs');
+
+  let allBlogs = [];
+
+  // ❌ REMOVED loadPost() completely (not needed on list page)
+
+  function applyFilters() {
+    const q = document.getElementById('search').value.toLowerCase();
+    const status = document.getElementById('filter-status').value;
+    const category = document.getElementById('filter-category').value;
+
+    let filtered = allBlogs.filter(b => {
+      const matchQ = !q || b.title.toLowerCase().includes(q) || b.slug.toLowerCase().includes(q);
+      const matchStatus = status === 'all' || (status === 'published' ? b.published : !b.published);
+      const matchCat = category === 'all' || b.category === category;
+      return matchQ && matchStatus && matchCat;
+    });
+
+    document.getElementById('count-badge').textContent =
+      `${filtered.length} post${filtered.length !== 1 ? 's' : ''}`;
+
+    renderTable(filtered);
+  }
+
+  function renderTable(blogs) {
+    const tbody = document.getElementById('blogs-table-body');
+
+    if (!blogs.length) {
+      tbody.innerHTML = `
+        <tr>
+          <td colspan="7">
+            <div class="empty-table">
+              <div class="empty-table-icon">📭</div>
+              <p>No posts match your filters.</p>
+            </div>
+          </td>
+        </tr>`;
+      return;
+    }
+
+    tbody.innerHTML = blogs.map(b => `
+      <tr id="row-${b.id}">
+        <td>
+          <div class="title-cell">
+            <a class="title-link" href="editor.html?id=${b.id}">${b.title}</a>
+            <span class="title-slug">/${b.slug}</span>
+          </div>
+        </td>
+        <td>${categoryBadge(b.category)}</td>
+        <td>
+          <span class="badge ${b.published ? 'badge-green' : 'badge-gray'}">
+            ${b.published ? 'Published' : 'Draft'}
+          </span>
+        </td>
+        <td>
+          <button
+            onclick="toggleFeatured('${b.id}', ${!b.featured})"
+            title="${b.featured ? 'Remove from featured' : 'Mark as featured'}"
+            style="background:none;border:none;cursor:pointer;font-size:1.125rem;opacity:${b.featured ? '1' : '0.25'};transition:opacity .2s;"
+          >★</button>
+        </td>
+        <td style="color:var(--ink-muted);">${b.read_time} min</td>
+        <td style="color:var(--ink-muted);white-space:nowrap;">
+          ${formatDate(b.created_at)}
+        </td>
+        <td>
+          <div class="action-cell">
+            <a href="editor.html?id=${b.id}" class="btn btn-secondary btn-sm">Edit</a>
+            <a href="./public/post.html?slug=${b.slug}" target="_blank" class="btn btn-ghost btn-sm">↗</a>
+            <button class="btn btn-danger btn-sm"
+              onclick="deleteBlog('${b.id}', '${b.title.replace(/'/g,"\\'")}')">
+              Delete
+            </button>
+          </div>
+        </td>
+      </tr>
+    `).join('');
+  }
+
+  async function toggleFeatured(id, featured) {
+    try {
+      const res = await authFetch(`/admin/blogs/${id}/featured?featured=${featured}`, {
+        method: 'PATCH'
+      });
+
+      if (!res || !res.ok) throw new Error();
+
+      const idx = allBlogs.findIndex(b => b.id === id);
+      if (idx !== -1) allBlogs[idx].featured = featured;
+
+      applyFilters();
+      showToast(featured ? 'Marked as featured' : 'Removed from featured', 'success');
+
+    } catch {
+      showToast('Failed to update featured status', 'error');
+    }
+  }
+
+  async function deleteBlog(id, title) {
+    const confirmed = await confirmDialog(
+      `Delete "<strong>${title}</strong>"? This cannot be undone.`
+    );
+    if (!confirmed) return;
+
+    try {
+      const res = await authFetch(`/admin/blogs/${id}`, {
+        method: 'DELETE'
+      });
+
+      if (!res || !res.ok) throw new Error();
+
+      allBlogs = allBlogs.filter(b => b.id !== id);
+      applyFilters();
+      showToast('Post deleted successfully', 'success');
+
+    } catch {
+      showToast('Failed to delete post', 'error');
+    }
+  }
+
+  async function loadBlogs() {
+    try {
+      const res = await authFetch('/admin/blogs');
+      if (!res.ok) throw new Error();
+
+      const data = await res.json();
+
+      // FIX: handle both array or wrapped response
+      allBlogs = Array.isArray(data) ? data : (data.results || data.data || []);
+
+      applyFilters();
+
+    } catch (e) {
+      showToast('Failed to load blogs', 'error');
+      console.error(e);
+    }
+  }
+
+  // IMPORTANT: actually call it
+  loadBlogs();
+</script>
+</body>
+</html>

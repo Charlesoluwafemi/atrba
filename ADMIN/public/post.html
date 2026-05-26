@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Loading… — Meridian</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,800;1,400;1,600&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --ink:       #0f0e0d;
+      --ink-muted: #6b6560;
+      --ink-faint: #b5b0aa;
+      --paper:     #faf9f7;
+      --paper-warm:#f3f0eb;
+      --accent:    #c8622a;
+      --rule:      #e8e3dc;
+      --serif:     'Playfair Display', Georgia, serif;
+      --sans:      'DM Sans', system-ui, sans-serif;
+      --transition:0.28s cubic-bezier(0.4,0,0.2,1);
+    }
+
+    html { scroll-behavior: smooth; }
+    body { font-family: var(--sans); background: var(--paper); color: var(--ink); line-height: 1.6; -webkit-font-smoothing: antialiased; }
+
+    /* Nav */
+    .site-header { position: sticky; top: 0; z-index: 100; background: rgba(250,249,247,.92); backdrop-filter: blur(12px); border-bottom: 1px solid var(--rule); }
+    .nav-inner { max-width: 780px; margin: 0 auto; padding: 0 32px; height: 68px; display: flex; align-items: center; justify-content: space-between; }
+    .nav-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+    .logo-mark { width: 34px; height: 34px; background: var(--ink); border-radius: 8px; display: flex; align-items: center; justify-content: center; }
+    .logo-mark svg { width: 18px; height: 18px; fill: none; stroke: #faf9f7; stroke-width: 2; }
+    .logo-text { font-family: var(--serif); font-size: 1.25rem; font-weight: 600; color: var(--ink); }
+    .nav-back { font-size: .875rem; color: var(--ink-muted); text-decoration: none; display: flex; align-items: center; gap: 6px; transition: color var(--transition); }
+    .nav-back:hover { color: var(--accent); }
+    .nav-back svg { width: 16px; height: 16px; stroke: currentColor; fill: none; stroke-width: 2; }
+
+    /* Article layout */
+    .article-wrap { max-width: 780px; margin: 0 auto; padding: 0 32px; }
+
+    /* Hero */
+    .article-hero { padding: 64px 0 48px; }
+    .article-category { font-size: .7rem; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: var(--accent); margin-bottom: 20px; }
+    .article-title { font-family: var(--serif); font-size: clamp(2rem, 5vw, 3.2rem); font-weight: 800; line-height: 1.1; letter-spacing: -.02em; color: var(--ink); }
+    .article-excerpt { margin-top: 20px; font-size: 1.125rem; color: var(--ink-muted); font-weight: 300; line-height: 1.7; }
+    .article-meta { display: flex; align-items: center; gap: 16px; margin-top: 32px; flex-wrap: wrap; }
+    .meta-author { display: flex; align-items: center; gap: 10px; }
+    .author-avatar { width: 36px; height: 36px; border-radius: 50%; background: var(--ink); display: flex; align-items: center; justify-content: center; font-size: .8rem; font-weight: 700; color: #fff; flex-shrink: 0; }
+    .author-name { font-size: .875rem; font-weight: 500; color: var(--ink); }
+    .meta-dot { width: 3px; height: 3px; background: var(--ink-faint); border-radius: 50%; }
+    .meta-item { font-size: .8125rem; color: var(--ink-muted); }
+
+    /* Cover image */
+    .article-cover {
+      width: 100%; aspect-ratio: 16/7; border-radius: 16px; overflow: hidden;
+      margin-bottom: 56px; position: relative;
+    }
+    .article-cover-inner { position: absolute; inset: 0; }
+    .cover-pattern { position: absolute; inset: 0; opacity: .1; background-image: repeating-linear-gradient(45deg,#fff 0,#fff 1px,transparent 0,transparent 50%); background-size: 16px 16px; }
+
+    /* Divider */
+    .article-divider { border: none; border-top: 1px solid var(--rule); margin: 0 0 56px; }
+
+    /* Blog content — render raw HTML exactly as stored */
+    .blog-content { font-size: 1.0625rem; line-height: 1.85; color: var(--ink); }
+    .blog-content h1 { font-family: var(--serif); font-size: 2rem; font-weight: 700; margin: 2.5rem 0 1rem; letter-spacing: -.02em; line-height: 1.2; }
+    .blog-content h2 { font-family: var(--serif); font-size: 1.6rem; font-weight: 700; margin: 2rem 0 .875rem; letter-spacing: -.015em; line-height: 1.25; }
+    .blog-content h3 { font-family: var(--serif); font-size: 1.25rem; font-weight: 600; margin: 1.5rem 0 .75rem; }
+    .blog-content p { margin: 0 0 1.4rem; }
+    .blog-content ul, .blog-content ol { margin: 0 0 1.4rem 1.5rem; }
+    .blog-content li { margin-bottom: .5rem; }
+    .blog-content blockquote { border-left: 3px solid var(--accent); padding: 4px 0 4px 24px; margin: 1.5rem 0; font-family: var(--serif); font-size: 1.15rem; font-style: italic; color: var(--ink-muted); }
+    .blog-content code { font-family: 'SF Mono', 'Fira Code', monospace; font-size: .875em; background: var(--paper-warm); padding: 2px 6px; border-radius: 4px; }
+    .blog-content pre { background: var(--ink); color: #e8e3dc; border-radius: 10px; padding: 24px; overflow-x: auto; margin: 1.5rem 0; }
+    .blog-content pre code { background: none; color: inherit; padding: 0; }
+    .blog-content img { max-width: 100%; border-radius: 10px; margin: 1.5rem 0; }
+    .blog-content a { color: var(--accent); text-decoration: underline; text-decoration-color: var(--accent); text-underline-offset: 3px; }
+    .blog-content strong { font-weight: 600; }
+    .blog-content table { width: 100%; border-collapse: collapse; margin: 1.5rem 0; }
+    .blog-content th, .blog-content td { text-align: left; padding: 10px 16px; border-bottom: 1px solid var(--rule); font-size: .9375rem; }
+    .blog-content th { font-weight: 600; background: var(--paper-warm); }
+
+    /* Footer */
+    .article-footer { border-top: 1px solid var(--rule); padding: 40px 0 80px; margin-top: 80px; display: flex; justify-content: space-between; align-items: center; gap: 20px; flex-wrap: wrap; }
+    .back-link { font-size: .875rem; color: var(--ink-muted); text-decoration: none; display: flex; align-items: center; gap: 8px; transition: color var(--transition); }
+    .back-link:hover { color: var(--accent); }
+    .back-link svg { width: 16px; height: 16px; stroke: currentColor; fill: none; stroke-width: 2; }
+    .share-links { display: flex; gap: 12px; align-items: center; }
+    .share-label { font-size: .8125rem; color: var(--ink-faint); }
+    .share-btn { width: 36px; height: 36px; border-radius: 8px; border: 1.5px solid var(--rule); display: flex; align-items: center; justify-content: center; cursor: pointer; text-decoration: none; transition: all var(--transition); }
+    .share-btn:hover { border-color: var(--accent); color: var(--accent); }
+    .share-btn svg { width: 14px; height: 14px; stroke: currentColor; fill: none; stroke-width: 2; }
+
+    /* Loading / Error */
+    .state-center { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 60vh; text-align: center; gap: 12px; }
+    .state-icon { font-size: 2.5rem; opacity: .4; }
+    .state-title { font-family: var(--serif); font-size: 1.5rem; color: var(--ink); }
+    .state-sub { font-size: .9375rem; color: var(--ink-muted); }
+    .spinner { width: 32px; height: 32px; border: 2.5px solid var(--rule); border-top-color: var(--accent); border-radius: 50%; animation: spin .8s linear infinite; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+    .fade-in { animation: fadeIn .5s ease both; }
+
+    @media (max-width: 640px) {
+      .article-wrap { padding: 0 20px; }
+      .nav-inner { padding: 0 20px; }
+    }
+  </style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="nav-inner">
+    <a href="/" class="nav-logo">
+      <div class="logo-mark"><svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h10M4 18h12"/></svg></div>
+      <span class="logo-text">ATRBA</span>
+    </a>
+    <a href="/" class="nav-back">
+      <svg viewBox="0 0 24 24"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+      All posts
+    </a>
+  </div>
+</header>
+
+<div id="app">
+  <div class="article-wrap">
+    <div class="state-center">
+      <div class="spinner"></div>
+      <p class="state-sub">Loading article…</p>
+    </div>
+  </div>
+</div>
+<script src="admin.js"></script>
+<script>
+  const API_BASE = 'http://localhost:8000';
+
+  const CATEGORY_COLORS = {
+    technology: 'linear-gradient(135deg,#1e40af,#0ea5e9)',
+    engineering:'linear-gradient(135deg,#065f46,#34d399)',
+    design:     'linear-gradient(135deg,#7c3aed,#c084fc)',
+    business:   'linear-gradient(135deg,#92400e,#f59e0b)',
+    general:    'linear-gradient(135deg,#374151,#9ca3af)',
+  };
+
+  function formatDate(iso) {
+    return new Date(iso).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+  }
+
+  function getInitials(name) {
+    return name.split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase();
+  }
+
+  async function loadPost() {
+    const slug = new URLSearchParams(location.search).get('slug');
+    if (!slug) return renderError('No post specified.');
+
+    try {
+      const res = await fetch(`${API_BASE}/blogs/${slug}`);
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      const post = await res.json();
+      renderPost(post);
+    } catch (e) {
+      renderError('Could not load this article. It may have been moved or deleted.');
+    }
+  }
+
+  function renderPost(post) {
+    document.title = `${post.title} — ATRBA`;
+    const gradient = CATEGORY_COLORS[post.category?.toLowerCase()] || CATEGORY_COLORS.general;
+
+    document.getElementById('app').innerHTML = `
+    <div class="article-wrap fade-in">
+      <div class="article-hero">
+        <p class="article-category">${post.category || 'General'}</p>
+        <h1 class="article-title">${post.title}</h1>
+        ${post.excerpt ? `<p class="article-excerpt">${post.excerpt}</p>` : ''}
+        <div class="article-meta">
+          <div class="meta-author">
+            <div class="author-avatar">${getInitials(post.author || 'A')}</div>
+            <span class="author-name">${post.author || 'Admin'}</span>
+          </div>
+          <span class="meta-dot"></span>
+          <span class="meta-item">${formatDate(post.created_at)}</span>
+          <span class="meta-dot"></span>
+          <span class="meta-item">${post.read_time} min read</span>
+        </div>
+      </div>
+
+      <div class="article-cover">
+        <div class="article-cover-inner" style="background:${gradient}"></div>
+        <div class="cover-pattern"></div>
+      </div>
+
+      <hr class="article-divider" />
+
+      <!-- ⚠️ SECURITY NOTE: Content is sanitized via bleach on the server before storage.
+           Direct innerHTML rendering is intentional — required to preserve rich formatting.
+           Never skip server-side sanitization. -->
+      <article class="blog-content" id="blog-content"></article>
+
+      <footer class="article-footer">
+        <a href="/" class="back-link">
+          <svg viewBox="0 0 24 24"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+          Back to journal
+        </a>
+        <div class="share-links">
+          <span class="share-label">Share</span>
+          <a class="share-btn" onclick="navigator.clipboard.writeText(location.href)" title="Copy link">
+            <svg viewBox="0 0 24 24"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/></svg>
+          </a>
+          <a class="share-btn" href="https://twitter.com/intent/tweet?url=${encodeURIComponent(location.href)}&text=${encodeURIComponent(post.title)}" target="_blank" rel="noopener" title="Share on Twitter">
+            <svg viewBox="0 0 24 24"><path d="M23 3a10.9 10.9 0 01-3.14 1.53 4.48 4.48 0 00-7.86 3v1A10.66 10.66 0 013 4s-4 9 5 13a11.64 11.64 0 01-7 2c9 5 20 0 20-11.5a4.5 4.5 0 00-.08-.83A7.72 7.72 0 0023 3z"/></svg>
+          </a>
+        </div>
+      </footer>
+    </div>`;
+
+    // Render HTML content — sanitized on server before storage
+    document.getElementById('blog-content').innerHTML = post.content;
+  }
+
+  function renderError(msg) {
+    document.getElementById('app').innerHTML = `
+    <div class="article-wrap">
+      <div class="state-center">
+        <div class="state-icon">📄</div>
+        <h2 class="state-title">Article not found</h2>
+        <p class="state-sub">${msg}</p>
+        <a href="/" style="margin-top:20px;font-size:.875rem;color:var(--accent);text-decoration:none;">← Back to journal</a>
+      </div>
+    </div>`;
+  }
+
+  loadPost();
+</script>
+</body>
+</html>

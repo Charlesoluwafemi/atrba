@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Editor — Meridian Admin</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="admin.css" />
+
+  <!-- Quill.js -->
+  <link href="https://cdn.quilljs.com/1.3.7/quill.snow.css" rel="stylesheet" />
+  <script src="https://cdn.quilljs.com/1.3.7/quill.min.js"></script>
+
+  <style>
+    /* ─── Editor layout ─────────────────────────────────── */
+    .editor-layout { display: grid; grid-template-columns: 1fr 300px; gap: 24px; align-items: start; }
+
+    /* Quill overrides */
+    .ql-container.ql-snow { border: 1.5px solid var(--rule); border-top: none; border-radius: 0 0 var(--radius) var(--radius); font-family: var(--sans); font-size: 1rem; min-height: 420px; }
+    .ql-toolbar.ql-snow { border: 1.5px solid var(--rule); border-radius: var(--radius) var(--radius) 0 0; background: var(--paper-warm); }
+    .ql-container.ql-snow:focus-within { border-color: var(--accent); }
+    .ql-editor { min-height: 400px; line-height: 1.7; padding: 20px 24px; }
+    .ql-editor p, .ql-editor h1, .ql-editor h2, .ql-editor h3 { margin-bottom: .75rem; }
+
+    /* Sidebar panel */
+    .panel-section { margin-bottom: 20px; }
+    .panel-section:last-child { margin-bottom: 0; }
+
+    /* Preview overlay */
+    .preview-overlay {
+      position: fixed; inset: 0; background: rgba(15,14,13,.6); z-index: 9990;
+      backdrop-filter: blur(4px); display: none; align-items: flex-start; justify-content: center;
+      padding: 24px; overflow-y: auto;
+    }
+    .preview-overlay.open { display: flex; }
+    .preview-frame {
+      background: #faf9f7; border-radius: 16px; width: 100%; max-width: 760px;
+      box-shadow: 0 32px 96px rgba(0,0,0,.3); overflow: hidden; margin: auto;
+    }
+    .preview-header {
+      background: var(--ink); padding: 16px 24px; display: flex; justify-content: space-between; align-items: center;
+    }
+    .preview-header span { font-size: .8125rem; color: rgba(255,255,255,.5); }
+    .preview-body { padding: 40px 48px 56px; }
+    .preview-body h1 { font-family: var(--serif); font-size: 2.25rem; font-weight: 800; letter-spacing: -.02em; margin-bottom: 12px; color: var(--ink); line-height: 1.15; }
+    .preview-body .meta { font-size: .875rem; color: var(--ink-muted); margin-bottom: 36px; }
+    .preview-content { font-size: 1.0625rem; line-height: 1.85; color: var(--ink); }
+    .preview-content h1,.preview-content h2,.preview-content h3 { font-family: var(--serif); margin: 1.75rem 0 .875rem; }
+    .preview-content h2 { font-size: 1.5rem; }
+    .preview-content h3 { font-size: 1.2rem; }
+    .preview-content p { margin-bottom: 1.25rem; }
+    .preview-content ul,.preview-content ol { margin: 0 0 1.25rem 1.5rem; }
+    .preview-content li { margin-bottom: .4rem; }
+    .preview-content blockquote { border-left: 3px solid var(--accent); padding-left: 20px; font-style: italic; color: var(--ink-muted); margin: 1.5rem 0; }
+    .preview-content img { max-width: 100%; border-radius: 8px; }
+    .preview-content a { color: var(--accent); }
+
+    /* Status bar */
+    .status-bar { display: flex; align-items: center; gap: 12px; margin-top: 8px; }
+    .char-count { font-size: .75rem; color: var(--ink-faint); }
+    .autosave-indicator { font-size: .75rem; color: var(--ink-faint); display: flex; align-items: center; gap: 6px; }
+    .autosave-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--success); }
+    .autosave-dot.saving { background: var(--warning); animation: pulse .8s ease-in-out infinite; }
+    @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: .3; } }
+
+    @media (max-width: 1100px) { .editor-layout { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+
+<div id="sidebar-slot"></div>
+
+<div class="main-wrap">
+  <header class="main-header">
+    <h1 class="header-title" id="page-title">New Post</h1>
+    <div class="header-actions">
+      <button class="btn btn-ghost" onclick="openPreview()">
+        <svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+        Preview
+      </button>
+      <button class="btn btn-secondary" onclick="saveBlog(false)" id="save-draft-btn">Save draft</button>
+      <button class="btn btn-primary" onclick="saveBlog(true)" id="publish-btn">
+        <svg viewBox="0 0 24 24"><polyline points="22 2 15 22 11 13 2 9 22 2"/></svg>
+        Publish
+      </button>
+    </div>
+  </header>
+
+  <div class="main-content">
+    <div class="editor-layout">
+
+      <!-- Main editor column -->
+      <div>
+        <div class="card" style="margin-bottom:20px;">
+          <div class="card-body" style="padding-bottom:20px;">
+            <div class="form-group">
+              <input type="text" class="input" id="title" placeholder="Post title…" style="font-family:var(--serif);font-size:1.5rem;font-weight:700;border:none;padding:0;border-radius:0;box-shadow:none;background:transparent;" oninput="onTitleChange()" />
+            </div>
+            <div style="display:flex;align-items:center;gap:8px;margin-top:12px;padding-top:12px;border-top:1px solid var(--rule);">
+              <span style="font-size:.8125rem;color:var(--ink-muted);">Slug:</span>
+              <code id="slug-preview" style="font-size:.8125rem;color:var(--ink-faint);background:var(--paper-warm);padding:2px 8px;border-radius:4px;">auto-generated</code>
+              <button class="btn btn-ghost btn-sm" onclick="editSlug()" style="padding:2px 8px;font-size:.75rem;">Edit</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div id="quill-editor"></div>
+          <div style="padding:10px 16px;border-top:1px solid var(--rule);background:var(--paper-warm);border-radius:0 0 14px 14px;">
+            <div class="status-bar">
+              <span class="char-count" id="char-count">0 characters</span>
+              <span style="color:var(--rule);">·</span>
+              <span class="autosave-indicator" id="autosave-status">
+                <span class="autosave-dot" id="autosave-dot"></span>
+                Saved
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Settings sidebar -->
+      <div>
+        <div class="card" style="margin-bottom:16px;">
+          <div class="card-header"><h3 class="card-title">Settings</h3></div>
+          <div class="card-body" style="display:flex;flex-direction:column;gap:18px;">
+
+            <div class="form-group">
+              <label class="form-label">Category</label>
+              <select class="select" id="category">
+                <option value="general">General</option>
+                <option value="technology">Technology</option>
+                <option value="engineering">Engineering</option>
+                <option value="design">Design</option>
+                <option value="business">Business</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Read time (minutes)</label>
+              <input type="number" class="input" id="read_time" value="5" min="1" max="120" />
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Author</label>
+              <input type="text" class="input" id="author" placeholder="Admin" />
+            </div>
+
+            <div>
+              <div class="toggle-row">
+                <div>
+                  <div class="toggle-label">Featured post</div>
+                  <div class="toggle-sub">Shown prominently on homepage</div>
+                </div>
+                <input type="checkbox" class="toggle" id="featured" />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header"><h3 class="card-title">Excerpt</h3></div>
+          <div class="card-body">
+            <div class="form-group">
+              <textarea class="textarea" id="excerpt" placeholder="Short description shown in blog cards and SEO…" style="min-height:100px;"></textarea>
+              <span class="form-hint">Shown in blog listing and search engines</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Preview overlay -->
+<div class="preview-overlay" id="preview-overlay" onclick="closePreviewOnOutside(event)">
+  <div class="preview-frame">
+    <div class="preview-header">
+      <span>Preview — how it looks on the blog</span>
+      <button onclick="closePreview()" class="btn btn-ghost btn-sm" style="color:rgba(255,255,255,.6);">✕ Close</button>
+    </div>
+    <div class="preview-body">
+      <h1 id="preview-title">Untitled</h1>
+      <div class="meta" id="preview-meta"></div>
+      <div class="preview-content" id="preview-content"></div>
+    </div>
+  </div>
+</div>
+
+<script src="admin.js"></script>
+<script>
+  if (!requireAuth()) throw new Error('Not authenticated');
+  renderSidebar('create');
+
+  const urlParams = new URLSearchParams(location.search);
+  const editId = urlParams.get('id');
+  let currentSlug = '';
+  let slugManuallyEdited = false;
+  let saveTimeout = null;
+
+  // ─── Quill init ─────────────────────────────────────────────
+  const quill = new Quill('#quill-editor', {
+    theme: 'snow',
+    placeholder: 'Write something brilliant…',
+    modules: {
+      toolbar: [
+        [{ header: [1, 2, 3, false] }],
+        ['bold', 'italic', 'underline', 'strike'],
+        [{ color: [] }, { background: [] }],
+        [{ list: 'ordered' }, { list: 'bullet' }],
+        ['blockquote', 'code-block'],
+        ['link', 'image'],
+        ['clean'],
+      ],
+    },
+  });
+
+  quill.on('text-change', () => {
+    const len = quill.getText().trim().length;
+    document.getElementById('char-count').textContent = `${len.toLocaleString()} characters`;
+    scheduleAutoSave();
+  });
+
+  // ─── Auto-save ───────────────────────────────────────────────
+  function scheduleAutoSave() {
+    const dot = document.getElementById('autosave-dot');
+    const status = document.getElementById('autosave-status');
+    dot.classList.add('saving');
+    status.childNodes[1].textContent = ' Unsaved';
+    if (saveTimeout) clearTimeout(saveTimeout);
+    saveTimeout = setTimeout(() => {
+      dot.classList.remove('saving');
+      status.childNodes[1].textContent = ' Saved locally';
+      localStorage.setItem('draft_backup', JSON.stringify(collectFormData()));
+    }, 1500);
+  }
+
+  // ─── Title → slug ────────────────────────────────────────────
+  function onTitleChange() {
+    const title = document.getElementById('title').value;
+    if (!slugManuallyEdited) {
+      currentSlug = slugify(title);
+      document.getElementById('slug-preview').textContent = currentSlug || 'auto-generated';
+    }
+    scheduleAutoSave();
+  }
+
+  function editSlug() {
+    const current = document.getElementById('slug-preview').textContent;
+    const newSlug = prompt('Edit slug (URL-safe):', current);
+    if (newSlug !== null) {
+      currentSlug = slugify(newSlug) || current;
+      document.getElementById('slug-preview').textContent = currentSlug;
+      slugManuallyEdited = true;
+    }
+  }
+
+  // ─── Collect form data ───────────────────────────────────────
+  function collectFormData() {
+    return {
+      title: document.getElementById('title').value.trim(),
+      slug: currentSlug,
+      content: quill.root.innerHTML,
+      excerpt: document.getElementById('excerpt').value.trim(),
+      category: document.getElementById('category').value,
+      read_time: parseInt(document.getElementById('read_time').value) || 5,
+      author: document.getElementById('author').value.trim() || 'Admin',
+      featured: document.getElementById('featured').checked,
+    };
+  }
+
+  // ─── Save / Publish ──────────────────────────────────────────
+  async function saveBlog(publish = false) {
+    const data = collectFormData();
+    data.published = publish;
+
+    if (!data.title) { showToast('Please add a title before saving', 'warning'); return; }
+    if (!data.content || data.content === '<p><br></p>') { showToast('Post content cannot be empty', 'warning'); return; }
+
+    const draftBtn = document.getElementById('save-draft-btn');
+    const publishBtn = document.getElementById('publish-btn');
+    draftBtn.disabled = true;
+    publishBtn.disabled = true;
+    publishBtn.innerHTML = '<div class="spinner"></div> Saving…';
+
+    try {
+      let res;
+      if (editId) {
+        res = await authFetch(`/admin/blogs/${editId}`, {
+          method: 'PUT',
+          body: JSON.stringify(data),
+        });
+      } else {
+        res = await authFetch('/admin/blogs', {
+          method: 'POST',
+          body: JSON.stringify(data),
+        });
+      }
+
+      if (!res || !res.ok) {
+        const err = await res?.json().catch(() => ({}));
+        throw new Error(err.detail || 'Save failed');
+      }
+
+      const saved = await res.json();
+      localStorage.removeItem('draft_backup');
+      showToast(publish ? 'Post published!' : 'Draft saved!', 'success');
+
+      if (!editId) {
+        // Redirect to edit mode after creation
+        setTimeout(() => { location.href = `editor.html?id=${saved.id}`; }, 1000);
+      }
+    } catch (e) {
+      showToast(e.message || 'Failed to save post', 'error');
+    } finally {
+      draftBtn.disabled = false;
+      publishBtn.disabled = false;
+      publishBtn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="15" height="15"><polyline points="22 2 15 22 11 13 2 9 22 2"/></svg> Publish';
+    }
+  }
+
+  // ─── Preview ─────────────────────────────────────────────────
+  function openPreview() {
+    const data = collectFormData();
+    document.getElementById('preview-title').textContent = data.title || 'Untitled';
+    document.getElementById('preview-meta').textContent = `${data.category} · ${data.read_time} min read · ${data.author}`;
+    document.getElementById('preview-content').innerHTML = data.content;
+    document.getElementById('preview-overlay').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closePreview() {
+    document.getElementById('preview-overlay').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  function closePreviewOnOutside(e) {
+    if (e.target === document.getElementById('preview-overlay')) closePreview();
+  }
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') closePreview();
+    if ((e.metaKey || e.ctrlKey) && e.key === 's') { e.preventDefault(); saveBlog(false); }
+  });
+
+  // ─── Load existing post for editing ─────────────────────────
+  async function loadPost(id) {
+    document.getElementById('page-title').textContent = 'Edit Post';
+    document.title = 'Edit Post — ATRBA Admin';
+    try {
+      const res = await authFetch(`/admin/blogs`);
+      if (!res) return;
+      const blogs = await res.json();
+      const blog = blogs.find(b => b.id === id);
+      if (!blog) { showToast('Post not found', 'error'); return; }
+
+      document.getElementById('title').value = blog.title;
+      document.getElementById('excerpt').value = blog.excerpt || '';
+      document.getElementById('category').value = blog.category || 'general';
+      document.getElementById('read_time').value = blog.read_time || 5;
+      document.getElementById('author').value = blog.author || 'Admin';
+      document.getElementById('featured').checked = blog.featured;
+      currentSlug = blog.slug;
+      slugManuallyEdited = true;
+      document.getElementById('slug-preview').textContent = blog.slug;
+
+      quill.clipboard.dangerouslyPasteHTML(blog.content || '');
+
+      // Update publish button
+      const publishBtn = document.getElementById('publish-btn');
+      if (blog.published) {
+        publishBtn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="15" height="15"><polyline points="22 2 15 22 11 13 2 9 22 2"/></svg> Update';
+      }
+    } catch (e) {
+      showToast('Failed to load post', 'error');
+    }
+  }
+
+  // ─── Restore draft backup ────────────────────────────────────
+  if (!editId) {
+    const backup = localStorage.getItem('draft_backup');
+    if (backup) {
+      try {
+        const d = JSON.parse(backup);
+        if (d.title && confirm('Restore unsaved draft?')) {
+          document.getElementById('title').value = d.title;
+          document.getElementById('excerpt').value = d.excerpt || '';
+          document.getElementById('category').value = d.category || 'general';
+          document.getElementById('read_time').value = d.read_time || 5;
+          document.getElementById('author').value = d.author || 'Admin';
+          quill.clipboard.dangerouslyPasteHTML(d.content || '');
+          currentSlug = d.slug;
+          document.getElementById('slug-preview').textContent = d.slug || 'auto-generated';
+        }
+      } catch (_) {}
+    }
+  }
+
+  // ─── Init ────────────────────────────────────────────────────
+  const user = getAdminUser();
+  document.getElementById('author').value = user.username || 'Admin';
+
+  if (editId) loadPost(editId);
+</script>
+</body>
+</html>

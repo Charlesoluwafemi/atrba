@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Contact — Book a Strategy Call — ATRBA</title>
+<meta name="description" content="Book a strategy call with ATRBA, chat via WhatsApp, or submit an inquiry. No pitch deck. No sales script. Just an honest diagnostic conversation.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="_shared.css">
+<style>
+body{padding-top:68px}
+.contact-grid{display:grid;grid-template-columns:1fr 1.2fr;gap:4rem;align-items:start}
+.contact-method{display:flex;gap:1rem;align-items:flex-start;margin-bottom:2rem}
+.contact-method-icon{width:48px;height:48px;background:rgba(201,147,58,.1);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0}
+.contact-method h4{font-size:.95rem;color:var(--navy);margin-bottom:.3rem}
+.contact-method p{font-size:.85rem;line-height:1.7}
+.contact-form-box{background:var(--cream);border-radius:8px;padding:2.5rem}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem}
+.form-group{margin-bottom:1rem}
+.form-label{display:block;font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:var(--navy);font-weight:600;margin-bottom:.4rem}
+.form-input{width:100%;padding:.7rem .9rem;border:1px solid rgba(27,42,74,.15);border-radius:4px;font-size:.9rem;background:#fff;color:var(--charcoal);transition:border-color .2s;font-family:var(--font-sans)}
+.form-input:focus{outline:none;border-color:var(--gold);box-shadow:0 0 0 3px rgba(201,147,58,.1)}
+textarea.form-input{resize:vertical;min-height:130px}
+select.form-input{appearance:none;cursor:pointer}
+.form-submit{width:100%;padding:1rem;background:var(--navy);color:#fff;border:none;border-radius:4px;font-size:.95rem;font-weight:600;cursor:pointer;transition:all .25s;letter-spacing:.02em;font-family:var(--font-sans)}
+.form-submit:hover:not(:disabled){background:var(--navy-mid);transform:translateY(-1px)}
+.form-submit:disabled{opacity:.6;cursor:not-allowed;transform:none}
+.form-success{display:none;text-align:center;padding:2rem;background:rgba(13,119,75,.06);border:1px solid rgba(13,119,75,.2);border-radius:6px;margin-top:1rem}
+.form-success h4{color:#0d774b;margin-bottom:.5rem}
+.form-error{display:none;padding:1rem 1.25rem;background:rgba(192,57,43,.06);border:1px solid rgba(192,57,43,.25);border-radius:6px;margin-top:1rem;font-size:.85rem;color:#c0392b;text-align:center}
+.calendly-box{background:#fff;border:1px solid rgba(27,42,74,.12);border-radius:6px;padding:1.5rem;margin-top:.75rem;text-align:center}
+.calendly-btn{display:inline-flex;align-items:center;gap:.75rem;background:var(--navy);color:#fff;padding:1rem 2rem;border-radius:4px;font-weight:600;font-size:.9rem;cursor:pointer;transition:all .25s;border:none;font-family:var(--font-sans);text-decoration:none}
+.calendly-btn:hover{background:var(--navy-mid);transform:translateY(-1px)}
+@media(max-width:960px){.contact-grid{grid-template-columns:1fr}}
+@media(max-width:640px){.form-row{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<nav>
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo">
+      <div class="nav-logo-main">Above The Rest</div>
+      <div class="nav-logo-sub">Business Advisors &nbsp;·&nbsp; ATRBA</div>
+    </a>
+    <div class="nav-links">
+      <a href="services.html" class="hide-mobile">Services</a>
+      <a href="atr-ai.html" class="hide-mobile">ATR AI</a>
+      <a href="atr-education.html" class="hide-mobile">Education</a>
+      <a href="industry-solutions.html" class="hide-mobile">Industries</a>
+      <a href="case-studies.html" class="hide-mobile">Case Studies</a>
+      <a href="resources.html" class="hide-mobile">Resources</a>
+      <a href="about.html" class="hide-mobile">About</a>
+      <a href="contact.html" class="nav-cta active">Book a Call</a>
+    </div>
+  </div>
+</nav>
+<a href="https://wa.me/18560000000" class="whatsapp-float" target="_blank" aria-label="Chat on WhatsApp">💬</a>
+
+<div class="page-header">
+  <div class="page-header-inner">
+    <div class="breadcrumb"><a href="index.html">Home</a><span style="opacity:.4">/</span><span>Contact</span></div>
+    <h1>Start the Conversation</h1>
+    <p>Every engagement begins with an honest diagnostic conversation — not a pitch. Tell us where you are, and we'll tell you what we see.</p>
+  </div>
+</div>
+
+<section>
+  <div class="section-inner">
+    <div class="contact-grid">
+      <div>
+        <div class="section-header">
+          <div class="section-eyebrow">How We Connect</div>
+          <h2>Three Ways to Begin</h2>
+          <span class="gold-line"></span>
+        </div>
+
+        <div class="contact-method">
+          <div class="contact-method-icon">&#128197;</div>
+          <div style="flex:1">
+            <h4>Book a Strategy Call</h4>
+            <p>60 minutes. No pitch. An honest conversation about your business, your challenges, and whether ATRBA is the right fit. Most clients leave with actionable clarity regardless of whether we engage.</p>
+            <div class="calendly-box">
+              <p style="font-size:.82rem;color:var(--slate);margin-bottom:1rem">Select a date and time that works for you.</p>
+              <a href="#" class="calendly-btn" onclick="alert('Production: Opens Calendly scheduling widget'); return false;">
+                &#128197; &nbsp;Schedule Your Call
+              </a>
+              <p style="font-size:.72rem;color:var(--slate);margin-top:.75rem">Calendly integration — 60-minute strategy session</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="contact-method">
+          <div class="contact-method-icon">&#128172;</div>
+          <div>
+            <h4>WhatsApp — Immediate Response</h4>
+            <p style="margin-bottom:.75rem">For urgent inquiries or if you prefer a direct conversation before scheduling a formal call. We respond within business hours.</p>
+            <a href="https://wa.me/18560000000?text=Hi%20ATRBA%2C%20I%27d%20like%20to%20learn%20more%20about%20your%20services." target="_blank" class="btn-primary" style="font-size:.85rem;padding:.6rem 1.25rem">Open WhatsApp Chat &rarr;</a>
+          </div>
+        </div>
+
+        <div class="contact-method">
+          <div class="contact-method-icon">&#128205;</div>
+          <div>
+            <h4>Office Locations</h4>
+            <div style="display:grid;gap:.75rem;margin-top:.5rem">
+              <div style="background:var(--cream);border-radius:4px;padding:1rem;border-left:3px solid var(--gold)">
+                <div style="font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);font-weight:600;margin-bottom:.25rem">US Headquarters</div>
+                <p style="font-size:.88rem;color:var(--navy);font-weight:500;margin:0">Camden, NJ</p>
+              </div>
+              <div style="background:var(--cream);border-radius:4px;padding:1rem;border-left:3px solid var(--gold)">
+                <div style="font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);font-weight:600;margin-bottom:.25rem">West Africa Office</div>
+                <p style="font-size:.88rem;color:var(--navy);font-weight:500;margin:0">Lagos, Nigeria</p>
+              </div>
+            </div>
+            <p style="font-size:.8rem;color:var(--slate);margin-top:.75rem"><strong style="color:var(--navy)">Response SLA:</strong> Within 24 business hours for all form inquiries.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="contact-form-box">
+        <div style="margin-bottom:1.75rem">
+          <div class="section-eyebrow" style="font-size:.65rem">Inquiry Form</div>
+          <h3 style="font-size:1.3rem;color:var(--navy)">Tell Us About Your Business</h3>
+          <p style="font-size:.85rem;margin-top:.5rem">We review every inquiry personally. The more specific you are, the better we can prepare for our conversation.</p>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label" for="firstName">First Name</label>
+            <input type="text" id="firstName" class="form-input" placeholder="First name" autocomplete="given-name">
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="lastName">Last Name</label>
+            <input type="text" id="lastName" class="form-input" placeholder="Last name" autocomplete="family-name">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="email">Email Address</label>
+          <input type="email" id="email" class="form-input" placeholder="you@yourcompany.com" autocomplete="email">
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="company">Company Name</label>
+          <input type="text" id="company" class="form-input" placeholder="Your company or organization" autocomplete="organization">
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label" for="revenue">Annual Revenue Range</label>
+            <select id="revenue" class="form-input">
+              <option value="">Select range...</option>
+              <option>Pre-revenue</option>
+              <option>$0 &ndash; $500K</option>
+              <option>$500K &ndash; $1M</option>
+              <option>$1M &ndash; $5M</option>
+              <option>$5M &ndash; $20M</option>
+              <option>$20M+</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="service">Primary Area of Interest</label>
+            <select id="service" class="form-input">
+              <option value="">Select a service area...</option>
+              <option>Business Infrastructure</option>
+              <option>Fractional COO / Operations</option>
+              <option>AI Automation Foundations</option>
+              <option>Enterprise AI Transformation</option>
+              <option>Financial Systems</option>
+              <option>Africa Market Entry</option>
+              <option>Education / Training</option>
+              <option>Not sure &mdash; need a diagnostic</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="message">What Are You Working Through?</label>
+          <textarea id="message" class="form-input" placeholder="Describe your primary challenge or goal in as much detail as you're comfortable sharing. The more context you provide, the better we can prepare for our conversation."></textarea>
+        </div>
+        <button class="form-submit" id="submitBtn" onclick="submitForm()">Send Inquiry &rarr;</button>
+        <p style="font-size:.72rem;color:var(--slate);margin-top:.75rem;text-align:center">We respond within 24 business hours. No automated sequences. No unsolicited follow-up.</p>
+        <div class="form-success" id="formSuccess">
+          <div style="font-size:1.5rem;margin-bottom:.5rem">&#10003;</div>
+          <h4>Inquiry Received</h4>
+          <p>We will review your message and respond within 24 business hours. If your matter is urgent, please reach us via WhatsApp using the button on this page.</p>
+        </div>
+        <div class="form-error" id="formError"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <h3>Above The Rest Business Advisors</h3>
+        <div style="font-size:.65rem;letter-spacing:.15em;text-transform:uppercase;color:var(--gold);font-weight:500;margin-top:.2rem">ATRBA</div>
+        <p>Building businesses that last — by giving growth-stage founders access to the operational infrastructure, strategic expertise, and AI capability historically reserved for large enterprises.</p>
+        <div class="footer-tagline">People. Processes. Profits.</div>
+      </div>
+      <div class="footer-col"><h5>Services</h5><a href="services.html">Advisory Platform</a><a href="services.html">Fractional COO</a><a href="atr-ai.html">AI Automation</a><a href="services.html">Africa Market Entry</a><a href="atr-education.html">ATR Academy</a></div>
+      <div class="footer-col"><h5>Company</h5><a href="about.html">About Us</a><a href="case-studies.html">Case Studies</a><a href="resources.html">Resources</a><a href="industry-solutions.html">Industries</a><a href="contact.html">Careers</a></div>
+      <div class="footer-col"><h5>Connect</h5><a href="contact.html">Book a Call</a><a href="https://wa.me/18560000000" target="_blank">WhatsApp</a><a href="#">LinkedIn</a><a href="#">Camden, NJ &mdash; HQ</a><a href="#">Lagos, Nigeria</a></div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; 2026 Above The Rest Business Advisors, LLC &middot; All rights reserved</span>
+      <div class="footer-bottom-links"><a href="#">Privacy Policy</a><a href="#">Terms of Service</a><a href="#">Accessibility</a></div>
+    </div>
+  </div>
+</footer>
+
+<script>
+async function submitForm() {
+  const successEl = document.getElementById('formSuccess');
+  const errorEl   = document.getElementById('formError');
+  const submitBtn = document.getElementById('submitBtn');
+
+  // Hide previous feedback
+  successEl.style.display = 'none';
+  errorEl.style.display   = 'none';
+
+  // Gather values
+  const firstName = document.getElementById('firstName').value.trim();
+  const lastName  = document.getElementById('lastName').value.trim();
+  const email     = document.getElementById('email').value.trim();
+  const company   = document.getElementById('company').value.trim();
+  const revenue   = document.getElementById('revenue').value;
+  const service   = document.getElementById('service').value;
+  const message   = document.getElementById('message').value.trim();
+
+  // Validation
+  if (!firstName) {
+    document.getElementById('firstName').focus();
+    showError('Please enter your first name.');
+    return;
+  }
+  if (!email || !email.includes('@')) {
+    document.getElementById('email').focus();
+    showError('Please enter a valid email address.');
+    return;
+  }
+
+  // Build payload matching FastAPI schema
+  const payload = {
+    first_name:               firstName,
+    last_name:                lastName,
+    email:                    email,
+    company_name:             company,
+    annual_revenue_range:     revenue,
+    primary_area_of_interest: service,
+    message:                  message
+  };
+
+  // Disable button while submitting
+  submitBtn.disabled    = true;
+  submitBtn.textContent = 'Sending\u2026';
+
+  try {
+    const response = await fetch('http://127.0.0.1:8000/leads', {
+      method:  'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body:    JSON.stringify(payload)
+    });
+
+    if (!response.ok) {
+      // Surface FastAPI validation/error detail if available
+      let detail = 'Server error (' + response.status + ')';
+      try {
+        const data = await response.json();
+        if (data.detail) detail = typeof data.detail === 'string' ? data.detail : JSON.stringify(data.detail);
+      } catch (_) {}
+      throw new Error(detail);
+    }
+
+    // Success
+    successEl.style.display = 'block';
+    successEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    resetForm();
+
+  } catch (err) {
+    showError(
+      err.message === 'Failed to fetch'
+        ? 'Unable to reach the server. Please check your connection and try again.'
+        : 'Something went wrong: ' + err.message
+    );
+  } finally {
+    submitBtn.disabled    = false;
+    submitBtn.textContent = 'Send Inquiry \u2192';
+  }
+}
+
+function showError(msg) {
+  const errorEl = document.getElementById('formError');
+  errorEl.textContent   = msg;
+  errorEl.style.display = 'block';
+  errorEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+function resetForm() {
+  ['firstName', 'lastName', 'email', 'company', 'message'].forEach(function(id) {
+    document.getElementById(id).value = '';
+  });
+  document.getElementById('revenue').selectedIndex = 0;
+  document.getElementById('service').selectedIndex = 0;
+}
+
+function observeReveal() {
+  var els = document.querySelectorAll('.reveal:not(.visible)');
+  if (!('IntersectionObserver' in window)) { els.forEach(function(el){ el.classList.add('visible'); }); return; }
+  var obs = new IntersectionObserver(function(entries) {
+    entries.forEach(function(e) {
+      if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); }
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+  els.forEach(function(el){ obs.observe(el); });
+}
+window.addEventListener('load', observeReveal);
+window.addEventListener('scroll', observeReveal, { passive: true });
+</script>
+</body>
+</html>

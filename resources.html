@@ -1,0 +1,917 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Resources & Insights — ATRBA</title>
+<meta name="description" content="Strategic frameworks, guides, and intelligence from ATRBA — written for growth-stage founders and operators.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="_shared.css">
+<style>
+/* ═══════════════════════════════════════════════════════
+   ATRBA Resources Page — scoped styles
+   ═══════════════════════════════════════════════════════ */
+:root {
+  --navy:       #1b2a4a;
+  --navy-dark:  #0f1c30;
+  --gold:       #c9933a;
+  --gold-lt:    rgba(201,147,58,.12);
+  --gold-border:rgba(201,147,58,.25);
+  --slate:      #4a5568;
+  --slate-lt:   #718096;
+  --pearl:      #f8f7f4;
+  --rule:       rgba(27,42,74,.1);
+  --card-bg:    #ffffff;
+  --radius:     8px;
+  --serif:      'DM Serif Display', Georgia, serif;
+  --sans:       'Inter', system-ui, sans-serif;
+  --mono:       'DM Mono', monospace;
+  --transition: .28s cubic-bezier(.4,0,.2,1);
+}
+
+body { padding-top: 68px; background: var(--pearl); font-family: var(--sans); color: var(--navy); -webkit-font-smoothing: antialiased; }
+
+/* ── Page header ───────────────────────────────────────── */
+.resources-hero {
+  background: var(--navy-dark);
+  padding: 72px 32px 64px;
+  position: relative;
+  overflow: hidden;
+}
+.resources-hero::before {
+  content: '';
+  position: absolute; inset: 0;
+  background:
+    radial-gradient(ellipse at 20% 50%, rgba(201,147,58,.08) 0%, transparent 60%),
+    radial-gradient(ellipse at 80% 20%, rgba(201,147,58,.05) 0%, transparent 50%);
+}
+.resources-hero::after {
+  content: '';
+  position: absolute; bottom: 0; left: 0; right: 0; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+}
+.hero-inner { max-width: 1120px; margin: 0 auto; position: relative; }
+.hero-eyebrow {
+  font-size: .65rem; letter-spacing: .18em; text-transform: uppercase;
+  color: var(--gold); font-weight: 600; margin-bottom: 16px;
+  display: flex; align-items: center; gap: 12px;
+}
+.hero-eyebrow::before {
+  content: ''; width: 28px; height: 1px; background: var(--gold);
+}
+.hero-title {
+  font-family: var(--serif); font-size: clamp(2.2rem,5vw,3.6rem);
+  color: #fff; line-height: 1.1; font-weight: 400; letter-spacing: -.01em;
+  max-width: 640px; margin-bottom: 20px;
+}
+.hero-title em { font-style: italic; color: var(--gold); }
+.hero-sub {
+  font-size: 1rem; color: rgba(255,255,255,.55); max-width: 520px;
+  line-height: 1.75; font-weight: 300;
+}
+.hero-stats {
+  display: flex; gap: 48px; margin-top: 40px; flex-wrap: wrap;
+}
+.hero-stat-val {
+  font-family: var(--serif); font-size: 2rem; color: var(--gold); line-height: 1;
+}
+.hero-stat-label { font-size: .72rem; color: rgba(255,255,255,.4); margin-top: 4px; letter-spacing: .06em; text-transform: uppercase; }
+
+/* ── Controls bar ─────────────────────────────────────── */
+.controls-bar {
+  background: #fff; border-bottom: 1px solid var(--rule);
+  position: sticky; top: 68px; z-index: 40;
+  box-shadow: 0 2px 12px rgba(27,42,74,.06);
+}
+.controls-inner {
+  max-width: 1120px; margin: 0 auto; padding: 0 32px;
+  display: flex; align-items: center; gap: 16px; height: 64px; flex-wrap: wrap;
+}
+
+/* Search */
+.search-wrap { position: relative; flex: 1; min-width: 200px; max-width: 320px; }
+.search-icon {
+  position: absolute; left: 12px; top: 50%; transform: translateY(-50%);
+  width: 15px; height: 15px; stroke: var(--slate-lt); fill: none; stroke-width: 2;
+  pointer-events: none;
+}
+.search-input {
+  width: 100%; padding: 8px 12px 8px 36px;
+  border: 1.5px solid var(--rule); border-radius: 6px;
+  font-family: var(--sans); font-size: .875rem; color: var(--navy);
+  background: var(--pearl); outline: none; transition: border-color var(--transition), box-shadow var(--transition);
+}
+.search-input:focus { border-color: var(--gold); box-shadow: 0 0 0 3px var(--gold-lt); }
+.search-input::placeholder { color: var(--slate-lt); }
+
+/* Category pills */
+.category-pills { display: flex; gap: 6px; overflow-x: auto; padding: 2px 0; scrollbar-width: none; }
+.category-pills::-webkit-scrollbar { display: none; }
+.pill {
+  font-size: .75rem; font-weight: 500; padding: 6px 14px; border-radius: 100px;
+  border: 1.5px solid var(--rule); background: transparent; cursor: pointer;
+  color: var(--slate); transition: all var(--transition); white-space: nowrap;
+  font-family: var(--sans);
+}
+.pill:hover { border-color: var(--navy); color: var(--navy); }
+.pill.active { background: var(--navy); border-color: var(--navy); color: #fff; }
+
+.result-count { font-size: .8rem; color: var(--slate-lt); margin-left: auto; white-space: nowrap; }
+
+/* ── Main layout ──────────────────────────────────────── */
+.resources-main { max-width: 1120px; margin: 0 auto; padding: 48px 32px 96px; }
+
+/* ── Featured strip ───────────────────────────────────── */
+.featured-label {
+  display: flex; align-items: center; gap: 12px;
+  font-size: .65rem; letter-spacing: .15em; text-transform: uppercase;
+  color: var(--gold); font-weight: 600; margin-bottom: 20px;
+}
+.featured-label::after { content: ''; flex: 1; height: 1px; background: var(--gold-border); }
+
+.featured-grid {
+  display: grid; grid-template-columns: repeat(2,1fr); gap: 20px;
+  margin-bottom: 56px;
+}
+.featured-card {
+  display: flex; gap: 20px;
+  background: var(--navy-dark); border-radius: var(--radius);
+  border: 1px solid rgba(201,147,58,.2); overflow: hidden;
+  text-decoration: none; transition: transform var(--transition), box-shadow var(--transition);
+  cursor: pointer;
+}
+.featured-card:hover { transform: translateY(-3px); box-shadow: 0 16px 48px rgba(27,42,74,.2); }
+.featured-thumb {
+  width: 120px; flex-shrink: 0; background: var(--navy);
+  display: flex; align-items: center; justify-content: center;
+  position: relative; overflow: hidden;
+}
+.featured-thumb img { width: 100%; height: 100%; object-fit: cover; }
+.featured-thumb-placeholder {
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 8px; padding: 16px;
+}
+.file-type-icon {
+  width: 36px; height: 44px; border-radius: 4px;
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--mono); font-size: .6rem; font-weight: 500;
+  color: #fff; letter-spacing: .04em;
+}
+.featured-body { padding: 20px 20px 20px 0; flex: 1; }
+.featured-cat {
+  font-size: .62rem; letter-spacing: .12em; text-transform: uppercase;
+  color: var(--gold); font-weight: 600; margin-bottom: 8px;
+}
+.featured-title {
+  font-family: var(--serif); font-size: 1.05rem; color: #fff;
+  line-height: 1.35; margin-bottom: 8px; font-weight: 400;
+}
+.featured-desc { font-size: .8rem; color: rgba(255,255,255,.5); line-height: 1.6; }
+.featured-footer {
+  display: flex; align-items: center; gap: 12px; margin-top: 14px;
+}
+.meta-pill {
+  font-size: .65rem; color: rgba(255,255,255,.35);
+  background: rgba(255,255,255,.06); border-radius: 4px; padding: 3px 8px;
+  font-family: var(--mono);
+}
+.download-chip {
+  margin-left: auto;
+  display: flex; align-items: center; gap: 5px;
+  font-size: .7rem; color: var(--gold); font-weight: 500;
+  background: var(--gold-lt); border: 1px solid var(--gold-border);
+  border-radius: 4px; padding: 4px 10px; transition: all var(--transition);
+}
+.download-chip svg { width: 11px; height: 11px; stroke: currentColor; fill: none; stroke-width: 2; }
+.featured-card:hover .download-chip { background: var(--gold); color: #fff; border-color: var(--gold); }
+
+/* ── Resource grid ────────────────────────────────────── */
+.section-divider {
+  display: flex; align-items: center; gap: 12px; margin-bottom: 24px;
+}
+.section-divider h3 {
+  font-family: var(--serif); font-size: 1.4rem; color: var(--navy); font-weight: 400;
+}
+.section-divider::after { content: ''; flex: 1; height: 1px; background: var(--rule); }
+
+.resource-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 20px; }
+
+.resource-card {
+  background: var(--card-bg); border-radius: var(--radius);
+  border: 1px solid var(--rule); overflow: hidden;
+  transition: transform var(--transition), box-shadow var(--transition), border-color var(--transition);
+  display: flex; flex-direction: column; cursor: pointer;
+}
+.resource-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 40px rgba(27,42,74,.1);
+  border-color: rgba(201,147,58,.3);
+}
+
+.card-thumb {
+  height: 140px; background: var(--navy); position: relative; overflow: hidden;
+}
+.card-thumb img { width: 100%; height: 100%; object-fit: cover; transition: transform .5s; }
+.resource-card:hover .card-thumb img { transform: scale(1.05); }
+.card-thumb-placeholder {
+  width: 100%; height: 100%; display: flex; flex-direction: column;
+  align-items: center; justify-content: center; gap: 8px;
+}
+
+.card-body { padding: 18px 20px; flex: 1; display: flex; flex-direction: column; }
+.card-cat {
+  font-size: .62rem; letter-spacing: .12em; text-transform: uppercase;
+  color: var(--gold); font-weight: 600; margin-bottom: 8px;
+}
+.card-title {
+  font-family: var(--serif); font-size: 1rem; color: var(--navy);
+  line-height: 1.4; font-weight: 400; flex: 1;
+  display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;
+}
+.card-desc {
+  font-size: .8rem; color: var(--slate); line-height: 1.6; margin-top: 8px;
+  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+}
+
+.card-footer {
+  padding: 14px 20px; border-top: 1px solid var(--rule);
+  display: flex; align-items: center; justify-content: space-between; gap: 8px;
+}
+.card-meta { display: flex; align-items: center; gap: 8px; }
+.card-size { font-size: .72rem; color: var(--slate-lt); font-family: var(--mono); }
+.card-downloads { font-size: .72rem; color: var(--slate-lt); display: flex; align-items: center; gap: 4px; }
+.card-downloads svg { width: 10px; height: 10px; stroke: currentColor; fill: none; stroke-width: 2; }
+
+.btn-download {
+  display: flex; align-items: center; gap: 5px;
+  font-size: .75rem; font-weight: 500; font-family: var(--sans);
+  color: var(--navy); background: var(--pearl);
+  border: 1.5px solid var(--rule); border-radius: 5px; padding: 6px 12px;
+  cursor: pointer; transition: all var(--transition); white-space: nowrap;
+}
+.btn-download svg { width: 12px; height: 12px; stroke: currentColor; fill: none; stroke-width: 2; }
+.btn-download:hover { background: var(--gold); color: #fff; border-color: var(--gold); }
+.btn-download.loading { opacity: .6; pointer-events: none; }
+
+/* ── Tags ─────────────────────────────────────────────── */
+.card-tags { display: flex; gap: 4px; flex-wrap: wrap; margin-top: 8px; }
+.tag {
+  font-size: .62rem; color: var(--slate-lt); background: var(--pearl);
+  border-radius: 3px; padding: 2px 6px; font-family: var(--mono);
+  border: 1px solid var(--rule);
+}
+
+/* ── File type badge colors ───────────────────────────── */
+.ftype-pdf  { background: #dc2626; }
+.ftype-docx, .ftype-doc  { background: #2563eb; }
+.ftype-xlsx, .ftype-xls  { background: #16a34a; }
+.ftype-pptx, .ftype-ppt  { background: #ea580c; }
+.ftype-zip  { background: #7c3aed; }
+.ftype-default { background: var(--navy); }
+
+/* ── Skeleton loaders ─────────────────────────────────── */
+.skeleton {
+  background: linear-gradient(90deg, #e8e4dd 25%, #f0ece5 50%, #e8e4dd 75%);
+  background-size: 200% 100%; animation: shimmer 1.6s infinite; border-radius: 4px;
+}
+@keyframes shimmer { 0%{background-position:200% 0} 100%{background-position:-200% 0} }
+.skeleton-card { background: #fff; border-radius: var(--radius); border: 1px solid var(--rule); overflow: hidden; }
+.sk-thumb { height: 140px; }
+.sk-body { padding: 18px 20px; display: flex; flex-direction: column; gap: 10px; }
+.sk-cat { height: 9px; width: 30%; }
+.sk-title { height: 14px; width: 90%; }
+.sk-title2 { height: 14px; width: 70%; }
+.sk-desc { height: 10px; width: 100%; }
+
+/* ── Pagination ───────────────────────────────────────── */
+.pagination {
+  display: flex; align-items: center; justify-content: center;
+  gap: 6px; margin-top: 48px;
+}
+.page-btn {
+  width: 36px; height: 36px; display: flex; align-items: center; justify-content: center;
+  border-radius: 6px; border: 1.5px solid var(--rule); background: #fff;
+  font-size: .8125rem; color: var(--slate); cursor: pointer;
+  transition: all var(--transition); font-family: var(--sans);
+}
+.page-btn:hover { border-color: var(--navy); color: var(--navy); }
+.page-btn.active { background: var(--navy); border-color: var(--navy); color: #fff; }
+.page-btn:disabled { opacity: .35; cursor: not-allowed; }
+.page-btn svg { width: 14px; height: 14px; stroke: currentColor; fill: none; stroke-width: 2; }
+
+/* ── Empty / error states ─────────────────────────────── */
+.state-box {
+  grid-column: 1/-1; text-align: center; padding: 72px 32px;
+}
+.state-icon { font-size: 3rem; opacity: .3; margin-bottom: 16px; }
+.state-title { font-family: var(--serif); font-size: 1.5rem; color: var(--navy); margin-bottom: 8px; }
+.state-sub { font-size: .9375rem; color: var(--slate); }
+
+/* ── Resource detail modal ────────────────────────────── */
+.modal-overlay {
+  position: fixed; inset: 0; background: rgba(15,20,30,.7);
+  backdrop-filter: blur(6px); z-index: 9000;
+  display: none; align-items: flex-start; justify-content: center;
+  padding: 32px 20px; overflow-y: auto;
+}
+.modal-overlay.open { display: flex; }
+.modal-box {
+  background: #fff; border-radius: 12px; width: 100%; max-width: 680px;
+  box-shadow: 0 40px 120px rgba(27,42,74,.3); overflow: hidden;
+  margin: auto; animation: slideUp .3s cubic-bezier(.4,0,.2,1);
+}
+@keyframes slideUp { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
+.modal-header {
+  background: var(--navy-dark); padding: 28px 32px;
+  display: flex; justify-content: space-between; align-items: flex-start; gap: 16px;
+}
+.modal-header-left { flex: 1; }
+.modal-cat { font-size: .62rem; letter-spacing: .12em; text-transform: uppercase; color: var(--gold); font-weight: 600; margin-bottom: 8px; }
+.modal-title { font-family: var(--serif); font-size: 1.5rem; color: #fff; line-height: 1.25; font-weight: 400; }
+.modal-close {
+  width: 32px; height: 32px; border-radius: 6px; background: rgba(255,255,255,.1);
+  border: none; color: rgba(255,255,255,.6); cursor: pointer; font-size: 1rem;
+  transition: background var(--transition); flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+}
+.modal-close:hover { background: rgba(255,255,255,.2); color: #fff; }
+.modal-body { padding: 28px 32px; }
+.modal-desc { font-size: .9375rem; color: var(--slate); line-height: 1.75; margin-bottom: 24px; }
+.modal-meta-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 24px; }
+.modal-meta-item { background: var(--pearl); border-radius: 6px; padding: 12px 16px; }
+.modal-meta-label { font-size: .65rem; letter-spacing: .1em; text-transform: uppercase; color: var(--slate-lt); margin-bottom: 4px; }
+.modal-meta-value { font-size: .875rem; color: var(--navy); font-weight: 500; }
+.modal-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 24px; }
+.modal-tag { font-size: .72rem; color: var(--navy); background: var(--gold-lt); border: 1px solid var(--gold-border); border-radius: 4px; padding: 4px 10px; font-family: var(--mono); }
+.modal-footer { padding: 20px 32px; border-top: 1px solid var(--rule); background: var(--pearl); display: flex; gap: 12px; }
+.btn-modal-download {
+  flex: 1; display: flex; align-items: center; justify-content: center; gap: 8px;
+  padding: 12px; background: var(--navy); color: #fff; border: none; border-radius: 7px;
+  font-family: var(--sans); font-size: .9rem; font-weight: 500; cursor: pointer;
+  transition: background var(--transition);
+}
+.btn-modal-download:hover { background: var(--navy-dark); }
+.btn-modal-download:disabled { opacity: .55; cursor: not-allowed; }
+.btn-modal-download svg { width: 16px; height: 16px; stroke: currentColor; fill: none; stroke-width: 2; }
+.btn-modal-close {
+  padding: 12px 24px; background: transparent; color: var(--slate); border: 1.5px solid var(--rule);
+  border-radius: 7px; font-family: var(--sans); font-size: .9rem; cursor: pointer;
+  transition: all var(--transition);
+}
+.btn-modal-close:hover { border-color: var(--navy); color: var(--navy); }
+
+/* ── CTA band ─────────────────────────────────────────── */
+.cta-band { background: var(--navy); padding: 64px 32px; text-align: center; }
+.cta-band h2 { font-family: var(--serif); font-size: 2rem; color: #fff; margin-bottom: 12px; font-weight: 400; }
+.cta-band p { font-size: .9375rem; color: rgba(255,255,255,.55); margin-bottom: 28px; max-width: 440px; margin-left: auto; margin-right: auto; }
+.btn-gold {
+  display: inline-block; padding: 13px 32px; background: var(--gold); color: #fff;
+  border-radius: 5px; text-decoration: none; font-weight: 500; font-size: .9rem;
+  transition: background var(--transition);
+}
+.btn-gold:hover { background: #b8822a; }
+
+/* ── Responsive ───────────────────────────────────────── */
+@media (max-width: 1024px) { .resource-grid { grid-template-columns: 1fr 1fr; } .featured-grid { grid-template-columns: 1fr; } }
+@media (max-width: 640px) {
+  .resource-grid { grid-template-columns: 1fr; }
+  .controls-inner { height: auto; padding: 12px 16px; gap: 10px; }
+  .resources-main { padding: 32px 16px 64px; }
+  .resources-hero { padding: 48px 16px 48px; }
+  .modal-meta-grid { grid-template-columns: 1fr; }
+  .modal-body, .modal-footer, .modal-header { padding-left: 20px; padding-right: 20px; }
+  .featured-card { flex-direction: column; }
+  .featured-thumb { width: 100%; height: 100px; }
+  .featured-body { padding: 16px; }
+}
+</style>
+</head>
+<body>
+
+<!-- Nav — preserved from your existing site -->
+<nav>
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo">
+      <div class="nav-logo-main">Above The Rest</div>
+      <div class="nav-logo-sub">Business Advisors &nbsp;·&nbsp; ATRBA</div>
+    </a>
+    <div class="nav-links">
+      <a href="services.html"          class="hide-mobile">Services</a>
+      <a href="atr-ai.html"            class="hide-mobile">ATR AI</a>
+      <a href="atr-education.html"     class="hide-mobile">Education</a>
+      <a href="industry-solutions.html"class="hide-mobile">Industries</a>
+      <a href="case-studies.html"      class="hide-mobile">Case Studies</a>
+      <a href="resources.html"         class="hide-mobile active-link">Resources</a>
+      <a href="about.html"             class="hide-mobile">About</a>
+      <a href="contact.html"           class="nav-cta">Book a Call</a>
+    </div>
+  </div>
+</nav>
+
+<a href="https://wa.me/18560000000" class="whatsapp-float" target="_blank" aria-label="Chat on WhatsApp">💬</a>
+
+<!-- ── Hero ─────────────────────────────────────────────── -->
+<section class="resources-hero">
+  <div class="hero-inner">
+    <div class="hero-eyebrow">Knowledge Hub</div>
+    <h1 class="hero-title">Frameworks for <em>building</em><br>businesses that last.</h1>
+    <p class="hero-sub">Practical intelligence from the work — guides, frameworks, and tools written for growth-stage founders, not academic journals.</p>
+    <div class="hero-stats">
+      <div>
+        <div class="hero-stat-val" id="stat-total">—</div>
+        <div class="hero-stat-label">Resources</div>
+      </div>
+      <div>
+        <div class="hero-stat-val" id="stat-categories">8</div>
+        <div class="hero-stat-label">Categories</div>
+      </div>
+      <div>
+        <div class="hero-stat-val" id="stat-downloads">—</div>
+        <div class="hero-stat-label">Downloads</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Controls bar ──────────────────────────────────────── -->
+<div class="controls-bar">
+  <div class="controls-inner">
+    <div class="search-wrap">
+      <svg class="search-icon" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+      <input class="search-input" id="search-input" placeholder="Search resources…" oninput="debounceSearch()" />
+    </div>
+    <div class="category-pills" id="category-pills">
+      <!-- injected by JS -->
+    </div>
+    <span class="result-count" id="result-count"></span>
+  </div>
+</div>
+
+<!-- ── Main content ──────────────────────────────────────── -->
+<div class="resources-main">
+
+  <!-- Featured section -->
+  <div id="featured-section" style="display:none;">
+    <div class="featured-label">Featured Resources</div>
+    <div class="featured-grid" id="featured-grid"></div>
+  </div>
+
+  <!-- All resources -->
+  <div class="section-divider">
+    <h3 id="section-title">All Resources</h3>
+  </div>
+
+  <div class="resource-grid" id="resource-grid">
+    <!-- skeleton loaders -->
+    ${Array(6).fill(`
+    <div class="skeleton-card">
+      <div class="sk-thumb skeleton"></div>
+      <div class="sk-body">
+        <div class="skeleton sk-cat"></div>
+        <div class="skeleton sk-title"></div>
+        <div class="skeleton sk-title2"></div>
+        <div class="skeleton sk-desc"></div>
+      </div>
+    </div>`).join('')}
+  </div>
+
+  <div class="pagination" id="pagination"></div>
+</div>
+
+<!-- ── Resource detail modal ─────────────────────────────── -->
+<div class="modal-overlay" id="resource-modal" onclick="handleModalClick(event)">
+  <div class="modal-box" id="modal-box">
+    <div class="modal-header">
+      <div class="modal-header-left">
+        <div class="modal-cat" id="modal-cat"></div>
+        <h2 class="modal-title" id="modal-title"></h2>
+      </div>
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+    <div class="modal-body">
+      <p class="modal-desc" id="modal-desc"></p>
+      <div class="modal-meta-grid">
+        <div class="modal-meta-item">
+          <div class="modal-meta-label">File Type</div>
+          <div class="modal-meta-value" id="modal-file-type"></div>
+        </div>
+        <div class="modal-meta-item">
+          <div class="modal-meta-label">File Size</div>
+          <div class="modal-meta-value" id="modal-file-size"></div>
+        </div>
+        <div class="modal-meta-item">
+          <div class="modal-meta-label">Author</div>
+          <div class="modal-meta-value" id="modal-author"></div>
+        </div>
+        <div class="modal-meta-item">
+          <div class="modal-meta-label">Downloads</div>
+          <div class="modal-meta-value" id="modal-downloads"></div>
+        </div>
+      </div>
+      <div class="modal-tags" id="modal-tags"></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-modal-download" id="modal-download-btn" onclick="downloadFromModal()">
+        <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        Download Resource
+      </button>
+      <button class="btn-modal-close" onclick="closeModal()">Close</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── CTA ───────────────────────────────────────────────── -->
+<div class="cta-band">
+  <h2>Get Resources in Your Inbox</h2>
+  <p>Strategic frameworks and tools for growth-stage founders. Published bi-weekly.</p>
+  <a href="contact.html" class="btn-gold">Subscribe to the Brief →</a>
+</div>
+
+<!-- Footer from your existing site -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <h3>Above The Rest Business Advisors</h3>
+        <div style="font-size:.65rem;letter-spacing:.15em;text-transform:uppercase;color:var(--gold);font-weight:500;margin-top:.2rem">ATRBA</div>
+        <p>Building businesses that last — giving growth-stage founders access to operational infrastructure, strategic expertise, and AI capability.</p>
+        <div class="footer-tagline">People. Processes. Profits.</div>
+      </div>
+      <div class="footer-col"><h5>Services</h5><a href="services.html">Advisory Platform</a><a href="services.html">Fractional COO</a><a href="atr-ai.html">AI Automation</a><a href="services.html">Africa Market Entry</a><a href="atr-education.html">ATR Academy</a></div>
+      <div class="footer-col"><h5>Company</h5><a href="about.html">About Us</a><a href="case-studies.html">Case Studies</a><a href="resources.html">Resources</a><a href="industry-solutions.html">Industries</a><a href="contact.html">Careers</a></div>
+      <div class="footer-col"><h5>Connect</h5><a href="contact.html">Book a Call</a><a href="https://wa.me/18560000000" target="_blank">WhatsApp</a><a href="#">LinkedIn</a><a href="#">Camden, NJ — HQ</a><a href="#">Lagos, Nigeria</a></div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 Above The Rest Business Advisors, LLC · All rights reserved</span>
+      <div class="footer-bottom-links"><a href="#">Privacy Policy</a><a href="#">Terms of Service</a><a href="#">Accessibility</a></div>
+    </div>
+  </div>
+</footer>
+
+<script>
+// ─── Config ────────────────────────────────────────────────────────────────
+const API_BASE = 'http://localhost:8001';
+
+// ─── State ────────────────────────────────────────────────────────────────
+let currentPage     = 1;
+let currentCategory = 'all';
+let currentSearch   = '';
+let totalPages      = 1;
+let activeResource  = null;
+let searchTimer     = null;
+
+// ─── Category config ───────────────────────────────────────────────────────
+const CATEGORIES = [
+  { value:'all',             label:'All' },
+  { value:'strategy',        label:'Strategy' },
+  { value:'operations',      label:'Operations' },
+  { value:'ai-technology',   label:'AI & Technology' },
+  { value:'africa-diaspora', label:'Africa & Diaspora' },
+  { value:'finance',         label:'Finance' },
+  { value:'leadership',      label:'Leadership' },
+  { value:'marketing',       label:'Marketing' },
+  { value:'general',         label:'General' },
+];
+
+// ─── File type helpers ─────────────────────────────────────────────────────
+const TYPE_COLORS = { pdf:'ftype-pdf', docx:'ftype-docx', doc:'ftype-doc', xlsx:'ftype-xlsx', xls:'ftype-xls', pptx:'ftype-pptx', ppt:'ftype-ppt', zip:'ftype-zip' };
+const TYPE_LABELS = { pdf:'PDF', docx:'DOCX', doc:'DOC', xlsx:'XLSX', xls:'XLS', pptx:'PPTX', ppt:'PPT', zip:'ZIP' };
+
+function fileTypeBadge(ext, size = 'sm') {
+  const cls = TYPE_COLORS[ext?.toLowerCase()] || 'ftype-default';
+  const lbl = TYPE_LABELS[ext?.toLowerCase()] || (ext||'').toUpperCase();
+  const dims = size === 'lg' ? 'width:48px;height:58px;font-size:.75rem;' : 'width:32px;height:40px;font-size:.6rem;';
+  return `<div class="file-type-icon ${cls}" style="${dims}">${lbl}</div>`;
+}
+
+function formatDownloads(n) {
+  return n >= 1000 ? `${(n/1000).toFixed(1)}k` : (n||0).toString();
+}
+
+// ─── Gradient backgrounds per category ────────────────────────────────────
+const CAT_GRADIENTS = {
+  'strategy':        'linear-gradient(135deg,#3a2a10,#201508)',
+  'operations':      'linear-gradient(135deg,#253a61,#0f1c30)',
+  'ai-technology':   'linear-gradient(135deg,#1b2a4a,#0c1425)',
+  'africa-diaspora': 'linear-gradient(135deg,#1a3a2a,#0c1f16)',
+  'finance':         'linear-gradient(135deg,#2a1a0a,#1a0c04)',
+  'leadership':      'linear-gradient(135deg,#1a2a3a,#0a1520)',
+  'marketing':       'linear-gradient(135deg,#2a1a3a,#1a0c28)',
+  'general':         'linear-gradient(135deg,#2a2a2a,#141414)',
+};
+
+function catGradient(cat) {
+  return CAT_GRADIENTS[cat] || CAT_GRADIENTS.general;
+}
+
+// ─── Render helpers ────────────────────────────────────────────────────────
+function renderThumbPlaceholder(resource, textColor='rgba(255,255,255,.4)') {
+  return `
+    <div class="card-thumb-placeholder" style="background:${catGradient(resource.category)}">
+      ${fileTypeBadge(resource.file_extension)}
+      <span style="font-size:.6rem;color:${textColor};font-family:var(--mono);letter-spacing:.08em;">${(resource.file_extension||'').toUpperCase()}</span>
+    </div>`;
+}
+
+function renderFeaturedCard(r) {
+  const thumb = r.thumbnail_url
+    ? `<img src="${r.thumbnail_url}" alt="${r.title}" loading="lazy" />`
+    : `<div class="featured-thumb-placeholder" style="background:${catGradient(r.category)}">${fileTypeBadge(r.file_extension,'lg')}</div>`;
+
+  return `
+  <div class="featured-card" onclick="openModal('${r.id}')">
+    <div class="featured-thumb">${thumb}</div>
+    <div class="featured-body">
+      <div class="featured-cat">${formatCatLabel(r.category)}</div>
+      <div class="featured-title">${r.title}</div>
+      <div class="featured-desc">${truncate(r.description||'',90)}</div>
+      <div class="featured-footer">
+        <span class="meta-pill">${r.file_extension?.toUpperCase()}</span>
+        <span class="meta-pill">${r.file_size_display||''}</span>
+        <span class="download-chip">
+          <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Download
+        </span>
+      </div>
+    </div>
+  </div>`;
+}
+
+function renderResourceCard(r) {
+  const thumb = r.thumbnail_url
+    ? `<div class="card-thumb"><img src="${r.thumbnail_url}" alt="${r.title}" loading="lazy" /></div>`
+    : `<div class="card-thumb">${renderThumbPlaceholder(r)}</div>`;
+
+  const tags = (r.tags||[]).slice(0,3).map(t => `<span class="tag">${t}</span>`).join('');
+
+  return `
+  <div class="resource-card" onclick="openModal('${r.id}')">
+    ${thumb}
+    <div class="card-body">
+      <div class="card-cat">${formatCatLabel(r.category)}</div>
+      <div class="card-title">${r.title}</div>
+      <div class="card-desc">${truncate(r.description||'',110)}</div>
+      ${tags ? `<div class="card-tags">${tags}</div>` : ''}
+    </div>
+    <div class="card-footer">
+      <div class="card-meta">
+        <span class="card-size">${r.file_size_display||''}</span>
+        <span class="card-downloads">
+          <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          ${formatDownloads(r.download_count)}
+        </span>
+      </div>
+      <button class="btn-download" onclick="event.stopPropagation();triggerDownload('${r.id}','${escHtml(r.file_name)}',this)">
+        <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        Download
+      </button>
+    </div>
+  </div>`;
+}
+
+function renderSkeletons(count = 6) {
+  return Array(count).fill(`
+    <div class="skeleton-card">
+      <div class="sk-thumb skeleton"></div>
+      <div class="sk-body">
+        <div class="skeleton sk-cat"></div>
+        <div class="skeleton sk-title"></div>
+        <div class="skeleton sk-title2"></div>
+        <div class="skeleton sk-desc"></div>
+      </div>
+    </div>`).join('');
+}
+
+// ─── Utility ──────────────────────────────────────────────────────────────
+function truncate(str, len) { return str.length > len ? str.slice(0,len).trim() + '…' : str; }
+function escHtml(s) { return (s||'').replace(/'/g,"\\'").replace(/"/g,'&quot;'); }
+function formatCatLabel(cat) {
+  const c = CATEGORIES.find(c => c.value === cat);
+  return c ? c.label : (cat||'General');
+}
+function formatDate(iso) {
+  return new Date(iso).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
+}
+
+// ─── Category pills ────────────────────────────────────────────────────────
+function renderCategoryPills() {
+  document.getElementById('category-pills').innerHTML = CATEGORIES.map(c => `
+    <button class="pill${c.value===currentCategory?' active':''}"
+            data-cat="${c.value}" onclick="selectCategory('${c.value}')">${c.label}</button>
+  `).join('');
+}
+
+function selectCategory(cat) {
+  currentCategory = cat;
+  currentPage = 1;
+  renderCategoryPills();
+  loadResources();
+}
+
+// ─── Search ────────────────────────────────────────────────────────────────
+function debounceSearch() {
+  clearTimeout(searchTimer);
+  searchTimer = setTimeout(() => {
+    currentSearch = document.getElementById('search-input').value.trim();
+    currentPage = 1;
+    loadResources();
+  }, 380);
+}
+
+// ─── Load resources ────────────────────────────────────────────────────────
+async function loadResources() {
+  document.getElementById('resource-grid').innerHTML = renderSkeletons();
+
+  const params = new URLSearchParams({
+    page: currentPage, per_page: 9,
+    ...(currentCategory !== 'all' && { category: currentCategory }),
+    ...(currentSearch && { search: currentSearch }),
+  });
+
+  try {
+    const res  = await fetch(`${API_BASE}/resources?${params}`);
+    const data = await res.json();
+
+    totalPages = data.total_pages || 1;
+    const items = data.items || [];
+
+    // Stats
+    if (currentPage === 1 && !currentSearch && currentCategory === 'all') {
+      document.getElementById('stat-total').textContent = data.total || 0;
+    }
+
+    // Update count display
+    const showing = items.length;
+    const total   = data.total || 0;
+    document.getElementById('result-count').textContent =
+      total ? `${total} resource${total !== 1 ? 's' : ''}` : '';
+
+    // Update section title
+    document.getElementById('section-title').textContent =
+      currentCategory !== 'all' ? formatCatLabel(currentCategory) :
+      currentSearch ? `Results for "${currentSearch}"` : 'All Resources';
+
+    if (!items.length) {
+      document.getElementById('resource-grid').innerHTML = `
+        <div class="state-box">
+          <div class="state-icon">📂</div>
+          <h3 class="state-title">No resources found</h3>
+          <p class="state-sub">Try a different search or category.</p>
+        </div>`;
+      document.getElementById('pagination').innerHTML = '';
+      return;
+    }
+
+    document.getElementById('resource-grid').innerHTML = items.map(renderResourceCard).join('');
+    renderPagination();
+  } catch (e) {
+    document.getElementById('resource-grid').innerHTML = `
+      <div class="state-box">
+        <div class="state-icon">⚠️</div>
+        <h3 class="state-title">Could not load resources</h3>
+        <p class="state-sub">Check your connection and try again.</p>
+      </div>`;
+  }
+}
+
+// ─── Featured resources ────────────────────────────────────────────────────
+async function loadFeatured() {
+  try {
+    const res  = await fetch(`${API_BASE}/resources/featured?limit=4`);
+    const data = await res.json();
+    const items = Array.isArray(data) ? data : (data.items || []);
+
+    if (!items.length) return;
+
+    const section = document.getElementById('featured-section');
+    document.getElementById('featured-grid').innerHTML = items.map(renderFeaturedCard).join('');
+    section.style.display = 'block';
+
+    // Aggregate download count for hero stat
+    const total = items.reduce((s,r) => s + (r.download_count||0), 0);
+    if (total) document.getElementById('stat-downloads').textContent = formatDownloads(total) + '+';
+  } catch (_) {}
+}
+
+// ─── Pagination ────────────────────────────────────────────────────────────
+function renderPagination() {
+  const el = document.getElementById('pagination');
+  if (totalPages <= 1) { el.innerHTML = ''; return; }
+
+  let html = `<button class="page-btn" onclick="goPage(${currentPage-1})" ${currentPage===1?'disabled':''}><svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg></button>`;
+
+  for (let i=1; i<=totalPages; i++) {
+    if (totalPages > 7 && Math.abs(i - currentPage) > 2 && i !== 1 && i !== totalPages) {
+      if (i === currentPage - 3 || i === currentPage + 3) html += `<span class="page-btn" style="border:none;cursor:default;">…</span>`;
+      continue;
+    }
+    html += `<button class="page-btn${i===currentPage?' active':''}" onclick="goPage(${i})">${i}</button>`;
+  }
+
+  html += `<button class="page-btn" onclick="goPage(${currentPage+1})" ${currentPage===totalPages?'disabled':''}><svg viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg></button>`;
+  el.innerHTML = html;
+}
+
+function goPage(page) {
+  if (page < 1 || page > totalPages) return;
+  currentPage = page;
+  loadResources();
+  window.scrollTo({ top: document.querySelector('.controls-bar').offsetTop - 80, behavior: 'smooth' });
+}
+
+// ─── Download ──────────────────────────────────────────────────────────────
+async function triggerDownload(resourceId, fileName, btn) {
+  if (btn) { btn.classList.add('loading'); btn.textContent = 'Preparing…'; }
+
+  try {
+    const res  = await fetch(`${API_BASE}/resources/${resourceId}/download`, { method: 'POST' });
+    const data = await res.json();
+
+    const a = document.createElement('a');
+    a.href = data.download_url;
+    a.download = data.file_name || fileName;
+    a.target = '_blank';
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+  } catch (e) {
+    alert('Download failed. Please try again.');
+  } finally {
+    if (btn) {
+      btn.classList.remove('loading');
+      btn.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="12" height="12"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg> Download`;
+    }
+  }
+}
+
+// ─── Modal ─────────────────────────────────────────────────────────────────
+const _resourceCache = {};
+
+async function openModal(resourceId) {
+  let r = _resourceCache[resourceId];
+  if (!r) {
+    try {
+      const res = await fetch(`${API_BASE}/resources?search=`);  // fallback: use list cache
+      // Try fetching by ID via slug lookup — use the already-loaded grid data
+      const allCards = document.querySelectorAll('.resource-card,.featured-card');
+      // Just use the download endpoint pattern to get info — or find in DOM
+      // Best approach: fetch the slug by injecting it as data attribute
+      r = await (await fetch(`${API_BASE}/resources?per_page=100`)).json()
+            .then(d => d.items?.find(i => i.id === resourceId));
+    } catch(_) {}
+  }
+
+  if (!r) return;
+  _resourceCache[resourceId] = r;
+  activeResource = r;
+
+  document.getElementById('modal-cat').textContent        = formatCatLabel(r.category);
+  document.getElementById('modal-title').textContent      = r.title;
+  document.getElementById('modal-desc').textContent       = r.description || 'No description provided.';
+  document.getElementById('modal-file-type').textContent  = r.file_type_label || r.file_extension?.toUpperCase();
+  document.getElementById('modal-file-size').textContent  = r.file_size_display || '—';
+  document.getElementById('modal-author').textContent     = r.author || 'ATRBA Team';
+  document.getElementById('modal-downloads').textContent  = `${r.download_count || 0} downloads`;
+  document.getElementById('modal-tags').innerHTML         = (r.tags||[]).map(t=>`<span class="modal-tag">${t}</span>`).join('');
+
+  document.getElementById('resource-modal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeModal() {
+  document.getElementById('resource-modal').classList.remove('open');
+  document.body.style.overflow = '';
+  activeResource = null;
+}
+
+function handleModalClick(e) {
+  if (e.target === document.getElementById('resource-modal')) closeModal();
+}
+
+async function downloadFromModal() {
+  if (!activeResource) return;
+  const btn = document.getElementById('modal-download-btn');
+  btn.disabled = true;
+  btn.innerHTML = `<span style="width:16px;height:16px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite;display:inline-block;"></span> Preparing…`;
+  await triggerDownload(activeResource.id, activeResource.file_name, null);
+  btn.disabled = false;
+  btn.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg> Download Resource`;
+}
+
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+// ─── Init ──────────────────────────────────────────────────────────────────
+(async function init() {
+  renderCategoryPills();
+  await Promise.all([loadFeatured(), loadResources()]);
+
+  // Scroll reveal
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } });
+  }, { threshold: .08, rootMargin: '0px 0px -30px 0px' });
+  document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+})();
+</script>
+</body>
+</html>

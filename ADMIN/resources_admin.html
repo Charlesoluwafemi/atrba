@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Resources Admin — ATRBA</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="admin.css">
+<style>
+/* ── Admin Resources — scoped styles ─────────────────── */
+:root {
+  --gold:     #c9933a;
+  --gold-lt:  rgba(201,147,58,.1);
+  --gold-bdr: rgba(201,147,58,.25);
+  --navy:     #1b2a4a;
+}
+
+/* Upload zone */
+.upload-zone {
+  border: 2px dashed var(--rule);
+  border-radius: 12px; padding: 40px 32px; text-align: center;
+  cursor: pointer; transition: all var(--transition); position: relative;
+  background: var(--paper-warm);
+}
+.upload-zone:hover, .upload-zone.drag-over {
+  border-color: var(--accent); background: var(--accent-lt);
+}
+.upload-zone input { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%; }
+.upload-zone-icon { font-size: 2.5rem; margin-bottom: 12px; opacity: .5; }
+.upload-zone-title { font-size: .9375rem; font-weight: 500; color: var(--ink); margin-bottom: 4px; }
+.upload-zone-sub { font-size: .8125rem; color: var(--ink-muted); }
+.upload-zone.has-file { border-color: var(--success); background: #d1fae5; }
+.upload-zone.has-file .upload-zone-icon { opacity: 1; }
+
+/* File preview */
+.file-preview {
+  display: flex; align-items: center; gap: 12px;
+  background: var(--paper-card); border: 1px solid var(--rule);
+  border-radius: 8px; padding: 12px 16px; margin-top: 8px;
+}
+.file-preview-icon {
+  width: 36px; height: 44px; border-radius: 4px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: .65rem; font-weight: 600; color: #fff;
+  font-family: 'DM Mono', monospace; flex-shrink: 0;
+}
+.file-preview-info { flex: 1; min-width: 0; }
+.file-preview-name { font-size: .875rem; font-weight: 500; color: var(--ink); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.file-preview-size { font-size: .75rem; color: var(--ink-muted); font-family: 'DM Mono', monospace; }
+.file-preview-remove { background: none; border: none; color: var(--ink-faint); cursor: pointer; font-size: 1.1rem; transition: color var(--transition); }
+.file-preview-remove:hover { color: var(--danger); }
+
+/* Tag input */
+.tag-input-wrap { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; padding: 8px 10px; border: 1.5px solid var(--rule); border-radius: var(--radius); min-height: 42px; background: var(--paper-card); cursor: text; transition: border-color .2s, box-shadow .2s; }
+.tag-input-wrap:focus-within { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-lt); }
+.tag-chip { display: flex; align-items: center; gap: 4px; background: var(--ink); color: #fff; border-radius: 4px; padding: 3px 8px; font-size: .72rem; font-family: 'DM Mono', monospace; }
+.tag-chip button { background: none; border: none; color: rgba(255,255,255,.6); cursor: pointer; font-size: .8rem; line-height: 1; padding: 0; transition: color .15s; }
+.tag-chip button:hover { color: #fff; }
+.tag-text-input { border: none; outline: none; font-family: var(--sans); font-size: .875rem; color: var(--ink); background: transparent; min-width: 80px; flex: 1; }
+
+/* Progress bar */
+.upload-progress { height: 4px; background: var(--rule); border-radius: 2px; overflow: hidden; margin-top: 8px; display: none; }
+.upload-progress-bar { height: 100%; background: var(--accent); border-radius: 2px; transition: width .3s; }
+
+/* Resource table rows */
+.res-title-cell { display: flex; flex-direction: column; gap: 2px; }
+.res-title { font-weight: 500; color: var(--ink); font-size: .875rem; }
+.res-slug { font-size: .72rem; color: var(--ink-faint); font-family: 'DM Mono', monospace; }
+.res-file-badge {
+  display: inline-flex; align-items: center; gap: 4px;
+  font-size: .65rem; font-weight: 600; padding: 2px 7px; border-radius: 3px;
+  color: #fff; font-family: 'DM Mono', monospace;
+}
+.ftype-pdf   { background: #dc2626; } .ftype-docx, .ftype-doc { background: #2563eb; }
+.ftype-xlsx, .ftype-xls { background: #16a34a; } .ftype-pptx, .ftype-ppt { background: #ea580c; }
+.ftype-zip   { background: #7c3aed; } .ftype-default { background: var(--ink-muted); }
+
+.stat-icon.gold  { background: var(--gold-lt); color: var(--gold); }
+
+/* Modal */
+.resource-modal-overlay { position:fixed;inset:0;background:rgba(15,14,13,.6);z-index:9000;display:none;align-items:center;justify-content:center;padding:24px;backdrop-filter:blur(4px); }
+.resource-modal-overlay.open { display:flex; }
+.resource-modal { background:#fff;border-radius:16px;width:100%;max-width:680px;max-height:90vh;overflow-y:auto;box-shadow:0 32px 96px rgba(0,0,0,.25);animation:slideUp .3s ease; }
+@keyframes slideUp { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
+.resource-modal-header { padding:24px 28px;border-bottom:1px solid var(--rule);display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;background:#fff;z-index:1; }
+.resource-modal-title { font-family:'Playfair Display',serif;font-size:1.25rem;font-weight:600;color:var(--ink); }
+.resource-modal-close { width:32px;height:32px;border-radius:8px;border:1.5px solid var(--rule);background:#fff;cursor:pointer;font-size:1rem;display:flex;align-items:center;justify-content:center;transition:all var(--transition); }
+.resource-modal-close:hover { border-color:var(--danger);color:var(--danger); }
+.resource-modal-body { padding:24px 28px;display:flex;flex-direction:column;gap:20px; }
+.form-row { display:grid;grid-template-columns:1fr 1fr;gap:16px; }
+</style>
+</head>
+<body>
+
+<div id="sidebar-slot"></div>
+
+<div class="main-wrap">
+  <header class="main-header">
+    <h1 class="header-title">Resources</h1>
+    <div class="header-actions">
+      <a href="../resources.html" target="_blank" class="btn btn-ghost">
+        <svg viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+        View Public Page
+      </a>
+      <button class="btn btn-primary" onclick="openUploadModal()">
+        <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        Upload Resource
+      </button>
+    </div>
+  </header>
+
+  <div class="main-content">
+
+    <!-- Stats -->
+    <div class="stat-grid" style="margin-bottom:24px;">
+      <div class="stat-card">
+        <div class="stat-icon" style="background:#dbeafe;color:#1e40af;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
+        <div class="stat-label">Total Resources</div>
+        <div class="stat-value" id="stat-total">—</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon" style="background:#d1fae5;color:#065f46;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div>
+        <div class="stat-label">Published</div>
+        <div class="stat-value" id="stat-published">—</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon gold"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></div>
+        <div class="stat-label">Total Downloads</div>
+        <div class="stat-value" id="stat-downloads">—</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon" style="background:#fef3c7;color:#92400e;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div>
+        <div class="stat-label">Featured</div>
+        <div class="stat-value" id="stat-featured">—</div>
+      </div>
+    </div>
+
+    <!-- Toolbar -->
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;flex-wrap:wrap;">
+      <div style="position:relative;flex:1;min-width:180px;max-width:300px;">
+        <svg style="position:absolute;left:10px;top:50%;transform:translateY(-50%);width:14px;height:14px;stroke:var(--ink-faint);fill:none;stroke-width:2;" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+        <input class="search-input" id="search" style="padding-left:32px;" placeholder="Search resources…" oninput="debounce(loadList,380)()" />
+      </div>
+      <select class="filter-select" id="filter-cat" onchange="loadList()">
+        <option value="">All categories</option>
+        <option value="strategy">Strategy</option>
+        <option value="operations">Operations</option>
+        <option value="ai-technology">AI & Technology</option>
+        <option value="africa-diaspora">Africa & Diaspora</option>
+        <option value="finance">Finance</option>
+        <option value="leadership">Leadership</option>
+        <option value="marketing">Marketing</option>
+        <option value="general">General</option>
+      </select>
+      <select class="filter-select" id="filter-pub" onchange="loadList()">
+        <option value="">All statuses</option>
+        <option value="true">Published</option>
+        <option value="false">Draft</option>
+      </select>
+      <span class="count-badge" id="count-badge"></span>
+    </div>
+
+    <!-- Table -->
+    <div class="card">
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Resource</th>
+              <th>Type</th>
+              <th>Category</th>
+              <th>Status</th>
+              <th>Downloads</th>
+              <th>Date</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="resources-table">
+            <tr><td colspan="7" class="empty-table"><div class="spinner spinner-dark" style="margin:0 auto;"></div></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- ── Upload / Edit Modal ─────────────────────────────── -->
+<div class="resource-modal-overlay" id="upload-modal" onclick="handleModalOverlayClick(event)">
+  <div class="resource-modal" id="upload-modal-box">
+    <div class="resource-modal-header">
+      <h3 class="resource-modal-title" id="modal-mode-title">Upload New Resource</h3>
+      <button class="resource-modal-close" onclick="closeUploadModal()">✕</button>
+    </div>
+    <div class="resource-modal-body">
+
+      <!-- File upload zone (shown for new, hidden for edit) -->
+      <div id="file-section">
+        <label class="form-label">Resource File *</label>
+        <div class="upload-zone" id="file-zone" ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)" ondrop="handleDrop(event,'file')">
+          <input type="file" id="file-input" accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.zip" onchange="handleFileSelect(event,'file')" />
+          <div class="upload-zone-icon">📄</div>
+          <div class="upload-zone-title">Drop your file here or click to browse</div>
+          <div class="upload-zone-sub">PDF, DOCX, XLSX, PPTX, ZIP · Max 50 MB</div>
+        </div>
+        <div id="file-preview-wrap" style="display:none;"></div>
+      </div>
+
+      <!-- Thumbnail -->
+      <div>
+        <label class="form-label">Cover Image <span style="color:var(--ink-faint);font-weight:400;">(optional)</span></label>
+        <div class="upload-zone" id="thumb-zone" style="padding:24px;" ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)" ondrop="handleDrop(event,'thumb')">
+          <input type="file" id="thumb-input" accept="image/jpeg,image/png,image/webp,image/gif" onchange="handleFileSelect(event,'thumb')" />
+          <div class="upload-zone-icon">🖼</div>
+          <div class="upload-zone-title" style="font-size:.875rem;">Upload thumbnail</div>
+          <div class="upload-zone-sub">JPEG, PNG, WebP · Max 5 MB</div>
+        </div>
+        <div id="thumb-preview-wrap" style="display:none;"></div>
+      </div>
+
+      <!-- Metadata -->
+      <div class="form-group">
+        <label class="form-label">Title *</label>
+        <input type="text" class="input" id="field-title" placeholder="e.g. 2025 AI Strategy Framework" />
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Description</label>
+        <textarea class="textarea" id="field-desc" placeholder="What will users get from this resource?" style="min-height:80px;"></textarea>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Category</label>
+          <select class="select" id="field-cat">
+            <option value="general">General</option>
+            <option value="strategy">Strategy</option>
+            <option value="operations">Operations</option>
+            <option value="ai-technology">AI & Technology</option>
+            <option value="africa-diaspora">Africa & Diaspora</option>
+            <option value="finance">Finance</option>
+            <option value="leadership">Leadership</option>
+            <option value="marketing">Marketing</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Author</label>
+          <input type="text" class="input" id="field-author" value="ATRBA Team" />
+        </div>
+      </div>
+
+      <!-- Tag input -->
+      <div class="form-group">
+        <label class="form-label">Tags <span style="color:var(--ink-faint);font-weight:400;">(press Enter or comma to add)</span></label>
+        <div class="tag-input-wrap" id="tag-wrap" onclick="document.getElementById('tag-raw').focus()">
+          <input class="tag-text-input" id="tag-raw" placeholder="Add tag…" onkeydown="handleTagKey(event)" />
+        </div>
+        <input type="hidden" id="field-tags" />
+      </div>
+
+      <div class="form-row" style="gap:24px;">
+        <div class="toggle-row">
+          <div>
+            <div class="toggle-label">Featured resource</div>
+            <div class="toggle-sub">Pinned to top of public page</div>
+          </div>
+          <input type="checkbox" class="toggle" id="field-featured" />
+        </div>
+        <div class="toggle-row">
+          <div>
+            <div class="toggle-label">Publish immediately</div>
+            <div class="toggle-sub">Visible on public resources page</div>
+          </div>
+          <input type="checkbox" class="toggle" id="field-published" />
+        </div>
+      </div>
+
+      <!-- Upload progress -->
+      <div class="upload-progress" id="upload-progress">
+        <div class="upload-progress-bar" id="upload-progress-bar" style="width:0%"></div>
+      </div>
+
+      <!-- Actions -->
+      <div style="display:flex;gap:10px;justify-content:flex-end;padding-top:8px;border-top:1px solid var(--rule);">
+        <button class="btn btn-secondary" onclick="closeUploadModal()">Cancel</button>
+        <button class="btn btn-primary" id="submit-btn" onclick="submitResource()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="15" height="15"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Upload Resource
+        </button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+<script src="admin.js"></script>
+<script>
+if (!requireAuth()) throw new Error('Not authenticated');
+renderSidebar('resources');
+
+const API = 'http://localhost:8001';
+
+// ─── State ─────────────────────────────────────────────────────────────────
+let editingId    = null;
+let selectedFile = null;
+let selectedThumb= null;
+let tags         = [];
+let debounceTimer= null;
+
+function debounce(fn, ms) {
+  return (...args) => { clearTimeout(debounceTimer); debounceTimer = setTimeout(() => fn(...args), ms); };
+}
+
+// ─── File type colors ───────────────────────────────────────────────────────
+const TYPE_COLORS = { pdf:'#dc2626', docx:'#2563eb', doc:'#2563eb', xlsx:'#16a34a', xls:'#16a34a', pptx:'#ea580c', ppt:'#ea580c', zip:'#7c3aed' };
+
+function getExt(filename) { return (filename||'').split('.').pop().toLowerCase(); }
+function formatSize(bytes) {
+  if (bytes < 1024) return `${bytes} B`;
+  if (bytes < 1024**2) return `${(bytes/1024).toFixed(1)} KB`;
+  return `${(bytes/1024**2).toFixed(1)} MB`;
+}
+
+// ─── Load resource list ─────────────────────────────────────────────────────
+async function loadList() {
+  const search = document.getElementById('search').value.trim();
+  const cat    = document.getElementById('filter-cat').value;
+  const pub    = document.getElementById('filter-pub').value;
+
+  const params = new URLSearchParams({ page:1, per_page:50 });
+  if (cat) params.set('category', cat);
+  if (pub !== '') params.set('published', pub);
+  if (search) params.set('search', search);
+
+  try {
+    const res  = await resourcesFetch(`/resources/admin/?${params}`);
+    if (!res) return;
+    const data = await res.json();
+    const items = data.items || [];
+
+    // Stats
+    const all   = items;
+    const pubs  = all.filter(r => r.published).length;
+    const feat  = all.filter(r => r.featured).length;
+    const dls   = all.reduce((s,r) => s+(r.download_count||0), 0);
+    document.getElementById('stat-total').textContent     = data.total || all.length;
+    document.getElementById('stat-published').textContent = pubs;
+    document.getElementById('stat-featured').textContent  = feat;
+    document.getElementById('stat-downloads').textContent = dls.toLocaleString();
+    document.getElementById('count-badge').textContent    = `${items.length} resource${items.length!==1?'s':''}`;
+
+    renderTable(items);
+  } catch(e) {
+    showToast('Failed to load resources', 'error');
+  }
+}
+
+function renderTable(items) {
+  const tbody = document.getElementById('resources-table');
+  if (!items.length) {
+    tbody.innerHTML = `<tr><td colspan="7"><div class="empty-table"><div class="empty-table-icon">📂</div><p>No resources yet. <button onclick="openUploadModal()" style="background:none;border:none;color:var(--accent);cursor:pointer;font-size:inherit;">Upload your first →</button></p></div></td></tr>`;
+    return;
+  }
+
+  tbody.innerHTML = items.map(r => {
+    const ext   = r.file_extension || '';
+    const color = TYPE_COLORS[ext.toLowerCase()] || '#6b6560';
+    const fmtDl = r.download_count >= 1000 ? `${(r.download_count/1000).toFixed(1)}k` : r.download_count||0;
+    const size  = r.file_size_bytes ? formatSize(r.file_size_bytes) : '—';
+
+    return `<tr id="row-${r.id}">
+      <td>
+        <div class="res-title-cell">
+          <span class="res-title">${r.title}</span>
+          <span class="res-slug">/${r.slug}</span>
+        </div>
+      </td>
+      <td>
+        <span class="res-file-badge ftype-${ext.toLowerCase()}" style="background:${color}">
+          ${ext.toUpperCase()}
+        </span>
+        <span style="font-size:.72rem;color:var(--ink-faint);margin-left:6px;font-family:'DM Mono',monospace;">${size}</span>
+      </td>
+      <td>${categoryBadge(r.category)}</td>
+      <td>
+        <span class="badge ${r.published?'badge-green':'badge-gray'}">${r.published?'Published':'Draft'}</span>
+        ${r.featured?'<span class="badge badge-amber" style="margin-left:4px;">★ Featured</span>':''}
+      </td>
+      <td style="font-family:'DM Mono',monospace;font-size:.8125rem;color:var(--ink-muted);">${fmtDl}</td>
+      <td style="color:var(--ink-muted);font-size:.8125rem;white-space:nowrap;">${formatDate(r.created_at)}</td>
+      <td>
+        <div style="display:flex;gap:6px;align-items:center;">
+          <button class="btn btn-secondary btn-sm" onclick="openEditModal('${r.id}')">Edit</button>
+          <button class="btn btn-ghost btn-sm" onclick="togglePublish('${r.id}',${!r.published})" title="${r.published?'Unpublish':'Publish'}">${r.published?'Unpublish':'Publish'}</button>
+          <button class="btn btn-danger btn-sm" onclick="deleteResource('${r.id}','${r.title.replace(/'/g,"\\'")}')">Delete</button>
+        </div>
+      </td>
+    </tr>`;
+  }).join('');
+}
+
+// ─── File drag & drop ───────────────────────────────────────────────────────
+function handleDragOver(e) { e.preventDefault(); e.currentTarget.classList.add('drag-over'); }
+function handleDragLeave(e) { e.currentTarget.classList.remove('drag-over'); }
+function handleDrop(e, type) {
+  e.preventDefault(); e.currentTarget.classList.remove('drag-over');
+  const file = e.dataTransfer.files[0];
+  if (file) setSelectedFile(file, type);
+}
+function handleFileSelect(e, type) {
+  const file = e.target.files[0];
+  if (file) setSelectedFile(file, type);
+}
+
+function setSelectedFile(file, type) {
+  const ext   = getExt(file.name);
+  const color = TYPE_COLORS[ext] || '#6b6560';
+
+  if (type === 'file') {
+    selectedFile = file;
+    const zone = document.getElementById('file-zone');
+    zone.classList.add('has-file');
+    zone.querySelector('.upload-zone-icon').textContent = '✅';
+    zone.querySelector('.upload-zone-title').textContent = 'File selected';
+
+    const wrap = document.getElementById('file-preview-wrap');
+    wrap.style.display = 'flex';
+    wrap.innerHTML = `
+      <div class="file-preview">
+        <div class="file-preview-icon" style="background:${color}">${ext.toUpperCase()}</div>
+        <div class="file-preview-info">
+          <div class="file-preview-name">${file.name}</div>
+          <div class="file-preview-size">${formatSize(file.size)}</div>
+        </div>
+        <button class="file-preview-remove" onclick="clearFile('file')">✕</button>
+      </div>`;
+  } else {
+    selectedThumb = file;
+    const zone = document.getElementById('thumb-zone');
+    zone.classList.add('has-file');
+    zone.querySelector('.upload-zone-icon').textContent = '🖼';
+    zone.querySelector('.upload-zone-title').textContent = file.name;
+
+    const wrap = document.getElementById('thumb-preview-wrap');
+    wrap.style.display = 'flex';
+    const url = URL.createObjectURL(file);
+    wrap.innerHTML = `
+      <div class="file-preview">
+        <img src="${url}" style="width:48px;height:48px;border-radius:6px;object-fit:cover;" />
+        <div class="file-preview-info"><div class="file-preview-name">${file.name}</div><div class="file-preview-size">${formatSize(file.size)}</div></div>
+        <button class="file-preview-remove" onclick="clearFile('thumb')">✕</button>
+      </div>`;
+  }
+}
+
+function clearFile(type) {
+  if (type === 'file') {
+    selectedFile = null;
+    document.getElementById('file-zone').classList.remove('has-file');
+    document.getElementById('file-zone').querySelector('.upload-zone-icon').textContent = '📄';
+    document.getElementById('file-zone').querySelector('.upload-zone-title').textContent = 'Drop your file here or click to browse';
+    document.getElementById('file-preview-wrap').style.display = 'none';
+    document.getElementById('file-input').value = '';
+  } else {
+    selectedThumb = null;
+    document.getElementById('thumb-zone').classList.remove('has-file');
+    document.getElementById('thumb-zone').querySelector('.upload-zone-icon').textContent = '🖼';
+    document.getElementById('thumb-zone').querySelector('.upload-zone-title').textContent = 'Upload thumbnail';
+    document.getElementById('thumb-preview-wrap').style.display = 'none';
+    document.getElementById('thumb-input').value = '';
+  }
+}
+
+// ─── Tag management ─────────────────────────────────────────────────────────
+function handleTagKey(e) {
+  const val = e.target.value.trim();
+  if ((e.key === 'Enter' || e.key === ',') && val) {
+    e.preventDefault();
+    addTag(val.replace(/,$/,'').trim());
+  }
+  if (e.key === 'Backspace' && !e.target.value && tags.length) {
+    removeTag(tags.length - 1);
+  }
+}
+
+function addTag(tag) {
+  tag = tag.toLowerCase().trim();
+  if (!tag || tags.includes(tag) || tags.length >= 10) return;
+  tags.push(tag);
+  renderTags();
+  document.getElementById('tag-raw').value = '';
+}
+
+function removeTag(i) {
+  tags.splice(i, 1);
+  renderTags();
+}
+
+function renderTags() {
+  const wrap = document.getElementById('tag-wrap');
+  const chips = tags.map((t,i) => `<span class="tag-chip">${t}<button onclick="removeTag(${i})" type="button">✕</button></span>`).join('');
+  wrap.innerHTML = chips + `<input class="tag-text-input" id="tag-raw" placeholder="${tags.length?'':'Add tag…'}" onkeydown="handleTagKey(event)" />`;
+  document.getElementById('field-tags').value = tags.join(',');
+}
+
+// ─── Modal open/close ───────────────────────────────────────────────────────
+function openUploadModal() {
+  editingId = null;
+  tags = [];
+  selectedFile = selectedThumb = null;
+  document.getElementById('modal-mode-title').textContent = 'Upload New Resource';
+  document.getElementById('submit-btn').textContent = '  Upload Resource';
+  document.getElementById('file-section').style.display = 'block';
+  resetForm();
+  document.getElementById('upload-modal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+async function openEditModal(id) {
+  editingId = id;
+  tags = [];
+  selectedFile = selectedThumb = null;
+
+  document.getElementById('modal-mode-title').textContent = 'Edit Resource';
+  document.getElementById('submit-btn').innerHTML = '  Save Changes';
+  document.getElementById('file-section').style.display = 'none';  // no file re-upload on edit
+  resetForm();
+
+  try {
+    const res  = await resourcesFetch(`/resources/admin/${id}`);
+    const data = await res.json();
+
+    document.getElementById('field-title').value   = data.title || '';
+    document.getElementById('field-desc').value    = data.description || '';
+    document.getElementById('field-cat').value     = data.category || 'general';
+    document.getElementById('field-author').value  = data.author || 'ATRBA Team';
+    document.getElementById('field-featured').checked = data.featured;
+    document.getElementById('field-published').checked = data.published;
+    tags = data.tags || [];
+    renderTags();
+  } catch(e) {
+    showToast('Could not load resource data', 'error');
+    return;
+  }
+
+  document.getElementById('upload-modal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeUploadModal() {
+  document.getElementById('upload-modal').classList.remove('open');
+  document.body.style.overflow = '';
+  editingId = null;
+}
+
+function handleModalOverlayClick(e) {
+  if (e.target === document.getElementById('upload-modal')) closeUploadModal();
+}
+
+function resetForm() {
+  ['field-title','field-desc','field-author'].forEach(id => {
+    const el = document.getElementById(id); if (el) el.value = '';
+  });
+  document.getElementById('field-cat').value = 'general';
+  document.getElementById('field-author').value = 'ATRBA Team';
+  document.getElementById('field-featured').checked  = false;
+  document.getElementById('field-published').checked = false;
+  tags = []; renderTags();
+  clearFile('file'); clearFile('thumb');
+  document.getElementById('upload-progress').style.display = 'none';
+  document.getElementById('upload-progress-bar').style.width = '0%';
+}
+
+// ─── Submit ─────────────────────────────────────────────────────────────────
+async function submitResource() {
+  const title = document.getElementById('field-title').value.trim();
+  if (!title) { showToast('Title is required', 'warning'); return; }
+  if (!editingId && !selectedFile) { showToast('Please select a file to upload', 'warning'); return; }
+
+  const btn = document.getElementById('submit-btn');
+  btn.disabled = true;
+  btn.innerHTML = '<div class="spinner"></div> Uploading…';
+
+  const progress = document.getElementById('upload-progress');
+  const bar      = document.getElementById('upload-progress-bar');
+  progress.style.display = 'block';
+  bar.style.width = '20%';
+
+  const fd = new FormData();
+  fd.append('title',       title);
+  fd.append('description', document.getElementById('field-desc').value.trim());
+  fd.append('category',    document.getElementById('field-cat').value);
+  fd.append('author',      document.getElementById('field-author').value.trim() || 'ATRBA Team');
+  fd.append('tags',        tags.join(','));
+  fd.append('featured',    document.getElementById('field-featured').checked);
+  fd.append('published',   document.getElementById('field-published').checked);
+  if (selectedFile)  fd.append('file',      selectedFile);
+  if (selectedThumb) fd.append('thumbnail', selectedThumb);
+
+  bar.style.width = '50%';
+
+  try {
+    const token = getToken();
+    const url   = editingId
+      ? `${API}/resources/admin/${editingId}`
+      : `${API}/resources/admin/`;
+    const method = editingId ? 'PUT' : 'POST';
+
+    const res = await fetch(url, {
+      method,
+      headers: { 'Authorization': `Bearer ${token}` },
+      body: fd,
+    });
+
+    bar.style.width = '90%';
+
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}));
+      throw new Error(err.detail || 'Upload failed');
+    }
+
+    bar.style.width = '100%';
+    showToast(editingId ? 'Resource updated!' : 'Resource uploaded!', 'success');
+    setTimeout(() => {
+      closeUploadModal();
+      loadList();
+    }, 400);
+
+  } catch(e) {
+    showToast(e.message || 'Upload failed', 'error');
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = editingId ? '  Save Changes' : '  Upload Resource';
+    setTimeout(() => { progress.style.display='none'; bar.style.width='0%'; }, 600);
+  }
+}
+
+// ─── Toggle publish ─────────────────────────────────────────────────────────
+async function togglePublish(id, published) {
+  try {
+    const token = getToken();
+
+    const res = await fetch(`${API}/resources/admin/${id}/publish`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      },
+      body: JSON.stringify({ published })
+    });
+
+    if (!res || !res.ok) throw new Error();
+
+    showToast(published ? 'Published!' : 'Unpublished', 'success');
+    loadList();
+  } catch {
+    showToast('Failed to update status', 'error');
+  }
+}
+// ─── Delete ─────────────────────────────────────────────────────────────────
+async function deleteResource(id, title) {
+  const ok = await confirmDialog(`Delete "<strong>${title}</strong>"?<br>This removes the file from storage permanently.`);
+  if (!ok) return;
+  try {
+    const res = await resourcesFetch(`/resources/admin/${id}`, { method: 'DELETE' });
+    if (!res||!res.ok) throw new Error();
+    showToast('Resource deleted', 'success');
+    loadList();
+  } catch { showToast('Failed to delete resource', 'error'); }
+}
+
+// ─── Init ───────────────────────────────────────────────────────────────────
+loadList();
+</script>
+</body>
+</html>

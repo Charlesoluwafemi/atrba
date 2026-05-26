@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Case Studies — ATRBA</title>
+<meta name="description" content="ATRBA client case studies: operational transformation, AI automation, and Africa market entry engagements with measurable outcomes.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+/* ── Reset & base ── */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Inter',sans-serif;font-weight:400;font-size:15px;color:#3a3a3a;background:#f9f6f0;padding-top:68px}
+
+/* ── Tokens ── */
+:root{
+  --navy:#0d1b2a;--navy-mid:#122035;--gold:#c9a84c;--gold-light:#e0c378;
+  --cream:#f9f6f0;--cream-dark:#f2ede3;--slate:#5a6a7a;
+  --border-soft:rgba(0,0,0,.07);--radius:8px;
+}
+
+/* ── NAV ── */
+nav{position:fixed;top:0;left:0;right:0;height:68px;background:rgba(13,27,42,.97);backdrop-filter:blur(10px);z-index:100;border-bottom:1px solid rgba(201,168,76,.12)}
+.nav-inner{max-width:1100px;margin:0 auto;padding:0 24px;height:100%;display:flex;align-items:center;justify-content:space-between}
+.nav-logo{text-decoration:none}
+.nav-logo-main{font-family:'DM Serif Display',serif;font-size:1.1rem;color:#fff;letter-spacing:-.01em}
+.nav-logo-sub{font-size:.6rem;font-weight:500;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);margin-top:2px}
+.nav-links{display:flex;align-items:center;gap:28px}
+.nav-links a{font-size:.78rem;font-weight:500;letter-spacing:.04em;color:rgba(255,255,255,.6);text-decoration:none;transition:color .2s}
+.nav-links a:hover,.nav-links a.active{color:#fff}
+.nav-cta{display:inline-block;background:var(--gold);color:var(--navy)!important;font-size:.75rem!important;font-weight:600!important;letter-spacing:.08em;text-transform:uppercase;padding:9px 20px;border-radius:2px;text-decoration:none;transition:background .2s!important}
+.nav-cta:hover{background:var(--gold-light)!important}
+@media(max-width:860px){.hide-mobile{display:none}}
+
+/* WhatsApp */
+.whatsapp-float{position:fixed;bottom:28px;right:28px;width:52px;height:52px;background:#25d366;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.4rem;text-decoration:none;z-index:99;box-shadow:0 4px 20px rgba(37,211,102,.35);transition:transform .2s}
+.whatsapp-float:hover{transform:scale(1.08)}
+
+/* ── PAGE HEADER ── */
+.page-header{background:var(--navy);padding:64px 24px 56px;text-align:center}
+.breadcrumb{display:flex;align-items:center;justify-content:center;gap:8px;font-size:.7rem;letter-spacing:.15em;text-transform:uppercase;color:rgba(255,255,255,.4);margin-bottom:24px}
+.breadcrumb a{color:var(--gold);text-decoration:none}
+.page-header h1{font-family:'DM Serif Display',serif;font-size:clamp(2rem,4vw,3.2rem);font-weight:400;color:#fff;letter-spacing:-.02em;margin-bottom:16px}
+.page-header p{font-size:.98rem;color:rgba(255,255,255,.55);max-width:520px;margin:0 auto;line-height:1.7}
+
+/* ── FILTER BAR ── */
+.filter-bar{background:#fff;border-bottom:1px solid var(--border-soft);padding:0 24px;display:flex;align-items:center;justify-content:center;gap:4px;flex-wrap:wrap}
+.filter-pill{padding:14px 18px;font-size:.73rem;font-weight:500;letter-spacing:.06em;text-transform:uppercase;color:var(--slate);cursor:pointer;border-bottom:2px solid transparent;transition:all .2s;text-decoration:none;white-space:nowrap}
+.filter-pill:hover{color:var(--navy)}
+.filter-pill.active{color:var(--navy);border-bottom-color:var(--gold);font-weight:600}
+
+/* ── MAIN SECTION ── */
+section{padding:48px 24px 72px}
+.section-inner{max-width:900px;margin:0 auto}
+
+/* ── CASE GRID ── */
+.case-grid{display:grid;gap:2.5rem}
+.case-card{background:#fff;border:1px solid var(--border-soft);border-radius:var(--radius);overflow:hidden;transition:box-shadow .3s}
+.case-card:hover{box-shadow:0 8px 40px rgba(13,27,42,.1)}
+
+/* Timeline strip */
+.timeline-visual{padding:1.25rem 2rem;border-bottom:1px solid var(--border-soft);background:var(--cream-dark)}
+.timeline-track{display:flex;align-items:center}
+.timeline-step{flex:1;text-align:center;position:relative}
+.timeline-step::after{content:'';position:absolute;top:14px;left:50%;right:-50%;height:2px;background:rgba(13,27,42,.1);z-index:0}
+.timeline-step:last-child::after{display:none}
+.timeline-dot{width:28px;height:28px;border-radius:50%;background:var(--gold);margin:0 auto .5rem;display:flex;align-items:center;justify-content:center;font-size:.68rem;color:var(--navy);font-weight:700;position:relative;z-index:1}
+.timeline-label{font-size:.65rem;letter-spacing:.1em;text-transform:uppercase;color:var(--navy);font-weight:600}
+
+/* Card header */
+.case-header{background:var(--navy);padding:1.75rem 2rem;display:grid;grid-template-columns:1fr auto;gap:1rem;align-items:start}
+.case-industry{font-size:.63rem;letter-spacing:.15em;text-transform:uppercase;color:var(--gold);font-weight:600;margin-bottom:.4rem}
+.case-client{font-family:'DM Serif Display',serif;font-size:1.3rem;color:#fff;font-weight:400;line-height:1.2}
+.case-location{font-size:.76rem;color:rgba(255,255,255,.4);margin-top:.3rem}
+.case-duration{background:rgba(201,168,76,.15);border:1px solid rgba(201,168,76,.3);border-radius:3px;padding:.3rem .75rem;font-size:.7rem;color:var(--gold);font-weight:500;white-space:nowrap;align-self:start}
+
+/* Card body */
+.case-body{padding:2rem;display:grid;grid-template-columns:1fr 1fr 1fr;gap:2rem}
+.case-section-label{font-size:.63rem;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);font-weight:600;margin-bottom:.6rem;display:flex;align-items:center;gap:.5rem}
+.case-section-label::before{content:'';display:block;width:14px;height:1px;background:var(--gold)}
+.case-body p{font-size:.865rem;line-height:1.78;color:var(--slate)}
+
+/* Metrics bar */
+.case-metrics{background:var(--cream);padding:1.4rem 2rem;display:flex;gap:2.5rem;border-top:1px solid var(--border-soft);flex-wrap:wrap}
+.case-metric{text-align:center}
+.case-metric-val{font-family:'DM Serif Display',serif;font-size:1.7rem;color:var(--navy);display:block;line-height:1}
+.case-metric-unit{color:var(--gold);font-size:.95rem}
+.case-metric-label{font-size:.66rem;color:var(--slate);letter-spacing:.04em;margin-top:.25rem;display:block}
+
+/* Quote */
+.case-quote{padding:1.4rem 2rem;background:#fff;border-top:1px solid var(--border-soft)}
+.case-quote blockquote{font-style:italic;color:var(--slate);font-size:.875rem;line-height:1.85;border-left:3px solid var(--gold);padding-left:1.25rem}
+.case-quote cite{display:block;margin-top:.75rem;font-style:normal;font-size:.73rem;color:var(--navy);font-weight:600}
+
+/* ── CTA BAND ── */
+.cta-band{background:var(--navy);padding:64px 24px;text-align:center}
+.cta-band h2{font-family:'DM Serif Display',serif;font-size:clamp(1.8rem,3vw,2.5rem);font-weight:400;color:#fff;letter-spacing:-.02em;margin-bottom:14px}
+.cta-band p{font-size:.93rem;color:rgba(255,255,255,.55);margin-bottom:32px;line-height:1.7}
+.btn-navy{display:inline-block;background:var(--gold);color:var(--navy);font-size:.8rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;padding:14px 32px;border-radius:2px;text-decoration:none;transition:background .2s,transform .15s}
+.btn-navy:hover{background:var(--gold-light);transform:translateY(-1px)}
+
+/* ── FOOTER ── */
+footer{background:#080f18;border-top:1px solid rgba(255,255,255,.06);padding:60px 24px 32px}
+.footer-inner{max-width:1100px;margin:0 auto}
+.footer-top{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:48px;margin-bottom:48px}
+.footer-brand h3{font-family:'DM Serif Display',serif;font-size:1.1rem;font-weight:400;color:#fff;margin-bottom:6px}
+.footer-brand p{font-size:.8rem;color:rgba(255,255,255,.4);line-height:1.7;margin-top:12px;max-width:280px}
+.footer-tagline{font-size:.65rem;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);margin-top:16px}
+.footer-col h5{font-size:.68rem;font-weight:600;letter-spacing:.15em;text-transform:uppercase;color:rgba(255,255,255,.35);margin-bottom:16px}
+.footer-col a{display:block;font-size:.82rem;color:rgba(255,255,255,.5);text-decoration:none;margin-bottom:10px;transition:color .2s}
+.footer-col a:hover{color:#fff}
+.footer-bottom{display:flex;justify-content:space-between;align-items:center;padding-top:24px;border-top:1px solid rgba(255,255,255,.06);font-size:.72rem;color:rgba(255,255,255,.25)}
+.footer-bottom-links{display:flex;gap:20px}
+.footer-bottom-links a{color:rgba(255,255,255,.25);text-decoration:none}
+.footer-bottom-links a:hover{color:rgba(255,255,255,.5)}
+
+/* ── Reveal ── */
+.reveal{opacity:0;transform:translateY(18px);transition:opacity .55s ease,transform .55s ease}
+.reveal.visible{opacity:1;transform:translateY(0)}
+
+/* ── Responsive ── */
+@media(max-width:768px){
+  .case-body{grid-template-columns:1fr}
+  .case-metrics{gap:1.25rem}
+  .footer-top{grid-template-columns:1fr 1fr}
+}
+@media(max-width:480px){
+  .footer-top{grid-template-columns:1fr}
+  .case-header{grid-template-columns:1fr}
+  .case-duration{align-self:auto;display:inline-block;margin-top:8px}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo">
+      <div class="nav-logo-main">Above The Rest Business Advisors</div>
+      <div class="nav-logo-sub">ATRBA</div>
+    </a>
+    <div class="nav-links">
+      <a href="services.html" class="hide-mobile">Services</a>
+      <a href="atr-ai.html" class="hide-mobile">ATR AI</a>
+      <a href="atr-education.html" class="hide-mobile">Education</a>
+      <a href="industry-solutions.html" class="hide-mobile">Industries</a>
+      <a href="case-studies.html" class="active hide-mobile">Case Studies</a>
+      <a href="resources.html" class="hide-mobile">Resources</a>
+      <a href="about.html" class="hide-mobile">About</a>
+      <a href="contact.html" class="nav-cta">Book a Call</a>
+    </div>
+  </div>
+</nav>
+
+<a href="https://wa.me/18560000000" class="whatsapp-float" target="_blank" aria-label="Chat on WhatsApp">💬</a>
+
+<div class="page-header">
+  <div style="max-width:700px;margin:0 auto">
+    <div class="breadcrumb"><a href="index.html">Home</a><span style="opacity:.4">/</span><span>Case Studies</span></div>
+    <h1>Case Studies</h1>
+    <p>Five client engagements. Five different industries. One consistent outcome: measurable, lasting transformation.</p>
+  </div>
+</div>
+
+<!-- Industry filter pills -->
+<div class="filter-bar">
+  <a href="#" class="filter-pill active" onclick="filterCards('all',this);return false">All Industries</a>
+  <a href="#" class="filter-pill" onclick="filterCards('professional-services',this);return false">Professional Services</a>
+  <a href="#" class="filter-pill" onclick="filterCards('healthcare',this);return false">Healthcare</a>
+  <a href="#" class="filter-pill" onclick="filterCards('fintech',this);return false">Fintech</a>
+  <a href="#" class="filter-pill" onclick="filterCards('agriculture',this);return false">Agriculture</a>
+  <a href="#" class="filter-pill" onclick="filterCards('manufacturing',this);return false">Manufacturing</a>
+</div>
+
+<section>
+  <div class="section-inner">
+    <div class="case-grid">
+
+      <!-- CASE 01 — Professional Services -->
+      <div class="case-card reveal" data-industry="professional-services">
+        <div class="timeline-visual">
+          <div class="timeline-track">
+            <div class="timeline-step"><div class="timeline-dot">1</div><div class="timeline-label">Challenge</div></div>
+            <div class="timeline-step"><div class="timeline-dot">2</div><div class="timeline-label">Intervention</div></div>
+            <div class="timeline-step"><div class="timeline-dot">3</div><div class="timeline-label">Transformation</div></div>
+          </div>
+        </div>
+        <div class="case-header">
+          <div>
+            <div class="case-industry">Professional Services</div>
+            <div class="case-client">Mid-Atlantic Consulting Group</div>
+            <div class="case-location">📍 Philadelphia, PA</div>
+          </div>
+          <div class="case-duration">16 weeks</div>
+        </div>
+        <div class="case-body">
+          <div>
+            <div class="case-section-label">The Challenge</div>
+            <p>A 22-person management consulting firm was growing revenue at 18% annually but watching margin erode as partner time was consumed by administrative overhead. Proposal generation alone consumed 14 hours per engagement. The firm had no standardized onboarding, no documented IP, and no system for capturing institutional knowledge.</p>
+          </div>
+          <div>
+            <div class="case-section-label">The Intervention</div>
+            <p>ATRBA deployed a 16-week operational transformation. Phase one productized the firm's top five offering types into standardized playbooks. Phase two implemented AI-assisted proposal generation, reducing proposal time from 14 hours to under 3. Phase three built a complete client success infrastructure with automated onboarding and NPS measurement.</p>
+          </div>
+          <div>
+            <div class="case-section-label">The Transformation</div>
+            <p>Within six months: 41% reduction in non-billable administrative overhead. Client NPS rose from 6.8 to 8.9. Three new productized service offerings launched without adding headcount. Partners reclaimed an average of 11 hours per week for client-facing and business development work.</p>
+          </div>
+        </div>
+        <div class="case-metrics">
+          <div class="case-metric"><span class="case-metric-val">41<span class="case-metric-unit">%</span></span><span class="case-metric-label">Overhead Reduction</span></div>
+          <div class="case-metric"><span class="case-metric-val">8.9<span class="case-metric-unit">/10</span></span><span class="case-metric-label">Client NPS</span></div>
+          <div class="case-metric"><span class="case-metric-val">79<span class="case-metric-unit">%</span></span><span class="case-metric-label">Faster Proposals</span></div>
+          <div class="case-metric"><span class="case-metric-val">11<span class="case-metric-unit">hrs</span></span><span class="case-metric-label">Reclaimed/Partner/Week</span></div>
+        </div>
+        <div class="case-quote">
+          <blockquote>"ATRBA did not come in and hand us a report. They worked inside our business until the systems were operational and our team actually used them. That's a rare thing in consulting."</blockquote>
+          <cite>— Managing Partner, Mid-Atlantic Consulting Group</cite>
+        </div>
+      </div>
+
+      <!-- CASE 02 — Healthcare -->
+      <div class="case-card reveal" data-industry="healthcare">
+        <div class="timeline-visual">
+          <div class="timeline-track">
+            <div class="timeline-step"><div class="timeline-dot">1</div><div class="timeline-label">Challenge</div></div>
+            <div class="timeline-step"><div class="timeline-dot">2</div><div class="timeline-label">Intervention</div></div>
+            <div class="timeline-step"><div class="timeline-dot">3</div><div class="timeline-label">Transformation</div></div>
+          </div>
+        </div>
+        <div class="case-header">
+          <div>
+            <div class="case-industry">Healthcare · AI Automation</div>
+            <div class="case-client">Regional Health &amp; Wellness Practice</div>
+            <div class="case-location">📍 New Jersey</div>
+          </div>
+          <div class="case-duration">12 weeks</div>
+        </div>
+        <div class="case-body">
+          <div>
+            <div class="case-section-label">The Challenge</div>
+            <p>A multi-location health and wellness practice with 85 employees was struggling with scheduling inefficiency, billing errors, and patient communication gaps that were driving churn. Clinical staff spent 30% of their time on administrative tasks rather than patient care — an unsustainable ratio that was also increasing burnout.</p>
+          </div>
+          <div>
+            <div class="case-section-label">The Intervention</div>
+            <p>Five targeted AI workflow automations were deployed following a comprehensive AI Readiness Assessment: intelligent scheduling with automated waitlist management, AI-assisted billing review, patient communication automation, staff scheduling optimization, and compliance documentation management — all deployed within 12 weeks.</p>
+          </div>
+          <div>
+            <div class="case-section-label">The Transformation</div>
+            <p>Clinical staff administrative time fell from 30% to 12% within 60 days of deployment. Billing error rates declined 73%. Patient no-show rates dropped 28%. The practice added three new providers without increasing administrative headcount, enabling meaningful revenue growth without proportional cost increases.</p>
+          </div>
+        </div>
+        <div class="case-metrics">
+          <div class="case-metric"><span class="case-metric-val">60<span class="case-metric-unit">%</span></span><span class="case-metric-label">Admin Time Reduction</span></div>
+          <div class="case-metric"><span class="case-metric-val">73<span class="case-metric-unit">%</span></span><span class="case-metric-label">Billing Error Decline</span></div>
+          <div class="case-metric"><span class="case-metric-val">28<span class="case-metric-unit">%</span></span><span class="case-metric-label">No-Show Rate Drop</span></div>
+          <div class="case-metric"><span class="case-metric-val">34<span class="case-metric-unit">%</span></span><span class="case-metric-label">Revenue Growth YoY</span></div>
+        </div>
+        <div class="case-quote">
+          <blockquote>"We were skeptical about AI in a clinical environment. ATRBA took the time to understand the regulatory constraints and designed automations that made our team more capable, not dependent on technology."</blockquote>
+          <cite>— Chief Operating Officer, Regional Health &amp; Wellness Practice</cite>
+        </div>
+      </div>
+
+      <!-- CASE 03 — Fintech -->
+      <div class="case-card reveal" data-industry="fintech">
+        <div class="timeline-visual">
+          <div class="timeline-track">
+            <div class="timeline-step"><div class="timeline-dot">1</div><div class="timeline-label">Challenge</div></div>
+            <div class="timeline-step"><div class="timeline-dot">2</div><div class="timeline-label">Intervention</div></div>
+            <div class="timeline-step"><div class="timeline-dot">3</div><div class="timeline-label">Transformation</div></div>
+          </div>
+        </div>
+        <div class="case-header">
+          <div>
+            <div class="case-industry">Financial Technology · Africa Market Entry</div>
+            <div class="case-client">US-Based Fintech Startup</div>
+            <div class="case-location">📍 Lagos, Nigeria (Entry Market)</div>
+          </div>
+          <div class="case-duration">14 weeks</div>
+        </div>
+        <div class="case-body">
+          <div>
+            <div class="case-section-label">The Challenge</div>
+            <p>A US-based fintech with an innovative B2B payment product had identified Nigeria as its first international market but faced significant barriers: no local legal entity, no regulatory understanding of CBN requirements, no partner relationships, and no market intelligence beyond high-level industry reports. The founding team estimated 18+ months to launch unassisted.</p>
+          </div>
+          <div>
+            <div class="case-section-label">The Intervention</div>
+            <p>ATRBA's Africa Market Entry program delivered in four phases: market viability assessment covering regulatory landscape, competitive positioning, and TAM sizing; optimal legal structure design for US companies operating in Nigeria; CBN licensing requirements mapping; and activation of ATRBA's Lagos-based partner network — facilitating introductions to two vetted integration partners and a banking relationship for local operations.</p>
+          </div>
+          <div>
+            <div class="case-section-label">The Transformation</div>
+            <p>The company launched Nigerian operations within seven months of engagement start — compressing a self-estimated 18-month timeline by more than 60%. The regulatory compliance framework ATRBA built has since supported a second market expansion into Ghana, demonstrating that infrastructure built for one entry generalizes across the region.</p>
+          </div>
+        </div>
+        <div class="case-metrics">
+          <div class="case-metric"><span class="case-metric-val">7<span class="case-metric-unit">mo</span></span><span class="case-metric-label">Time to Market Launch</span></div>
+          <div class="case-metric"><span class="case-metric-val">60<span class="case-metric-unit">%</span></span><span class="case-metric-label">Timeline Compression</span></div>
+          <div class="case-metric"><span class="case-metric-val">8</span><span class="case-metric-label">Vetted Introductions Made</span></div>
+          <div class="case-metric"><span class="case-metric-val">2</span><span class="case-metric-label">Markets Now Operational</span></div>
+        </div>
+        <div class="case-quote">
+          <blockquote>"The depth of knowledge ATRBA brought to the Nigerian regulatory environment was unlike anything we found elsewhere. They didn't just advise — they made the introductions that made the business viable."</blockquote>
+          <cite>— CEO &amp; Co-Founder, US-Based Fintech Startup</cite>
+        </div>
+      </div>
+
+      <!-- CASE 04 — Agriculture (NEW) -->
+      <div class="case-card reveal" data-industry="agriculture">
+        <div class="timeline-visual">
+          <div class="timeline-track">
+            <div class="timeline-step"><div class="timeline-dot">1</div><div class="timeline-label">Challenge</div></div>
+            <div class="timeline-step"><div class="timeline-dot">2</div><div class="timeline-label">Intervention</div></div>
+            <div class="timeline-step"><div class="timeline-dot">3</div><div class="timeline-label">Transformation</div></div>
+          </div>
+        </div>
+        <div class="case-header">
+          <div>
+            <div class="case-industry">Agriculture · Agribusiness Operations</div>
+            <div class="case-client">West African Export Farming Cooperative</div>
+            <div class="case-location">📍 Kaduna State, Nigeria</div>
+          </div>
+          <div class="case-duration">20 weeks</div>
+        </div>
+        <div class="case-body">
+          <div>
+            <div class="case-section-label">The Challenge</div>
+            <p>A cooperative of 340 smallholder farmers producing sesame and soybean for export had no shared data infrastructure, no formal quality control process, and no direct buyer relationships — relying entirely on middlemen who captured most of the margin. Post-harvest losses ran at 22% annually and export documentation errors were causing repeat shipment delays.</p>
+          </div>
+          <div>
+            <div class="case-section-label">The Intervention</div>
+            <p>ATRBA deployed a three-phase agribusiness transformation: first, a centralized yield and inventory tracking system using low-cost mobile tools accessible to field agents; second, a standardized quality grading and documentation process aligned to EU export standards; third, direct buyer introductions through ATRBA's commodity trade network and support in negotiating first-purchase agreements without a middleman.</p>
+          </div>
+          <div>
+            <div class="case-section-label">The Transformation</div>
+            <p>Post-harvest losses fell from 22% to 7% within the first harvest cycle. Export documentation errors dropped to near zero following process implementation. The cooperative secured two direct buyer contracts — increasing average farm gate price by 31% — and eliminated reliance on margin-extracting middlemen for its primary export volume.</p>
+          </div>
+        </div>
+        <div class="case-metrics">
+          <div class="case-metric"><span class="case-metric-val">68<span class="case-metric-unit">%</span></span><span class="case-metric-label">Reduction in Post-Harvest Loss</span></div>
+          <div class="case-metric"><span class="case-metric-val">31<span class="case-metric-unit">%</span></span><span class="case-metric-label">Farm Gate Price Increase</span></div>
+          <div class="case-metric"><span class="case-metric-val">2</span><span class="case-metric-label">Direct Buyer Contracts Secured</span></div>
+          <div class="case-metric"><span class="case-metric-val">340</span><span class="case-metric-label">Farmers Directly Impacted</span></div>
+        </div>
+        <div class="case-quote">
+          <blockquote>"Before ATRBA, we had no visibility into what was happening between harvest and export. Now we have systems, we have buyers, and our farmers are earning more for the same crop. That is transformation."</blockquote>
+          <cite>— Cooperative Chairman, West African Export Farming Cooperative</cite>
+        </div>
+      </div>
+
+      <!-- CASE 05 — Manufacturing (NEW) -->
+      <div class="case-card reveal" data-industry="manufacturing">
+        <div class="timeline-visual">
+          <div class="timeline-track">
+            <div class="timeline-step"><div class="timeline-dot">1</div><div class="timeline-label">Challenge</div></div>
+            <div class="timeline-step"><div class="timeline-dot">2</div><div class="timeline-label">Intervention</div></div>
+            <div class="timeline-step"><div class="timeline-dot">3</div><div class="timeline-label">Transformation</div></div>
+          </div>
+        </div>
+        <div class="case-header">
+          <div>
+            <div class="case-industry">Manufacturing · Operational Transformation</div>
+            <div class="case-client">Mid-Size Industrial Components Manufacturer</div>
+            <div class="case-location">📍 Baltimore, MD</div>
+          </div>
+          <div class="case-duration">18 weeks</div>
+        </div>
+        <div class="case-body">
+          <div>
+            <div class="case-section-label">The Challenge</div>
+            <p>A $14M industrial components manufacturer supplying Tier 2 automotive customers was losing contracts due to delivery inconsistency. On-time delivery sat at 67% — well below the 92% threshold required by its largest client. Root cause analysis had never been formally conducted. Production scheduling was managed via spreadsheet and tribal knowledge, with no real-time visibility into floor capacity or material status.</p>
+          </div>
+          <div>
+            <div class="case-section-label">The Intervention</div>
+            <p>ATRBA conducted a structured root cause analysis that identified three systemic failure points: unplanned downtime from deferred preventive maintenance, a scheduling process that ignored real-time machine capacity, and a supplier lead time buffer that hadn't been recalibrated in four years. ATRBA then implemented a digital production scheduling system, a preventive maintenance program tied to production cycles, and a supplier performance scorecard with revised lead time assumptions.</p>
+          </div>
+          <div>
+            <div class="case-section-label">The Transformation</div>
+            <p>On-time delivery rose from 67% to 94% within 14 weeks of system implementation — exceeding the client's contractual threshold and saving the company's largest account. Unplanned downtime fell 52%. The company subsequently won two new supply agreements citing its improved delivery performance as the deciding factor. Total revenue impact in year one: $2.3M in retained and new contracts.</p>
+          </div>
+        </div>
+        <div class="case-metrics">
+          <div class="case-metric"><span class="case-metric-val">94<span class="case-metric-unit">%</span></span><span class="case-metric-label">On-Time Delivery Rate</span></div>
+          <div class="case-metric"><span class="case-metric-val">52<span class="case-metric-unit">%</span></span><span class="case-metric-label">Unplanned Downtime Reduction</span></div>
+          <div class="case-metric"><span class="case-metric-val">2</span><span class="case-metric-label">New Supply Agreements Won</span></div>
+          <div class="case-metric"><span class="case-metric-val">$2.3<span class="case-metric-unit">M</span></span><span class="case-metric-label">Year-One Contract Impact</span></div>
+        </div>
+        <div class="case-quote">
+          <blockquote>"We were three months from losing our biggest client. ATRBA found the actual problems — not the symptoms — and fixed them fast enough to matter. The numbers speak for themselves."</blockquote>
+          <cite>— VP of Operations, Mid-Size Industrial Components Manufacturer</cite>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<div class="cta-band">
+  <h2>Which Challenge Looks Like Yours?</h2>
+  <p>Every case study started with a 60-minute discovery conversation. Yours can too.</p>
+  <a href="contact.html" class="btn-navy">Book a Discovery Call →</a>
+</div>
+
+<footer>
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <h3>Above The Rest Business Advisors</h3>
+        <div style="font-size:.65rem;letter-spacing:.15em;text-transform:uppercase;color:var(--gold);font-weight:500;margin-top:.2rem">ATRBA</div>
+        <p>Building businesses that last — by giving growth-stage founders access to the operational infrastructure, strategic expertise, and AI capability historically reserved for large enterprises.</p>
+        <div class="footer-tagline">People. Processes. Profits.</div>
+      </div>
+      <div class="footer-col">
+        <h5>Services</h5>
+        <a href="services.html">Advisory Platform</a>
+        <a href="services.html">Fractional CDO</a>
+        <a href="atr-ai.html">AI Automation</a>
+        <a href="services.html">Africa Market Entry</a>
+        <a href="atr-education.html">ATR Academy</a>
+      </div>
+      <div class="footer-col">
+        <h5>Company</h5>
+        <a href="about.html">About Us</a>
+        <a href="case-studies.html">Case Studies</a>
+        <a href="resources.html">Resources</a>
+        <a href="industry-solutions.html">Industries</a>
+        <a href="contact.html">Careers</a>
+      </div>
+      <div class="footer-col">
+        <h5>Connect</h5>
+        <a href="contact.html">Book a Call</a>
+        <a href="https://wa.me/18560000000" target="_blank">WhatsApp</a>
+        <a href="#">LinkedIn</a>
+        <a href="#">Camden, NJ — HQ</a>
+        <a href="#">Lagos, Nigeria</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 Above The Rest Business Advisors, LLC · All rights reserved</span>
+      <div class="footer-bottom-links">
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms of Service</a>
+        <a href="#">Accessibility</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+function observeReveal(){
+  const els=document.querySelectorAll('.reveal:not(.visible)');
+  if(!('IntersectionObserver' in window)){els.forEach(el=>el.classList.add('visible'));return;}
+  const obs=new IntersectionObserver(entries=>{
+    entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');obs.unobserve(e.target);}});
+  },{threshold:.08,rootMargin:'0px 0px -40px 0px'});
+  els.forEach(el=>obs.observe(el));
+}
+window.addEventListener('load',observeReveal);
+window.addEventListener('scroll',observeReveal,{passive:true});
+
+function filterCards(industry, pill){
+  document.querySelectorAll('.filter-pill').forEach(p=>p.classList.remove('active'));
+  pill.classList.add('active');
+  document.querySelectorAll('.case-card').forEach(card=>{
+    if(industry==='all'||card.dataset.industry===industry){
+      card.style.display='';
+    } else {
+      card.style.display='none';
+    }
+  });
+}
+</script>
+</body>
+</html>
