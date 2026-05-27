@@ -29,24 +29,51 @@ body{padding-top:68px}
 </style>
 </head>
 <body>
-<nav>
+<!-- NAVBAR -->
+<nav class="site-nav" id="site-nav">
   <div class="nav-inner">
-    <a href="index.html" class="nav-logo">
-      <div class="nav-logo-main">Above The Rest</div>
-      <div class="nav-logo-sub">Business Advisors &nbsp;·&nbsp; ATRBA</div>
+
+    <!-- LOGO -->
+    <a href="/" class="nav-logo">
+      <img src="/assets/logo.png" alt="ATRBA Logo">
     </a>
-    <div class="nav-links">
-      <a href="/services" class="hide-mobile">Services</a>
-      <a href="/atr-ai" class="hide-mobile">ATR AI</a>
-      <a href="/atr-education" class="hide-mobile">Education</a>
-      <a href="/industry-solutions" class="hide-mobile">Industries</a>
-      <a href="/case-studies" class="hide-mobile">Case Studies</a>
-      <a href="/resources" class="hide-mobile">Resources</a>
-      <a href="/about" class="active hide-mobile">About</a>
-      <a href="/contact" class="nav-cta">Book a Call</a>
-    </div>
+
+    <!-- DESKTOP LINKS -->
+    <ul class="nav-links">
+      <li><a href="/services/">Services</a></li>
+      <li><a href="/atr-ai/">ATR AI</a></li>
+      <li><a href="/solutions/">Industries</a></li>
+      <li><a href="/case-studies/">Case Studies</a></li>
+      <li><a href="/resources/">Resources</a></li>
+      <li><a href="/about/">About</a></li>
+      <li><a href="/blog/">Blog</a></li>
+      <li><a href="/contact/" class="nav-cta-btn">Book a Call</a></li>
+    </ul>
+
+    <!-- MOBILE TOGGLE -->
+    <button class="nav-toggle" id="nav-toggle">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+
   </div>
 </nav>
+
+<!-- MOBILE MENU -->
+<div class="nav-drawer" id="nav-drawer">
+  <ul class="nav-drawer-links">
+    <li><a href="/services/">Services</a></li>
+    <li><a href="/atr-ai/">ATR AI</a></li>
+    <li><a href="/solutions/">Industries</a></li>
+    <li><a href="/case-studies/">Case Studies</a></li>
+    <li><a href="/resources/">Resources</a></li>
+    <li><a href="/about/">About</a></li>
+    <li><a href="/blog/">Blog</a></li>
+    <li><a href="/contact/">Contact</a></li>
+  </ul>
+</div>
+
 <a href="https://wa.me/18560000000" class="whatsapp-float" target="_blank" aria-label="Chat on WhatsApp">💬</a>
 
 <div class="page-header">
@@ -244,6 +271,30 @@ body{padding-top:68px}
   </div>
 </footer>
 
+<!-- NAV SCRIPT -->
+<script>
+(function () {
+  const toggle = document.getElementById('nav-toggle');
+  const drawer = document.getElementById('nav-drawer');
+
+  if (!toggle || !drawer) return;
+
+  function setOpen(open){
+    toggle.classList.toggle('open', open);
+    drawer.classList.toggle('open', open);
+    document.body.style.overflow = open ? 'hidden' : '';
+  }
+
+  toggle.addEventListener('click', () => {
+    setOpen(!drawer.classList.contains('open'));
+  });
+
+  drawer.querySelectorAll('a').forEach(a=>{
+    a.addEventListener('click', ()=> setOpen(false));
+  });
+})();
+</script>
+
 <script>
 function toggleFAQ(el){
   const item=el.parentElement;
@@ -251,14 +302,7 @@ function toggleFAQ(el){
   document.querySelectorAll('.faq-item').forEach(f=>f.classList.remove('open'));
   if(!wasOpen) item.classList.add('open');
 }
-function observeReveal(){
-  const els=document.querySelectorAll('.reveal:not(.visible)');
-  if(!('IntersectionObserver' in window)){els.forEach(el=>el.classList.add('visible'));return;}
-  const obs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');obs.unobserve(e.target);}});},{threshold:.1,rootMargin:'0px 0px -40px 0px'});
-  els.forEach(el=>obs.observe(el));
-}
-window.addEventListener('load',observeReveal);
-window.addEventListener('scroll',observeReveal,{passive:true});
 </script>
+
 </body>
 </html>
