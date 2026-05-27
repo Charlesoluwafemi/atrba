@@ -168,58 +168,7 @@
 <!-- ═══════════════════════════════════════════════════════════
      NAVIGATION
 ════════════════════════════════════════════════════════════ -->
-<nav id="main-nav">
-  <div class="nav-inner">
-
-    <!-- Logo: replace logo.png with your actual logo file path -->
-    <a href="index.html" class="nav-logo" aria-label="ATRBA – Home">
-      <img
-        src="logo.png"
-        alt="ATRBA — Above The Rest Business Advisors"
-        class="nav-logo-img"
-        onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
-      >
-      <!-- Text fallback (shown if image fails to load) -->
-      <div class="nav-logo-text" style="display:none">
-        <span class="nav-logo-main">Above The Rest</span>
-        <span class="nav-logo-sub">Business Advisors &nbsp;·&nbsp; ATRBA</span>
-      </div>
-    </a>
-
-    <!-- Desktop links -->
-    <div class="nav-links">
-      <a href="/services"          class="nav-cta">Services</a>
-      <a href="/atr-ai"            class="hide-mobile">ATR AI</a>
-      <a href="/atr-education"     class="hide-mobile">Education</a>
-      <a href="/industry-solutions"class="hide-mobile">Industries</a>
-      <a href="/case-studies"      class="hide-mobile">Case Studies</a>
-      <a href="/resources"         class="hide-mobile">Resources</a>
-      <a href="/about"             class="hide-mobile">About</a>
-      <a href="/contact"   class="nav-cta">Book a Call</a>
-      <a href="/blog"      class="hide-mobile">Blog</a>
-    </div>
-
-    <!-- Hamburger (mobile only) -->
-    <button class="nav-hamburger" id="hamburger" aria-label="Toggle menu" aria-expanded="false">
-      <span></span>
-      <span></span>
-      <span></span>
-    </button>
-  </div>
-</nav>
-
-<!-- Mobile drawer -->
-<div class="nav-mobile-menu" id="mobile-menu" role="dialog" aria-label="Mobile navigation">
-  <nav class="nav-mobile-links">
-    <a href="/services">Services</a>
-    <a href="/atr-ai">ATR AI</a>
-    <a href="/atr-education">Education</a>
-    <a href="/solutions">Industries</a>
-    <a href="/case-studies">Case Studies</a>
-    <a href="/resources">Resources</a>
-    <a href="/about">About</a>
-    <a href="/blog">Blog</a>
-  </nav>
+<script src="/components/navbar-loader.js"></script>
   <div class="nav-mobile-ctas">
     <a href="/contact" class="btn-primary" style="flex:1;justify-content:center">Book a Call →</a>
     <a href="https://wa.me/18560000000" class="btn-secondary" target="_blank" style="flex:1;justify-content:center">💬 WhatsApp</a>
