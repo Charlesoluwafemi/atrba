@@ -102,11 +102,13 @@
   }
 
   /* ── 5. Main flow (fast path first) ── */
-  (async function main() {
-    var html = await fetchNavbar();
-    inject(html);
+  window.addEventListener("DOMContentLoaded", () => {
+  fetchNavbar().then(inject);
 
-    /* run after DOM insertion */
-    requestAnimationFrame(initNav);
-  })();
+  if ('requestIdleCallback' in window) {
+    requestIdleCallback(initNav, { timeout: 1000 });
+  } else {
+    setTimeout(initNav, 0);
+  }
+});
 })(); 
