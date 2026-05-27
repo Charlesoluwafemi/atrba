@@ -3,6 +3,16 @@
    Imported once in the <head> of every page.
    ============================================================ */
 
+/* ── FIX: prevent flash of unstyled navbar ─────────────────── */
+.site-nav {
+  opacity: 0;
+  transition: opacity .2s ease;
+}
+
+body.nav-ready .site-nav {
+  opacity: 1;
+}
+
 /* ── CSS Variables (shared tokens) ─────────────────────────── */
 :root {
   --navy:        #1B2A4A;
@@ -39,7 +49,7 @@ body {
   backdrop-filter: blur(18px);
   -webkit-backdrop-filter: blur(18px);
   border-bottom: 1px solid rgba(201, 147, 58, 0.18);
-  transition: box-shadow .3s;
+  transition: box-shadow .3s, opacity .2s ease;
 }
 
 .site-nav.scrolled {
@@ -106,7 +116,6 @@ body {
   list-style: none;
 }
 
-
 .nav-links a {
   font-size: .72rem;
   font-weight: 500;
@@ -163,11 +172,11 @@ body {
 }
 
 /* ══════════════════════════════════════════════════════════════
-   HAMBURGER BUTTON  (mobile only — hidden ≥769px)
+   HAMBURGER BUTTON
 ══════════════════════════════════════════════════════════════ */
 
 .nav-toggle {
-  display: none;             /* desktop: invisible */
+  display: none;
   flex-direction: column;
   justify-content: center;
   align-items: center;
@@ -200,10 +209,9 @@ body {
   background: rgba(255, 255, 255, .9);
   border-radius: 2px;
   transition: transform .35s var(--ease), opacity .25s;
-  pointer-events: none;
 }
 
-/* × animation when open */
+/* × animation */
 .nav-toggle.open .bar:nth-child(1) { transform: translateY(7px) rotate(45deg); }
 .nav-toggle.open .bar:nth-child(2) { opacity: 0; transform: scaleX(0); }
 .nav-toggle.open .bar:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
@@ -211,7 +219,6 @@ body {
 /* ══════════════════════════════════════════════════════════════
    MOBILE DRAWER
 ══════════════════════════════════════════════════════════════ */
-
 .nav-drawer {
   position: fixed;
   top: var(--nav-h);
@@ -381,4 +388,7 @@ body {
 @media (max-width: 380px) {
   .nav-logo-main { font-size: .85rem; }
   .nav-logo-sub  { display: none; }
-}
+} 
+
+/* (UNCHANGED — your original CSS preserved below) */
+/* ... keep everything exactly as you wrote it ... */
