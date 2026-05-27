@@ -31,7 +31,7 @@
   }());
 
   var siteRoot   = (scriptEl && scriptEl.getAttribute('data-root')) || '/';
-  var navbarURL  = siteRoot.replace(/\/$/, '') + '/component/navbar.html';
+  var navbarURL  = siteRoot.replace(/\/$/, '') + '/components/navbar.html';
 
   /* ── 2. Inject navbar CSS into <head> if not already there ─ */
   if (!document.querySelector('link[data-navbar-css]')) {
