@@ -1,1 +1,71 @@
+<!-- ============================================================
+     ATRBA — NAVBAR COMPONENT  (single source of truth)
+     DO NOT duplicate this file. Load it via navbar-loader.js.
+     ============================================================ -->
 
+<!-- ── MAIN NAV ─────────────────────────────────────────────── -->
+<nav class="site-nav" id="main-nav">
+  <div class="nav-inner">
+
+    <!-- Logo -->
+    <a href="/" class="nav-logo" aria-label="ATRBA — Home">
+      <!--
+        OPTION A — swap in your image when ready:
+        <img src="/assets/atrba-logo.svg" alt="ATRBA" class="nav-logo-img">
+      -->
+      <!-- OPTION B — text logo (default) -->
+      <div class="nav-logo-text">
+        <div class="nav-logo-main">Above The Rest</div>
+        <div class="nav-logo-sub">Business Advisors&nbsp;·&nbsp;ATRBA</div>
+      </div>
+    </a>
+
+    <!-- Desktop links -->
+    <div class="nav-links" role="navigation" aria-label="Main navigation">
+      <a href="/services">Services</a>
+      <a href="/atr-ai">ATR AI</a>
+      <a href="/solutions">Industries</a>
+      <a href="/case-studies">Case Studies</a>
+      <a href="/resources">Resources</a>
+      <a href="/about">About</a>
+      <a href="/blog">Blog</a>
+      <a href="/contact" class="nav-cta-btn">Book a Call</a>
+    </div>
+
+    <!-- Hamburger — mobile only -->
+    <button
+      class="nav-toggle"
+      id="nav-hamburger"
+      aria-label="Toggle navigation menu"
+      aria-expanded="false"
+      aria-controls="nav-mobile-drawer"
+    >
+      <span class="bar"></span>
+      <span class="bar"></span>
+      <span class="bar"></span>
+    </button>
+
+  </div>
+</nav>
+
+<!-- ── MOBILE DRAWER ─────────────────────────────────────────── -->
+<div class="nav-drawer" id="nav-mobile-drawer" aria-hidden="true" role="dialog" aria-label="Mobile navigation">
+  <ul class="nav-drawer-links" role="list">
+    <li><a href="/services">Services <span class="arrow" aria-hidden="true">→</span></a></li>
+    <li><a href="/atr-ai">ATR AI <span class="arrow" aria-hidden="true">→</span></a></li>
+    <li><a href="/solutions">Industries <span class="arrow" aria-hidden="true">→</span></a></li>
+    <li><a href="/case-studies">Case Studies <span class="arrow" aria-hidden="true">→</span></a></li>
+    <li><a href="/resources">Resources <span class="arrow" aria-hidden="true">→</span></a></li>
+    <li><a href="/about">About <span class="arrow" aria-hidden="true">→</span></a></li>
+    <li><a href="/blog">Blog <span class="arrow" aria-hidden="true">→</span></a></li>
+  </ul>
+  <div class="nav-drawer-ctas">
+    <a href="/contact" class="drawer-cta-primary">Book a Strategy Call →</a>
+    <a href="https://wa.me/18560000000"
+       class="drawer-cta-secondary"
+       target="_blank"
+       rel="noopener noreferrer">
+      💬 &nbsp;Chat on WhatsApp
+    </a>
+  </div>
+</div>
