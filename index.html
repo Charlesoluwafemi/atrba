@@ -692,9 +692,13 @@ window.addEventListener('scroll', observeReveal, { passive: true });
     requestAnimationFrame(draw);
   }
 
-  init();
-  draw();
+ init();
 
+window.addEventListener("load", () => {
+  if (window.innerWidth > 768) {
+    requestAnimationFrame(draw);
+  }
+});
   window.addEventListener('resize', init);
 })();
 </script>
