@@ -10,13 +10,47 @@
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="_shared.css">
 
-<style>
-/* ── Page-specific: Hero ───────────────────────────────────── */
+/* ── HERO BASE FIX ───────────────────────── */
 .hero {
+  position: relative;
+  overflow: hidden;
   background: var(--navy-dark);
   min-height: calc(100svh - var(--nav-h));
 }
 
+/* VIDEO */
+.hero-video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 0;
+}
+
+/* OVERLAY */
+.hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.55);
+  z-index: 1;
+}
+
+/* PARTICLES */
+#particles-canvas {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+}
+
+/* CONTENT LAYER */
+.hero-content {
+  position: relative;
+  z-index: 3;
+}
+
+/* GRID FIX */
 .hero-content-inner {
   max-width: 1200px;
   margin: 0 auto;
@@ -27,6 +61,14 @@
   align-items: center;
 }
 
+/* BUTTON DUPLICATION FIX (common navbar issue) */
+nav button,
+.nav button,
+.nav-cta {
+  white-space: nowrap;
+}
+
+/* HERO TEXT */
 .hero-eyebrow {
   font-size: .68rem;
   letter-spacing: .22em;
@@ -34,53 +76,27 @@
   color: var(--gold);
   font-weight: 700;
   margin-bottom: 1.4rem;
-  display: flex;
-  align-items: center;
-  gap: .75rem;
-}
-
-.hero-eyebrow::before {
-  content: '';
-  display: block;
-  width: 28px;
-  height: 1px;
-  background: var(--gold);
-  flex-shrink: 0;
 }
 
 .hero h1 {
   color: #fff;
   margin-bottom: 1.4rem;
-  animation: slideUp .9s var(--ease-out) .3s both;
   text-shadow: 0 2px 30px rgba(0,0,0,.3);
-}
-
-.hero h1 em {
-  color: var(--gold);
-  font-style: italic;
 }
 
 .hero-sub {
   color: rgba(255,255,255,.68);
-  font-size: clamp(.9rem, 1.8vw, 1.05rem);
-  line-height: 1.82;
-  margin-bottom: 2.25rem;
-  animation: slideUp .9s var(--ease-out) .5s both;
-  max-width: 520px;
+  line-height: 1.8;
+  margin-bottom: 2rem;
 }
 
 .hero-ctas {
   display: flex;
   gap: .875rem;
   flex-wrap: wrap;
-  animation: slideUp .9s var(--ease-out) .7s both;
 }
 
-/* Hero metrics panel */
-.hero-visual {
-  animation: fadeIn 1.2s var(--ease-out) .8s both;
-}
-
+/* METRICS */
 .hero-metrics {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -89,79 +105,24 @@
   border-radius: 12px;
   overflow: hidden;
   border: 1px solid rgba(255,255,255,.08);
-  backdrop-filter: blur(8px);
 }
 
 .hero-metric {
   background: rgba(255,255,255,.04);
-  padding: clamp(1rem, 3vw, 1.5rem);
+  padding: 1.2rem;
   text-align: center;
-  transition: background .25s;
 }
 
-.hero-metric:hover { background: rgba(201,147,58,.07); }
-
-.hero-metric-val {
-  font-family: var(--font-serif);
-  font-size: clamp(1.8rem, 3.5vw, 2.5rem);
-  color: var(--gold);
-  display: block;
-  line-height: 1;
-}
-
-.hero-metric-label {
-  font-size: clamp(.6rem, 1.2vw, .72rem);
-  color: rgba(255,255,255,.48);
-  letter-spacing: .08em;
-  text-transform: uppercase;
-  margin-top: .4rem;
-  display: block;
-  line-height: 1.4;
-}
-
-.hero-tagline {
-  grid-column: 1 / -1;
-  background: rgba(201,147,58,.07);
-  border-top: 1px solid rgba(201,147,58,.18);
-  padding: .9rem 1.25rem;
-}
-
-.hero-tagline p {
-  color: rgba(255,255,255,.48);
-  font-size: .76rem;
-  font-style: italic;
-  text-align: center;
-  margin: 0;
-  line-height: 1.5;
-}
-
-@keyframes slideUp {
-  from { opacity: 0; transform: translateY(28px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to   { opacity: 1; }
-}
-
-/* ── Responsive hero grid ─────────────────────────────────── */
+/* RESPONSIVE */
 @media (max-width: 900px) {
   .hero-content-inner {
     grid-template-columns: 1fr;
-    gap: 2.5rem;
   }
-  .hero-visual { order: -1; }
-  .hero-sub { max-width: 100%; }
-  .hero-metrics { max-width: 480px; }
-}
 
-@media (max-width: 480px) {
-  .hero-metrics { max-width: 100%; }
-  .hero-metric { padding: 1rem .875rem; }
-  .hero-metric-val { font-size: 1.6rem; }
+  .hero-visual {
+    order: -1;
+  }
 }
-</style>
 </head>
 <body>
 
@@ -582,6 +543,40 @@
     </div>
   </div>
 </footer>
+<script>
+/* ── EDGE TAB SWITCH FIX ── */
+function switchEdge(index) {
+  const contents = document.querySelectorAll('.edge-content');
+  const navItems = document.querySelectorAll('.edge-nav-item');
+  const tabs = document.querySelectorAll('.edge-tab-btn');
 
+  contents.forEach(c => c.classList.remove('active'));
+  navItems.forEach(n => n.classList.remove('active'));
+  tabs.forEach(t => t.classList.remove('active'));
+
+  const active = document.getElementById('edge-' + index);
+  if (active) active.classList.add('active');
+
+  if (navItems[index]) navItems[index].classList.add('active');
+  if (tabs[index]) tabs[index].classList.add('active');
+}
+
+/* ── FIX NAVBAR DUPLICATION ISSUE ── */
+document.addEventListener("DOMContentLoaded", () => {
+  const nav = document.querySelector("nav");
+
+  if (nav) {
+    const seen = new Set();
+    nav.querySelectorAll("*").forEach(el => {
+      const text = el.textContent?.trim();
+      if (seen.has(text)) {
+        el.remove(); // removes duplicate buttons like "Book a Call"
+      } else {
+        seen.add(text);
+      }
+    });
+  }
+});
+</script>
 </body>
 </html>
