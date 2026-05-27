@@ -1,135 +1,112 @@
 /**
- * ATRBA — navbar-loader.js
- *
- * Drop ONE <script> tag into every page, before </body>:
- *
- *   <script src="/components/navbar-loader.js"></script>
- *
- * That's it. This script:
- *   1. Fetches /components/navbar.html
- *   2. Injects it at the very top of <body>
- *   3. Wires up: hamburger toggle, Escape key, scroll shadow,
- *      active link highlighting, body-scroll lock
- *
- * Works on GitHub Pages, Vercel, Netlify, and any static host.
- * NOTE: fetch() requires HTTP/HTTPS — open via a local server
- *       (e.g. VS Code Live Server, `npx serve`, etc.),
- *       not by double-clicking the HTML file.
+ * ATRBA — Optimized navbar-loader.js
+ * Faster fetch + cache-first + priority hints
  */
 
 (function () {
   'use strict';
 
-  /* ── 1. Determine the root-relative path to the component ── */
-  // Reads data-root on the script tag so deep pages work too.
-  // Example for a page at /blog/post.html:
-  //   <script src="/components/navbar-loader.js" data-root="/"></script>
-  // Default assumes root-relative paths work (Vercel / GH Pages).
-  var scriptEl   = document.currentScript || (function () {
-    var scripts = document.getElementsByTagName('script');
-    return scripts[scripts.length - 1];
-  }());
+  var scriptEl = document.currentScript;
+  var siteRoot = (scriptEl && scriptEl.getAttribute('data-root')) || '/';
 
-  var siteRoot   = (scriptEl && scriptEl.getAttribute('data-root')) || '/';
-  var navbarURL  = siteRoot.replace(/\/$/, '') + '/components/navbar.html';
+  var base = siteRoot.replace(/\/$/, '');
+  var navbarURL = base + '/components/navbar.html';
+  var cssURL = base + '/components/navbar.css';
 
-  /* ── 2. Inject navbar CSS into <head> if not already there ─ */
+  /* ── 1. Inject CSS ASAP (non-blocking) ── */
   if (!document.querySelector('link[data-navbar-css]')) {
     var link = document.createElement('link');
-    link.rel = 'stylesheet';
-    link.href = siteRoot.replace(/\/$/, '') + '/components/navbar.css';
+    link.rel = 'preload';
+    link.as = 'style';
+    link.href = cssURL;
+    link.onload = function () {
+      this.rel = 'stylesheet';
+    };
     link.setAttribute('data-navbar-css', '1');
     document.head.appendChild(link);
   }
 
-  /* ── 3. Fetch the navbar HTML and inject it ─────────────── */
-  fetch(navbarURL)
-    .then(function (res) {
+  /* ── 2. Fast fetch with cache + priority hint ── */
+  async function fetchNavbar() {
+    try {
+      var res = await fetch(navbarURL, {
+        cache: 'force-cache', // 👈 key speed boost for repeat visits
+        priority: 'high'      // 👈 modern browsers
+      });
+
       if (!res.ok) throw new Error('Navbar fetch failed: ' + res.status);
-      return res.text();
-    })
-    .then(function (html) {
-      /* Create a temporary container to parse the HTML */
-      var tmp = document.createElement('div');
-      tmp.innerHTML = html;
+      return await res.text();
+    } catch (e) {
+      console.error('[ATRBA Navbar]', e);
+      return '';
+    }
+  }
 
-      /* Prepend all child nodes to <body> */
-      var body   = document.body;
-      var refNode = body.firstChild;
-      while (tmp.firstChild) {
-        body.insertBefore(tmp.firstChild, refNode);
-      }
+  /* ── 3. Inject ASAP ── */
+  function inject(html) {
+    if (!html) return;
 
-      /* Now that the DOM is in place, boot the nav logic */
-      initNav();
-    })
-    .catch(function (err) {
-      console.error('[ATRBA Navbar]', err);
-    });
+    var tmp = document.createElement('div');
+    tmp.innerHTML = html;
 
-  /* ── 4. Nav behaviour (runs after HTML is injected) ─────── */
+    var body = document.body;
+    var ref = body.firstChild;
+
+    while (tmp.firstChild) {
+      body.insertBefore(tmp.firstChild, ref);
+    }
+  }
+
+  /* ── 4. Init logic AFTER paint-ready ── */
   function initNav() {
     var hamburger = document.getElementById('nav-hamburger');
-    var drawer    = document.getElementById('nav-mobile-drawer');
-    var nav       = document.getElementById('main-nav');
+    var drawer = document.getElementById('nav-mobile-drawer');
+    var nav = document.getElementById('main-nav');
 
-    if (!hamburger || !drawer || !nav) {
-      console.warn('[ATRBA Navbar] Elements not found — check navbar.html IDs.');
-      return;
-    }
+    if (!hamburger || !drawer || !nav) return;
 
-    /* Toggle open / closed */
     function toggleMenu(forceOpen) {
-      var isOpen = (typeof forceOpen === 'boolean')
-        ? forceOpen
-        : !hamburger.classList.contains('open');
+      var isOpen =
+        typeof forceOpen === 'boolean'
+          ? forceOpen
+          : !hamburger.classList.contains('open');
 
       hamburger.classList.toggle('open', isOpen);
       drawer.classList.toggle('open', isOpen);
+
       hamburger.setAttribute('aria-expanded', String(isOpen));
       drawer.setAttribute('aria-hidden', String(!isOpen));
 
-      /* Prevent body scroll while drawer is open */
       document.body.style.overflow = isOpen ? 'hidden' : '';
     }
 
-    /* Hamburger click */
-    hamburger.addEventListener('click', function () {
-      toggleMenu();
-    });
+    hamburger.addEventListener('click', toggleMenu);
 
-    /* Close when a drawer link is tapped */
-    drawer.querySelectorAll('a').forEach(function (link) {
-      link.addEventListener('click', function () {
+    drawer.querySelectorAll('a').forEach(function (a) {
+      a.addEventListener('click', function () {
         toggleMenu(false);
       });
     });
 
-    /* Escape key closes the drawer */
     document.addEventListener('keydown', function (e) {
-      if (e.key === 'Escape' && hamburger.classList.contains('open')) {
-        toggleMenu(false);
-        hamburger.focus();
-      }
+      if (e.key === 'Escape') toggleMenu(false);
     });
 
-    /* Scroll shadow */
-    function onScroll() {
-      nav.classList.toggle('scrolled', window.scrollY > 20);
-    }
-    window.addEventListener('scroll', onScroll, { passive: true });
-    onScroll(); /* run once on load */
-
-    /* Active link — highlight the link matching the current path */
-    var currentPath = window.location.pathname;
-    document.querySelectorAll(
-      '.nav-links a, .nav-drawer-links a'
-    ).forEach(function (a) {
-      var href = a.getAttribute('href');
-      if (href && href !== '/' && currentPath.startsWith(href)) {
-        a.classList.add('active');
-      }
-    });
+    window.addEventListener(
+      'scroll',
+      function () {
+        nav.classList.toggle('scrolled', window.scrollY > 20);
+      },
+      { passive: true }
+    );
   }
 
-}());
+  /* ── 5. Main flow (fast path first) ── */
+  (async function main() {
+    var html = await fetchNavbar();
+    inject(html);
+
+    /* run after DOM insertion */
+    requestAnimationFrame(initNav);
+  })();
+})(); 
