@@ -7,8 +7,11 @@
 <meta name="description" content="Above The Rest Business Advisors — the multidisciplinary advisory firm that builds operational infrastructure, deploys AI systems, and opens international markets for growth-stage founders.">
 <meta name="theme-color" content="#0C1425">
 <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preload" as="video" href="video1.mp4" type="video/mp4">
+<link rel="preload" as="fetch" href="/components/navbar.html">
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="_shared.css">
+<script src="/components/navbar-loader.js" defer></script>
 
 <style>
 /* ── Page-specific: Hero ───────────────────────────────────── */
@@ -168,20 +171,24 @@
 <!-- ═══════════════════════════════════════════════════════════
      NAVIGATION
 ════════════════════════════════════════════════════════════ -->
-<script src="/components/navbar-loader.js"></script>
+
 <!-- ═══════════════════════════════════════════════════════════
      HERO
 ════════════════════════════════════════════════════════════ -->
 <div class="hero">
   <!-- Background video — fully responsive via object-fit:cover -->
   <video
-    autoplay muted loop playsinline
-    class="hero-video"
-    poster="video-poster.jpg"
-    preload="metadata"
-  >
-    <source src="video1.mp4" type="video/mp4">
-  </video>
+  autoplay
+  muted
+  loop
+  playsinline
+  class="hero-video"
+  poster="video-poster.jpg"
+  fetchpriority="high"
+  preload="metadata"
+>
+  <source src="video1.mp4" type="video/mp4">
+</video>
 
   <!-- Gradient overlay for legibility -->
   <div class="hero-overlay" aria-hidden="true"></div>
