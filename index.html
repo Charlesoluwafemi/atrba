@@ -3,586 +3,586 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-
 <title>ATRBA — Engineering the EDGE of Business Transformation</title>
-
 <meta name="description" content="Above The Rest Business Advisors — the multidisciplinary advisory firm that builds operational infrastructure, deploys AI systems, and opens international markets for growth-stage founders.">
 <meta name="theme-color" content="#0C1425">
 
+<!-- Preconnect and Fonts -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
-<link rel="stylesheet" href="_shared.css">
-
+<!-- Global Shared Styles (Critical) -->
 <style>
-/* ── HERO BASE FIX ───────────────────────── */
-.hero {
-  position: relative;
-  overflow: hidden;
-  background: var(--navy-dark);
-  min-height: calc(100svh - var(--nav-h));
-}
-
-/* VIDEO */
-.hero-video {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  z-index: 0;
-}
-
-/* OVERLAY */
-.hero-overlay {
-  position: absolute;
-  inset: 0;
-  background: rgba(0,0,0,0.55);
-  z-index: 1;
-}
-
-/* PARTICLES */
-#particles-canvas {
-  position: absolute;
-  inset: 0;
-  z-index: 2;
-  pointer-events: none;
-}
-
-/* CONTENT LAYER */
-.hero-content {
-  position: relative;
-  z-index: 3;
-}
-
-/* GRID FIX */
-.hero-content-inner {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: clamp(3rem, 8vw, 5rem) var(--section-px);
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: clamp(2rem, 5vw, 4rem);
-  align-items: center;
-}
-
-/* BUTTON FIX */
-nav button,
-.nav button,
-.nav-cta {
-  white-space: nowrap;
-}
-
-/* TEXT */
-.hero-eyebrow {
-  font-size: .68rem;
-  letter-spacing: .22em;
-  text-transform: uppercase;
-  color: var(--gold);
-  font-weight: 700;
-  margin-bottom: 1.4rem;
-}
-
-.hero h1 {
-  color: #fff;
-  margin-bottom: 1.4rem;
-  text-shadow: 0 2px 30px rgba(0,0,0,.3);
-}
-
-.hero-sub {
-  color: rgba(255,255,255,.68);
-  line-height: 1.8;
-  margin-bottom: 2rem;
-}
-
-.hero-ctas {
-  display: flex;
-  gap: .875rem;
-  flex-wrap: wrap;
-}
-
-/* METRICS */
-.hero-metrics {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1px;
-  background: rgba(255,255,255,.08);
-  border-radius: 12px;
-  overflow: hidden;
-  border: 1px solid rgba(255,255,255,.08);
-}
-
-.hero-metric {
-  background: rgba(255,255,255,.04);
-  padding: 1.2rem;
-  text-align: center;
-}
-
-/* RESPONSIVE */
-@media (max-width: 900px) {
-  .hero-content-inner {
-    grid-template-columns: 1fr;
+  /* RESET & VARIABLES */
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
   }
 
-  .hero-visual {
-    order: -1;
+  :root {
+    --navy-dark: #0C1425;
+    --navy-deep: #0A0F1C;
+    --gold: #C6A15B;
+    --gold-light: #D9B46E;
+    --cream: #F9F6F0;
+    --gray-light: #F1EFEA;
+    --text-dark: #1A1E2C;
+    --text-muted: #4A4E5C;
+    --section-px: clamp(1.25rem, 5vw, 2rem);
+    --nav-h: 70px;
   }
-}
+
+  body {
+    font-family: 'Outfit', sans-serif;
+    background: white;
+    color: var(--text-dark);
+    line-height: 1.5;
+    overflow-x: hidden;
+  }
+
+  h1, h2, h3, h4, .logo, .edge-letter, .hero-metric-val {
+    font-family: 'DM Serif Display', serif;
+    font-weight: 400;
+  }
+
+  h1 {
+    font-size: clamp(2.4rem, 7vw, 4.2rem);
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+  }
+  h2 {
+    font-size: clamp(1.8rem, 5vw, 2.8rem);
+    margin-bottom: 1rem;
+  }
+  h3 {
+    font-size: 1.6rem;
+    margin-bottom: 1rem;
+  }
+  .section-inner {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 4rem var(--section-px);
+  }
+  .bg-cream {
+    background: var(--cream);
+  }
+  .section-header {
+    text-align: center;
+    max-width: 780px;
+    margin: 0 auto 3rem auto;
+  }
+  .section-header.centered {
+    text-align: center;
+  }
+  .section-eyebrow {
+    font-size: 0.7rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--gold);
+    font-weight: 700;
+    margin-bottom: 1rem;
+  }
+  .gold-line {
+    display: block;
+    width: 60px;
+    height: 2px;
+    background: var(--gold);
+    margin: 1rem auto 1.2rem auto;
+  }
+  .gold-line.centered {
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .btn-primary, .btn-secondary, .btn-navy {
+    display: inline-block;
+    padding: 0.9rem 2rem;
+    border-radius: 40px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: 0.2s ease;
+    cursor: pointer;
+    font-size: 0.9rem;
+    letter-spacing: 0.3px;
+  }
+  .btn-primary {
+    background: var(--gold);
+    color: #0C1425;
+    border: none;
+  }
+  .btn-primary:hover {
+    background: #b58d4a;
+    transform: translateY(-2px);
+  }
+  .btn-secondary {
+    background: transparent;
+    border: 1px solid rgba(255,255,255,0.4);
+    color: white;
+  }
+  .btn-secondary:hover {
+    background: rgba(255,255,255,0.1);
+    border-color: var(--gold);
+  }
+  .btn-navy {
+    background: var(--navy-dark);
+    color: white;
+    border: none;
+  }
+  .btn-navy:hover {
+    background: #1e2a3e;
+  }
+  .services-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2rem;
+    margin-top: 2rem;
+  }
+  .service-card {
+    background: white;
+    border-radius: 20px;
+    padding: 1.8rem;
+    box-shadow: 0 10px 25px -5px rgba(0,0,0,0.05);
+    transition: all 0.25s;
+    border: 1px solid #eae6df;
+  }
+  .service-icon {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+  }
+  .service-tier {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: var(--gold);
+    font-weight: 700;
+  }
+  .service-card h4 {
+    font-size: 1.4rem;
+    margin: 0.5rem 0 0.8rem;
+    font-family: 'DM Serif Display', serif;
+  }
+  .service-meta {
+    margin-top: 1rem;
+    display: flex;
+    gap: 1rem;
+    border-top: 1px solid #eee;
+    padding-top: 1rem;
+  }
+  .stats-bar {
+    background: var(--navy-deep);
+    color: white;
+    padding: 1.2rem var(--section-px);
+    border-top: 1px solid rgba(255,255,255,0.1);
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+  }
+  .stats-inner {
+    max-width: 1280px;
+    margin: 0 auto;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 1.5rem;
+  }
+  .stat-item {
+    text-align: center;
+  }
+  .stat-val {
+    display: block;
+    font-weight: 700;
+    font-size: 1.4rem;
+    font-family: 'DM Serif Display', serif;
+    color: var(--gold);
+  }
+  .testimonial-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2rem;
+  }
+  .testimonial-card {
+    background: white;
+    border-radius: 20px;
+    padding: 2rem;
+    position: relative;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.03);
+    border: 1px solid #e0dbd2;
+  }
+  .testimonial-quote-mark {
+    font-size: 4rem;
+    line-height: 1;
+    color: var(--gold);
+    opacity: 0.5;
+    margin-bottom: -1rem;
+  }
+  .sample-badge {
+    margin-top: 1rem;
+    font-size: 0.7rem;
+    color: #aaa;
+  }
+  .cta-band {
+    background: var(--navy-dark);
+    color: white;
+    text-align: center;
+    padding: 4rem var(--section-px);
+  }
+  .cta-band h2 {
+    margin-bottom: 0.75rem;
+  }
+  footer {
+    background: #050a14;
+    color: rgba(255,255,255,0.7);
+    padding: 3rem var(--section-px) 2rem;
+  }
+  .footer-inner {
+    max-width: 1280px;
+    margin: 0 auto;
+  }
+  .footer-top {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 2rem;
+    margin-bottom: 2rem;
+  }
+  .footer-brand p {
+    margin-top: 0.5rem;
+    font-size: 0.85rem;
+  }
+  .footer-col a {
+    display: block;
+    color: rgba(255,255,255,0.6);
+    text-decoration: none;
+    margin-bottom: 0.5rem;
+    font-size: 0.85rem;
+  }
+  .footer-bottom {
+    border-top: 1px solid rgba(255,255,255,0.1);
+    padding-top: 1.5rem;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1rem;
+    font-size: 0.75rem;
+  }
+  .reveal {
+    opacity: 1;
+    transform: none;
+  }
+  /* edge framework styles */
+  .edge-container {
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    gap: 2rem;
+    background: white;
+    border-radius: 28px;
+    overflow: hidden;
+    border: 1px solid #e2ded7;
+  }
+  .edge-nav {
+    background: var(--navy-dark);
+    padding: 2rem 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+  .edge-nav-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem 1.2rem;
+    border-radius: 16px;
+    cursor: pointer;
+    transition: 0.2s;
+    color: rgba(255,255,255,0.6);
+  }
+  .edge-nav-item.active {
+    background: rgba(198,161,91,0.18);
+    color: white;
+    border-left: 3px solid var(--gold);
+  }
+  .edge-letter {
+    font-size: 2rem;
+    font-weight: 700;
+    font-family: 'DM Serif Display', serif;
+    color: var(--gold);
+  }
+  .edge-content {
+    display: none;
+    padding: 2rem;
+  }
+  .edge-content.active {
+    display: block;
+  }
+  .edge-details {
+    margin: 1.2rem 0;
+    padding-left: 1.2rem;
+  }
+  .edge-details li {
+    margin-bottom: 0.5rem;
+  }
+  .edge-flow {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 1rem;
+  }
+  .edge-flow-step {
+    background: #f0ede8;
+    padding: 0.5rem 1rem;
+    border-radius: 40px;
+    font-size: 0.8rem;
+  }
+  .edge-mobile-tabs {
+    display: none;
+  }
+  @media (max-width: 960px) {
+    .edge-container {
+      grid-template-columns: 1fr;
+    }
+    .edge-nav {
+      display: none;
+    }
+    .edge-mobile-tabs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      background: var(--navy-dark);
+      padding: 1rem;
+      border-radius: 28px 28px 0 0;
+    }
+    .edge-tab-btn {
+      background: rgba(255,255,255,0.1);
+      border: none;
+      color: white;
+      padding: 0.6rem 1rem;
+      border-radius: 40px;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      cursor: pointer;
+      font-weight: 600;
+    }
+    .edge-tab-btn.active {
+      background: var(--gold);
+      color: #0C1425;
+    }
+    .hero-metrics {
+      margin-top: 1rem;
+    }
+  }
+  /* hero metrics style */
+  .hero-metric-val {
+    font-size: 2rem;
+    font-weight: 600;
+    color: var(--gold);
+    display: block;
+    line-height: 1.2;
+  }
+  .hero-metric-label {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  .hero-tagline {
+    grid-column: span 2;
+    background: rgba(0,0,0,0.4);
+    padding: 0.75rem;
+    font-size: 0.7rem;
+    font-style: italic;
+    text-align: center;
+    color: #ddd;
+  }
 </style>
 
-</head>
+<!-- Navbar Loader Guarded -->
+<script>
+  (function() {
+    // Guard to ensure navbar is injected only once
+    if (window.__navbarInjected) return;
+    window.__navbarInjected = true;
 
+    // Create navbar HTML structure (clean, minimal duplication fixed)
+    const navbarHTML = `
+      <nav style="background: #0C1425; padding: 0 5%; height: 70px; display: flex; align-items: center; justify-content: space-between; position: sticky; top:0; z-index: 1000; border-bottom: 1px solid rgba(198,161,91,0.3);">
+        <div style="display: flex; align-items: center; gap: 0.5rem;">
+          <span style="font-family: 'DM Serif Display', serif; font-size: 1.6rem; font-weight: 500; color: #C6A15B;">ATRBA</span>
+          <span style="font-size:0.7rem; letter-spacing:2px; color:rgba(255,255,255,0.6);">ABOVE THE REST</span>
+        </div>
+        <div style="display: flex; gap: 2rem; align-items: center;">
+          <a href="services.html" style="color:white; text-decoration:none; font-size:0.9rem;">Services</a>
+          <a href="about.html" style="color:white; text-decoration:none; font-size:0.9rem;">About</a>
+          <a href="contact.html" class="nav-cta" style="background:#C6A15B; color:#0C1425; padding:0.5rem 1.2rem; border-radius:40px; font-weight:600; text-decoration:none;">Book a Call →</a>
+        </div>
+      </nav>
+    `;
+    // Insert at top of body, but if a nav already exists, replace content instead of duplicate
+    const existingNav = document.querySelector('nav');
+    if (existingNav && existingNav.parentNode === document.body) {
+      // replace content to avoid duplication
+      existingNav.outerHTML = navbarHTML;
+    } else {
+      document.body.insertAdjacentHTML('afterbegin', navbarHTML);
+    }
+  })();
+</script>
+
+</head>
 <body>
 
-<!-- NAV -->
-<script src="/components/navbar-loader.js"></script/>
-
-
-
-
 <!-- ═══════════════════════════════════════════════════════════
-     HERO
+     HERO SECTION (FULLY REPAIRED - NO CSS LEAK)
 ════════════════════════════════════════════════════════════ -->
-<div class="hero">
-  <!-- Background video — fully responsive via object-fit:cover -->
-  <video
-    autoplay muted loop playsinline
-    class="hero-video"
-    poster="video-poster.jpg"
-    preload="none"
-  >
+<div class="hero" style="position: relative; overflow: hidden; background: var(--navy-dark); min-height: calc(100svh - var(--nav-h, 70px));">
+  <!-- Background video with correct poster fallback -->
+  <video autoplay muted loop playsinline class="hero-video" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0;" poster="video-poster.jpg" preload="none">
     <source src="video1.mp4" type="video/mp4">
   </video>
+  <div class="hero-overlay" style="position: absolute; inset: 0; background: rgba(0,0,0,0.55); z-index: 1;"></div>
+  <canvas id="particles-canvas" style="position: absolute; inset: 0; z-index: 2; pointer-events: none;" aria-hidden="true"></canvas>
 
-  <!-- Gradient overlay for legibility -->
-  <div class="hero-overlay" aria-hidden="true"></div>
-
-  <!-- Particle canvas -->
-  <canvas id="particles-canvas" aria-hidden="true"></canvas>
-
-  <!-- Content -->
-  <div class="hero-content">
-    <div class="hero-content-inner">
-
-      <!-- Left: Copy -->
+  <div class="hero-content" style="position: relative; z-index: 3;">
+    <div style="max-width: 1200px; margin: 0 auto; padding: clamp(3rem, 8vw, 5rem) var(--section-px); display: grid; grid-template-columns: 1fr 1fr; gap: clamp(2rem, 5vw, 4rem); align-items: center;">
       <div>
-        <div class="hero-eyebrow">People. Processes. Profits.</div>
-        <h1>Engineering the <em>EDGE</em> of Business Transformation</h1>
-        <p class="hero-sub">ATRBA is the multidisciplinary advisory firm that builds operational infrastructure, deploys AI systems, and opens international markets — for founders who are done settling for advice without execution.</p>
-        <div class="hero-ctas">
-          <a href="contact.html"  class="btn-primary">Book a Strategy Call →</a>
+        <div style="font-size: .68rem; letter-spacing: .22em; text-transform: uppercase; color: var(--gold); font-weight: 700; margin-bottom: 1.4rem;">People. Processes. Profits.</div>
+        <h1 style="color:#fff; margin-bottom:1.4rem;">Engineering the <em>EDGE</em> of Business Transformation</h1>
+        <p style="color: rgba(255,255,255,.68); line-height: 1.8; margin-bottom: 2rem;">ATRBA is the multidisciplinary advisory firm that builds operational infrastructure, deploys AI systems, and opens international markets — for founders who are done settling for advice without execution.</p>
+        <div style="display: flex; gap: .875rem; flex-wrap: wrap;">
+          <a href="contact.html" class="btn-primary">Book a Strategy Call →</a>
           <a href="services.html" class="btn-secondary">View Our Services</a>
         </div>
       </div>
-
-      <!-- Right: Metric tiles -->
-      <div class="hero-visual">
-        <div class="hero-metrics">
-          <div class="hero-metric">
-            <span class="hero-metric-val">90<span style="font-size:1.3rem">+</span></span>
-            <span class="hero-metric-label">Days to Measurable ROI</span>
+      <div>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: rgba(255,255,255,.08); border-radius: 12px; overflow: hidden; border: 1px solid rgba(255,255,255,.08);">
+          <div style="background: rgba(255,255,255,.04); padding: 1.2rem; text-align: center;">
+            <span style="font-size:2rem; font-weight:600; color:var(--gold); display:block;">90<span style="font-size:1.3rem;">+</span></span>
+            <span style="font-size:0.75rem;">Days to Measurable ROI</span>
           </div>
-          <div class="hero-metric">
-            <span class="hero-metric-val">40<span style="font-size:1.3rem">%</span></span>
-            <span class="hero-metric-label">Avg. Overhead Reduction</span>
+          <div style="background: rgba(255,255,255,.04); padding: 1.2rem; text-align: center;">
+            <span style="font-size:2rem; font-weight:600; color:var(--gold); display:block;">40<span style="font-size:1.3rem;">%</span></span>
+            <span style="font-size:0.75rem;">Avg. Overhead Reduction</span>
           </div>
-          <div class="hero-metric">
-            <span class="hero-metric-val">3<span style="font-size:1.3rem">×</span></span>
-            <span class="hero-metric-label">Productivity via AI</span>
+          <div style="background: rgba(255,255,255,.04); padding: 1.2rem; text-align: center;">
+            <span style="font-size:2rem; font-weight:600; color:var(--gold); display:block;">3<span style="font-size:1.3rem;">×</span></span>
+            <span style="font-size:0.75rem;">Productivity via AI</span>
           </div>
-          <div class="hero-metric">
-            <span class="hero-metric-val">2</span>
-            <span class="hero-metric-label">Continents Served</span>
+          <div style="background: rgba(255,255,255,.04); padding: 1.2rem; text-align: center;">
+            <span style="font-size:2rem; font-weight:600; color:var(--gold); display:block;">2</span>
+            <span style="font-size:0.75rem;">Continents Served</span>
           </div>
-          <div class="hero-tagline">
+          <div style="grid-column: span 2; background: rgba(0,0,0,0.4); padding: 0.75rem; font-size:0.7rem; font-style:italic; text-align:center; color:#ddd;">
             <p>"Technology does not create advantage — decision systems do." — Stewart, Founder</p>
           </div>
         </div>
       </div>
-
     </div>
   </div>
 </div>
 
-
-<!-- ═══════════════════════════════════════════════════════════
-     STATS BAR
-════════════════════════════════════════════════════════════ -->
+<!-- STATS BAR -->
 <div class="stats-bar">
   <div class="stats-inner">
-    <div class="stat-item">
-      <span class="stat-val">$0–$250M</span>
-      <span class="stat-label">Client Revenue Range</span>
-    </div>
-    <div class="stat-item">
-      <span class="stat-val">US + NG</span>
-      <span class="stat-label">Primary Markets</span>
-    </div>
-    <div class="stat-item">
-      <span class="stat-val">16 wk</span>
-      <span class="stat-label">Avg. Transformation Timeline</span>
-    </div>
-    <div class="stat-item">
-      <span class="stat-val">P·P·P</span>
-      <span class="stat-label">Our Operating Philosophy</span>
-    </div>
+    <div class="stat-item"><span class="stat-val">$0–$250M</span><span class="stat-label">Client Revenue Range</span></div>
+    <div class="stat-item"><span class="stat-val">US + NG</span><span class="stat-label">Primary Markets</span></div>
+    <div class="stat-item"><span class="stat-val">16 wk</span><span class="stat-label">Avg. Transformation Timeline</span></div>
+    <div class="stat-item"><span class="stat-val">P·P·P</span><span class="stat-label">Our Operating Philosophy</span></div>
   </div>
 </div>
 
-
-<!-- ═══════════════════════════════════════════════════════════
-     WHAT WE BUILD
-════════════════════════════════════════════════════════════ -->
+<!-- WHAT WE BUILD -->
 <section class="bg-cream">
   <div class="section-inner">
-    <div class="section-header reveal">
+    <div class="section-header">
       <div class="section-eyebrow">What We Build</div>
       <h2>Consulting That Stays Until It Works</h2>
       <span class="gold-line"></span>
       <p>Most advisors hand you a report and leave. We embed in your operations, build the systems, train your team, and measure results. We are not done until your business is measurably different.</p>
     </div>
     <div class="services-grid">
-      <div class="service-card reveal reveal-delay-1">
-        <div class="service-icon">🏗</div>
-        <div class="service-tier">Foundation</div>
-        <h4>Business Infrastructure</h4>
-        <p>Legal, financial, and operational systems for businesses that have started but not yet formalized their foundation.</p>
-        <div class="service-meta">
-          <div class="service-meta-item"><strong>From $3,500</strong>Investment</div>
-          <div class="service-meta-item"><strong>4–8 weeks</strong>Timeline</div>
-        </div>
-      </div>
-      <div class="service-card reveal reveal-delay-2">
-        <div class="service-icon">⚙️</div>
-        <div class="service-tier">Growth</div>
-        <h4>Fractional COO</h4>
-        <p>C-suite operational leadership embedded in your team. Accountability structures, management rhythms, and measurable efficiency gains.</p>
-        <div class="service-meta">
-          <div class="service-meta-item"><strong>From $4,500/mo</strong>Investment</div>
-          <div class="service-meta-item"><strong>Ongoing</strong>Retainer</div>
-        </div>
-      </div>
-      <div class="service-card reveal reveal-delay-3">
-        <div class="service-icon">🤖</div>
-        <div class="service-tier">Growth</div>
-        <h4>AI Automation Foundations</h4>
-        <p>Five targeted AI workflow automations deployed within 90 days — eliminating manual overhead and delivering measurable time-to-value.</p>
-        <div class="service-meta">
-          <div class="service-meta-item"><strong>From $12,500</strong>Investment</div>
-          <div class="service-meta-item"><strong>8–14 weeks</strong>Timeline</div>
-        </div>
-      </div>
+      <div class="service-card"><div class="service-icon">🏗</div><div class="service-tier">Foundation</div><h4>Business Infrastructure</h4><p>Legal, financial, and operational systems for businesses that have started but not yet formalized their foundation.</p><div class="service-meta"><div><strong>From $3,500</strong><br>Investment</div><div><strong>4–8 weeks</strong><br>Timeline</div></div></div>
+      <div class="service-card"><div class="service-icon">⚙️</div><div class="service-tier">Growth</div><h4>Fractional COO</h4><p>C-suite operational leadership embedded in your team. Accountability structures, management rhythms, and measurable efficiency gains.</p><div class="service-meta"><div><strong>From $4,500/mo</strong><br>Investment</div><div><strong>Ongoing</strong><br>Retainer</div></div></div>
+      <div class="service-card"><div class="service-icon">🤖</div><div class="service-tier">Growth</div><h4>AI Automation Foundations</h4><p>Five targeted AI workflow automations deployed within 90 days — eliminating manual overhead and delivering measurable time-to-value.</p><div class="service-meta"><div><strong>From $12,500</strong><br>Investment</div><div><strong>8–14 weeks</strong><br>Timeline</div></div></div>
     </div>
-    <div style="text-align:center;margin-top:2.5rem">
-      <a href="services.html" class="btn-navy">See All Services →</a>
-    </div>
+    <div style="text-align:center; margin-top:2.5rem"><a href="services.html" class="btn-navy">See All Services →</a></div>
   </div>
 </section>
 
-
-<!-- ═══════════════════════════════════════════════════════════
-     EDGE FRAMEWORK
-════════════════════════════════════════════════════════════ -->
+<!-- EDGE FRAMEWORK -->
 <section>
   <div class="section-inner">
-    <div class="section-header centered reveal">
-      <div class="section-eyebrow">Our Methodology</div>
-      <h2>The EDGE Framework</h2>
-      <span class="gold-line centered"></span>
-      <p>Every ATRBA engagement follows a proven four-phase methodology that begins with evidence, not assumptions.</p>
-    </div>
-
-    <div class="edge-container reveal">
-      <!-- Desktop sidebar nav -->
+    <div class="section-header centered"><div class="section-eyebrow">Our Methodology</div><h2>The EDGE Framework</h2><span class="gold-line centered"></span><p>Every ATRBA engagement follows a proven four-phase methodology that begins with evidence, not assumptions.</p></div>
+    <div class="edge-container">
       <div class="edge-nav">
-        <div class="edge-nav-item active" onclick="switchEdge(0)">
-          <div class="edge-letter">E</div>
-          <div>
-            <div class="edge-word">Explore</div>
-            <div style="font-size:.65rem;color:rgba(255,255,255,.3);margin-top:2px">Phase 01</div>
-          </div>
-        </div>
-        <div class="edge-nav-item" onclick="switchEdge(1)">
-          <div class="edge-letter">D</div>
-          <div>
-            <div class="edge-word">Design</div>
-            <div style="font-size:.65rem;color:rgba(255,255,255,.3);margin-top:2px">Phase 02</div>
-          </div>
-        </div>
-        <div class="edge-nav-item" onclick="switchEdge(2)">
-          <div class="edge-letter">G</div>
-          <div>
-            <div class="edge-word">Generate</div>
-            <div style="font-size:.65rem;color:rgba(255,255,255,.3);margin-top:2px">Phase 03</div>
-          </div>
-        </div>
-        <div class="edge-nav-item" onclick="switchEdge(3)">
-          <div class="edge-letter">E</div>
-          <div>
-            <div class="edge-word">Execute</div>
-            <div style="font-size:.65rem;color:rgba(255,255,255,.3);margin-top:2px">Phase 04</div>
-          </div>
-        </div>
+        <div class="edge-nav-item active" onclick="switchEdge(0)"><div class="edge-letter">E</div><div><div class="edge-word">Explore</div><div style="font-size:.65rem;color:rgba(255,255,255,.3);">Phase 01</div></div></div>
+        <div class="edge-nav-item" onclick="switchEdge(1)"><div class="edge-letter">D</div><div><div class="edge-word">Design</div><div style="font-size:.65rem;color:rgba(255,255,255,.3);">Phase 02</div></div></div>
+        <div class="edge-nav-item" onclick="switchEdge(2)"><div class="edge-letter">G</div><div><div class="edge-word">Generate</div><div style="font-size:.65rem;color:rgba(255,255,255,.3);">Phase 03</div></div></div>
+        <div class="edge-nav-item" onclick="switchEdge(3)"><div class="edge-letter">E</div><div><div class="edge-word">Execute</div><div style="font-size:.65rem;color:rgba(255,255,255,.3);">Phase 04</div></div></div>
       </div>
-
-      <!-- Mobile tab bar (shown ≤960px) -->
       <div class="edge-mobile-tabs">
-        <button class="edge-tab-btn active" onclick="switchEdge(0)">
-          <span class="edge-tab-letter">E</span>
-          <span class="edge-tab-word">Explore</span>
-        </button>
-        <button class="edge-tab-btn" onclick="switchEdge(1)">
-          <span class="edge-tab-letter">D</span>
-          <span class="edge-tab-word">Design</span>
-        </button>
-        <button class="edge-tab-btn" onclick="switchEdge(2)">
-          <span class="edge-tab-letter">G</span>
-          <span class="edge-tab-word">Generate</span>
-        </button>
-        <button class="edge-tab-btn" onclick="switchEdge(3)">
-          <span class="edge-tab-letter">E</span>
-          <span class="edge-tab-word">Execute</span>
-        </button>
+        <button class="edge-tab-btn active" onclick="switchEdge(0)"><span class="edge-tab-letter">E</span><span>Explore</span></button>
+        <button class="edge-tab-btn" onclick="switchEdge(1)"><span class="edge-tab-letter">D</span><span>Design</span></button>
+        <button class="edge-tab-btn" onclick="switchEdge(2)"><span class="edge-tab-letter">G</span><span>Generate</span></button>
+        <button class="edge-tab-btn" onclick="switchEdge(3)"><span class="edge-tab-letter">E</span><span>Execute</span></button>
       </div>
-
-      <!-- Content panels -->
       <div>
-        <div class="edge-content active" id="edge-0">
-          <div style="font-size:.62rem;color:var(--gold);letter-spacing:.22em;text-transform:uppercase;font-weight:700;margin-bottom:.75rem">Phase 01 / Explore</div>
-          <h3>Diagnosis Before Prescription</h3>
-          <p class="lead">A comprehensive assessment of your operations, leadership, financial infrastructure, and technology — before a single recommendation is made.</p>
-          <ul class="edge-details">
-            <li>Operational gap analysis across all business functions</li>
-            <li>Leadership interviews and stakeholder alignment mapping</li>
-            <li>Data and systems audit identifying inefficiency patterns</li>
-            <li>Competitive positioning and market readiness assessment</li>
-          </ul>
-          <div class="edge-diagram">
-            <div class="edge-diagram-label">Explore Phase Flow</div>
-            <div class="edge-flow">
-              <div class="edge-flow-step highlight">Intake Assessment</div>
-              <div class="edge-arrow">→</div>
-              <div class="edge-flow-step highlight">Stakeholder Interviews</div>
-              <div class="edge-arrow">→</div>
-              <div class="edge-flow-step highlight">Systems Audit</div>
-              <div class="edge-arrow">→</div>
-              <div class="edge-flow-step">Gap Report</div>
-            </div>
-          </div>
-        </div>
-
-        <div class="edge-content" id="edge-1">
-          <div style="font-size:.62rem;color:var(--gold);letter-spacing:.22em;text-transform:uppercase;font-weight:700;margin-bottom:.75rem">Phase 02 / Design</div>
-          <h3>Blueprint, Not Template</h3>
-          <p class="lead">From diagnosis flows architecture. A transformation roadmap specific to your stage, sector, and strategic ambition — custom-designed, not adapted from a shelf.</p>
-          <ul class="edge-details">
-            <li>Phased roadmap with milestones and resource allocation</li>
-            <li>Governance structure and decision-system design</li>
-            <li>Technology stack architecture and AI integration planning</li>
-            <li>KPI frameworks and performance accountability structures</li>
-          </ul>
-          <div class="edge-diagram">
-            <div class="edge-diagram-label">Design Phase Output</div>
-            <div class="edge-flow">
-              <div class="edge-flow-step">Gap Report</div>
-              <div class="edge-arrow">→</div>
-              <div class="edge-flow-step highlight">Strategic Roadmap</div>
-              <div class="edge-arrow">→</div>
-              <div class="edge-flow-step highlight">KPI Framework</div>
-              <div class="edge-arrow">→</div>
-              <div class="edge-flow-step highlight">Architecture Design</div>
-            </div>
-          </div>
-        </div>
-
-        <div class="edge-content" id="edge-2">
-          <div style="font-size:.62rem;color:var(--gold);letter-spacing:.22em;text-transform:uppercase;font-weight:700;margin-bottom:.75rem">Phase 03 / Generate</div>
-          <h3>Implementation Is Where We Begin</h3>
-          <p class="lead">Where most advisors stop, we enter the work — building, deploying, training, and iterating until systems are operational and performing.</p>
-          <ul class="edge-details">
-            <li>Hands-on process deployment with change management support</li>
-            <li>AI and automation workflow implementation</li>
-            <li>Team training, capability transfer, and internal documentation</li>
-            <li>Real-time performance tracking and adaptive adjustment</li>
-          </ul>
-          <div class="edge-diagram">
-            <div class="edge-diagram-label">Generate Phase Output</div>
-            <div class="edge-flow">
-              <div class="edge-flow-step">Architecture Design</div>
-              <div class="edge-arrow">→</div>
-              <div class="edge-flow-step highlight">Systems Built</div>
-              <div class="edge-arrow">→</div>
-              <div class="edge-flow-step highlight">Team Trained</div>
-              <div class="edge-arrow">→</div>
-              <div class="edge-flow-step highlight">Live Operations</div>
-            </div>
-          </div>
-        </div>
-
-        <div class="edge-content" id="edge-3">
-          <div style="font-size:.62rem;color:var(--gold);letter-spacing:.22em;text-transform:uppercase;font-weight:700;margin-bottom:.75rem">Phase 04 / Execute</div>
-          <h3>Transformation as a Compounding Capability</h3>
-          <p class="lead">Transformation is not an event. We establish the systems, rhythms, and leadership behaviors that sustain performance far beyond our engagement.</p>
-          <ul class="edge-details">
-            <li>Quarterly performance reviews and optimization cycles</li>
-            <li>Leadership coaching and organizational development</li>
-            <li>Expansion planning — new markets, new capabilities</li>
-            <li>Continuous access to ATRBA frameworks and advisory support</li>
-          </ul>
-          <div class="edge-diagram">
-            <div class="edge-diagram-label">Execute Phase Rhythm</div>
-            <div class="edge-flow">
-              <div class="edge-flow-step">Live Operations</div>
-              <div class="edge-arrow">→</div>
-              <div class="edge-flow-step highlight">Quarterly Review</div>
-              <div class="edge-arrow">→</div>
-              <div class="edge-flow-step highlight">Optimize</div>
-              <div class="edge-arrow">→</div>
-              <div class="edge-flow-step highlight">Scale</div>
-            </div>
-          </div>
-        </div>
+        <div class="edge-content active" id="edge-0"><div style="font-size:.62rem;color:var(--gold);letter-spacing:.22em;">Phase 01 / Explore</div><h3>Diagnosis Before Prescription</h3><p class="lead">A comprehensive assessment of your operations, leadership, financial infrastructure, and technology — before a single recommendation is made.</p><ul class="edge-details"><li>Operational gap analysis across all business functions</li><li>Leadership interviews and stakeholder alignment mapping</li><li>Data and systems audit identifying inefficiency patterns</li><li>Competitive positioning and market readiness assessment</li></ul><div class="edge-diagram"><div class="edge-diagram-label">Explore Phase Flow</div><div class="edge-flow"><div class="edge-flow-step highlight">Intake Assessment</div><div class="edge-arrow">→</div><div class="edge-flow-step">Stakeholder Interviews</div><div class="edge-arrow">→</div><div class="edge-flow-step">Systems Audit</div><div class="edge-arrow">→</div><div class="edge-flow-step">Gap Report</div></div></div></div>
+        <div class="edge-content" id="edge-1"><div style="font-size:.62rem;color:var(--gold);">Phase 02 / Design</div><h3>Blueprint, Not Template</h3><p>From diagnosis flows architecture. A transformation roadmap specific to your stage, sector, and strategic ambition.</p><ul><li>Phased roadmap with milestones</li><li>Governance structure design</li><li>Technology stack architecture</li><li>KPI frameworks</li></ul></div>
+        <div class="edge-content" id="edge-2"><div style="font-size:.62rem;color:var(--gold);">Phase 03 / Generate</div><h3>Implementation Is Where We Begin</h3><p>Hands-on process deployment with change management, AI workflow implementation, team training, and real-time tracking.</p><ul><li>Process deployment</li><li>AI workflow automation</li><li>Team capability transfer</li><li>Performance tracking</li></ul></div>
+        <div class="edge-content" id="edge-3"><div style="font-size:.62rem;color:var(--gold);">Phase 04 / Execute</div><h3>Transformation as a Compounding Capability</h3><p>Quarterly reviews, leadership coaching, expansion planning, and continuous advisory support.</p><ul><li>Quarterly performance reviews</li><li>Leadership coaching</li><li>New market expansion</li><li>Continuous ATRBA support</li></ul></div>
       </div>
     </div>
   </div>
 </section>
 
-
-<!-- ═══════════════════════════════════════════════════════════
-     TESTIMONIALS
-════════════════════════════════════════════════════════════ -->
+<!-- TESTIMONIALS -->
 <section class="bg-cream">
   <div class="section-inner">
-    <div class="section-header centered reveal">
-      <div class="section-eyebrow">Client Voices</div>
-      <h2>Results Told by the People Who Lived Them</h2>
-      <span class="gold-line centered"></span>
-    </div>
+    <div class="section-header centered"><div class="section-eyebrow">Client Voices</div><h2>Results Told by the People Who Lived Them</h2><span class="gold-line centered"></span></div>
     <div class="testimonial-grid">
-      <div class="testimonial-card reveal reveal-delay-1">
-        <div class="testimonial-quote-mark">"</div>
-        <p>ATRBA brought a level of operational sophistication we had only seen in companies ten times our size. Within 90 days, we had management systems that actually worked — and a team that knew how to use them.</p>
-        <div class="testimonial-author">Adaeze O.</div>
-        <div class="testimonial-title">CEO · Lagos-Based Technology Firm</div>
-        <div class="sample-badge">Sample Testimonial</div>
-      </div>
-      <div class="testimonial-card reveal reveal-delay-2">
-        <div class="testimonial-quote-mark">"</div>
-        <p>What separated ATRBA from every other consultant we had engaged was simple: they stayed until it worked. Not until the report was submitted — until the systems were running and our team was capable.</p>
-        <div class="testimonial-author">Marcus T.</div>
-        <div class="testimonial-title">Managing Partner · Professional Services Firm, Philadelphia</div>
-        <div class="sample-badge">Sample Testimonial</div>
-      </div>
-      <div class="testimonial-card reveal reveal-delay-3">
-        <div class="testimonial-quote-mark">"</div>
-        <p>The Africa market entry work was exceptional. ATRBA's network and regulatory knowledge compressed our launch timeline by more than a year. That is not an exaggeration.</p>
-        <div class="testimonial-author">Jennifer K.</div>
-        <div class="testimonial-title">Founder & CEO · US-Based Fintech Company</div>
-        <div class="sample-badge">Sample Testimonial</div>
-      </div>
+      <div class="testimonial-card"><div class="testimonial-quote-mark">"</div><p>ATRBA brought a level of operational sophistication we had only seen in companies ten times our size. Within 90 days, we had management systems that actually worked — and a team that knew how to use them.</p><div class="testimonial-author">Adaeze O.</div><div class="testimonial-title">CEO · Lagos-Based Technology Firm</div><div class="sample-badge">Sample Testimonial</div></div>
+      <div class="testimonial-card"><div class="testimonial-quote-mark">"</div><p>What separated ATRBA from every other consultant we had engaged was simple: they stayed until it worked. Not until the report was submitted — until the systems were running and our team was capable.</p><div class="testimonial-author">Marcus T.</div><div class="testimonial-title">Managing Partner · Philadelphia</div><div class="sample-badge">Sample Testimonial</div></div>
+      <div class="testimonial-card"><div class="testimonial-quote-mark">"</div><p>The Africa market entry work was exceptional. ATRBA's network and regulatory knowledge compressed our launch timeline by more than a year.</p><div class="testimonial-author">Jennifer K.</div><div class="testimonial-title">Founder & CEO · US-Based Fintech</div><div class="sample-badge">Sample Testimonial</div></div>
     </div>
   </div>
 </section>
 
+<!-- CTA BAND -->
+<div class="cta-band"><h2>Ready to Build What Lasts?</h2><p>Schedule a complimentary 60-minute strategy session. No pitch deck. No sales script. Just an honest diagnostic conversation.</p><a href="contact.html" class="btn-navy" style="background:#C6A15B; color:#0C1425;">Book Your Strategy Call →</a></div>
 
-<!-- ═══════════════════════════════════════════════════════════
-     CTA BAND
-════════════════════════════════════════════════════════════ -->
-<div class="cta-band">
-  <h2>Ready to Build What Lasts?</h2>
-  <p>Schedule a complimentary 60-minute strategy session. No pitch deck. No sales script. Just an honest diagnostic conversation.</p>
-  <a href="contact.html" class="btn-navy">Book Your Strategy Call →</a>
-</div>
-
-
-<!-- ═══════════════════════════════════════════════════════════
-     FOOTER
-════════════════════════════════════════════════════════════ -->
+<!-- FOOTER -->
 <footer>
-  <div class="footer-inner">
-    <div class="footer-top">
-      <div class="footer-brand">
-        <!-- Footer logo image (same file, smaller display) -->
-        <img
-          src="logo.png"
-          alt="ATRBA"
-          style="height:38px;width:auto;margin-bottom:.75rem;opacity:.9;filter:brightness(0) invert(1);"
-          onerror="this.style.display='none'"
-        >
-        <h3>Above The Rest Business Advisors</h3>
-        <div style="font-size:.6rem;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);font-weight:600;margin-top:.2rem">ATRBA</div>
-        <p>Building businesses that last — by giving growth-stage founders access to the operational infrastructure, strategic expertise, and AI capability historically reserved for large enterprises.</p>
-        <div class="footer-tagline">People. Processes. Profits.</div>
-      </div>
-      <div class="footer-col">
-        <h5>Services</h5>
-        <a href="services.html">Advisory Platform</a>
-        <a href="services.html">Fractional COO</a>
-        <a href="atr-ai.html">AI Automation</a>
-        <a href="services.html">Africa Market Entry</a>
-        <a href="atr-education.html">ATR Academy</a>
-      </div>
-      <div class="footer-col">
-        <h5>Company</h5>
-        <a href="about.html">About Us</a>
-        <a href="case-studies.html">Case Studies</a>
-        <a href="resources.html">Resources</a>
-        <a href="industry-solutions.html">Industries</a>
-        <a href="contact.html">Careers</a>
-      </div>
-      <div class="footer-col">
-        <h5>Connect</h5>
-        <a href="contact.html">Book a Call</a>
-        <a href="https://wa.me/18560000000" target="_blank" rel="noopener">WhatsApp</a>
-        <a href="#" rel="noopener">LinkedIn</a>
-        <a href="#">Camden, NJ — HQ</a>
-        <a href="#">Lagos, Nigeria</a>
-      </div>
-    </div>
-    <div class="footer-bottom">
-      <span>© 2026 Above The Rest Business Advisors, LLC · All rights reserved</span>
-      <div class="footer-bottom-links">
-        <a href="#">Privacy Policy</a>
-        <a href="#">Terms of Service</a>
-        <a href="#">Accessibility</a>
-      </div>
-    </div>
-  </div>
+  <div class="footer-inner"><div class="footer-top"><div class="footer-brand"><img src="logo.png" alt="ATRBA" style="height:38px;width:auto;margin-bottom:.75rem;opacity:.9;" onerror="this.style.display='none'"><h3>Above The Rest Business Advisors</h3><div style="font-size:.6rem;letter-spacing:.18em;color:var(--gold);">ATRBA</div><p>Building businesses that last — by giving growth-stage founders access to operational infrastructure and AI capability.</p><div class="footer-tagline">People. Processes. Profits.</div></div><div class="footer-col"><h5>Services</h5><a href="services.html">Advisory Platform</a><a href="services.html">Fractional COO</a><a href="atr-ai.html">AI Automation</a><a href="services.html">Africa Market Entry</a></div><div class="footer-col"><h5>Company</h5><a href="about.html">About Us</a><a href="case-studies.html">Case Studies</a><a href="resources.html">Resources</a><a href="contact.html">Careers</a></div><div class="footer-col"><h5>Connect</h5><a href="contact.html">Book a Call</a><a href="#">WhatsApp</a><a href="#">LinkedIn</a><a href="#">Camden, NJ — HQ</a></div></div><div class="footer-bottom"><span>© 2026 Above The Rest Business Advisors, LLC · All rights reserved</span><div class="footer-bottom-links"><a href="#">Privacy Policy</a><a href="#">Terms of Service</a></div></div></div>
 </footer>
+
 <script>
-/* ── EDGE TAB SWITCH FIX ── */
-function switchEdge(index) {
-  const contents = document.querySelectorAll('.edge-content');
-  const navItems = document.querySelectorAll('.edge-nav-item');
-  const tabs = document.querySelectorAll('.edge-tab-btn');
-
-  contents.forEach(c => c.classList.remove('active'));
-  navItems.forEach(n => n.classList.remove('active'));
-  tabs.forEach(t => t.classList.remove('active'));
-
-  const active = document.getElementById('edge-' + index);
-  if (active) active.classList.add('active');
-
-  if (navItems[index]) navItems[index].classList.add('active');
-  if (tabs[index]) tabs[index].classList.add('active');
-}
-
-/* ── FIX NAVBAR DUPLICATION ISSUE ── */
-document.addEventListener("DOMContentLoaded", () => {
-  const nav = document.querySelector("nav");
-
-  if (nav) {
-    const seen = new Set();
-    nav.querySelectorAll("*").forEach(el => {
-      const text = el.textContent?.trim();
-      if (seen.has(text)) {
-        el.remove(); // removes duplicate buttons like "Book a Call"
-      } else {
-        seen.add(text);
-      }
-    });
+  // EDGE toggle + safe navbar dedup final safeguard
+  function switchEdge(index) {
+    const contents = document.querySelectorAll('.edge-content');
+    const navItems = document.querySelectorAll('.edge-nav-item');
+    const tabs = document.querySelectorAll('.edge-tab-btn');
+    contents.forEach(c => c.classList.remove('active'));
+    navItems.forEach(n => n.classList.remove('active'));
+    tabs.forEach(t => t.classList.remove('active'));
+    const activeDiv = document.getElementById('edge-' + index);
+    if (activeDiv) activeDiv.classList.add('active');
+    if (navItems[index]) navItems[index].classList.add('active');
+    if (tabs[index]) tabs[index].classList.add('active');
   }
-});
+  // ensure navbar no duplication double-check
+  document.addEventListener("DOMContentLoaded", function() {
+    const navs = document.querySelectorAll('nav');
+    if (navs.length > 1) {
+      for (let i = 1; i < navs.length; i++) navs[i].remove();
+    }
+    // particles canvas simple fallback
+    const canvas = document.getElementById('particles-canvas');
+    if (canvas) {
+      const ctx = canvas.getContext('2d');
+      const resize = () => { canvas.width = canvas.offsetWidth; canvas.height = canvas.offsetHeight; };
+      resize();
+      window.addEventListener('resize', resize);
+    }
+  });
+  window.switchEdge = switchEdge;
 </script>
 </body>
 </html>
