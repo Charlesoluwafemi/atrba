@@ -4,14 +4,7 @@
    ============================================================ */
 
 /* ── FIX: prevent flash of unstyled navbar ─────────────────── */
-.site-nav {
-  opacity: 0;
-  transition: opacity .2s ease;
-}
 
-body.nav-ready .site-nav {
-  opacity: 1;
-}
 
 /* ── CSS Variables (shared tokens) ─────────────────────────── */
 :root {
@@ -42,14 +35,20 @@ body {
 
 .site-nav {
   position: fixed;
-  top: 0; left: 0; right: 0;
+  top: 0;
+  left: 0;
+  right: 0;
   height: var(--nav-h);
   z-index: 9000;
+
   background: rgba(11, 18, 35, 0.95);
+
   backdrop-filter: blur(18px);
   -webkit-backdrop-filter: blur(18px);
+
   border-bottom: 1px solid rgba(201, 147, 58, 0.18);
-  transition: box-shadow .3s, opacity .2s ease;
+
+  transition: box-shadow .3s;
 }
 
 .site-nav.scrolled {
