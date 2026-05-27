@@ -584,90 +584,74 @@
      SCRIPTS
 ════════════════════════════════════════════════════════════ -->
 <script>
-/* ── Hamburger / Mobile Menu ─────────────────────────────── */
-(function () {
-  const btn  = document.getElementById('hamburger');
-  const menu = document.getElementById('mobile-menu');
-  if (!btn || !menu) return;
-
-  function toggleMenu(open) {
-    btn.classList.toggle('open', open);
-    menu.classList.toggle('open', open);
-    btn.setAttribute('aria-expanded', open);
-    document.body.style.overflow = open ? 'hidden' : '';
-  }
-
-  btn.addEventListener('click', () => toggleMenu(!btn.classList.contains('open')));
-
-  // Close on link click
-  menu.querySelectorAll('a').forEach(link =>
-    link.addEventListener('click', () => toggleMenu(false))
+/* ── EDGE TABS ── */
+function switchEdge(idx) {
+  document.querySelectorAll('.edge-nav-item').forEach((el, i) =>
+    el.classList.toggle('active', i === idx)
   );
 
-  // Close on outside click
-  document.addEventListener('click', e => {
-    if (menu.classList.contains('open') && !btn.contains(e.target) && !menu.contains(e.target)) {
-      toggleMenu(false);
-    }
-  });
+  document.querySelectorAll('.edge-tab-btn').forEach((el, i) =>
+    el.classList.toggle('active', i === idx)
+  );
 
-  // Close on Escape
-  document.addEventListener('keydown', e => {
-    if (e.key === 'Escape') toggleMenu(false);
-  });
-})();
-
-/* ── EDGE Framework Tabs ────────────────────────────────── */
-function switchEdge(idx) {
-  document.querySelectorAll('.edge-nav-item').forEach((el, i) => el.classList.toggle('active', i === idx));
-  document.querySelectorAll('.edge-tab-btn').forEach((el, i) => el.classList.toggle('active', i === idx));
-  document.querySelectorAll('.edge-content').forEach((el, i) => el.classList.toggle('active', i === idx));
+  document.querySelectorAll('.edge-content').forEach((el, i) =>
+    el.classList.toggle('active', i === idx)
+  );
 }
 
-/* ── Scroll Reveal ──────────────────────────────────────── */
+/* ── SCROLL REVEAL ── */
 function observeReveal() {
   const els = document.querySelectorAll('.reveal:not(.visible)');
+
   if (!('IntersectionObserver' in window)) {
     els.forEach(el => el.classList.add('visible'));
     return;
   }
+
   const obs = new IntersectionObserver(entries => {
     entries.forEach(e => {
-      if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); }
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        obs.unobserve(e.target);
+      }
     });
-  }, { threshold: .12, rootMargin: '0px 0px -40px 0px' });
+  }, {
+    threshold: 0.12,
+    rootMargin: '0px 0px -40px 0px'
+  });
+
   els.forEach(el => obs.observe(el));
 }
 
-/* ── Particle Canvas ────────────────────────────────────── */
+window.addEventListener('load', observeReveal);
+window.addEventListener('scroll', observeReveal, { passive: true });
+
+/* ── PARTICLES ── */
 (function () {
   const canvas = document.getElementById('particles-canvas');
   if (!canvas) return;
 
-  // Disable particles on mobile to save battery
-  const isMobile = window.matchMedia('(max-width: 640px)').matches;
-  if (isMobile) { canvas.style.display = 'none'; return; }
-
   const ctx = canvas.getContext('2d');
-  let w, h, particles = [], raf;
+  let w, h, particles = [];
 
   function resize() {
-    w = canvas.width  = canvas.offsetWidth;
+    w = canvas.width = canvas.offsetWidth;
     h = canvas.height = canvas.offsetHeight;
   }
 
   function Particle() {
-    this.x  = Math.random() * w;
-    this.y  = Math.random() * h;
-    this.vx = (Math.random() - .5) * .3;
-    this.vy = (Math.random() - .5) * .3;
-    this.r  = Math.random() * 1.5 + .5;
-    this.a  = Math.random() * .35 + .08;
+    this.x = Math.random() * w;
+    this.y = Math.random() * h;
+    this.vx = (Math.random() - 0.5) * 0.3;
+    this.vy = (Math.random() - 0.5) * 0.3;
+    this.r = Math.random() * 1.5 + 0.5;
+    this.a = Math.random() * 0.35 + 0.08;
   }
 
   Particle.prototype.update = function () {
     this.x += this.vx;
     this.y += this.vy;
+
     if (this.x < 0 || this.x > w) this.vx *= -1;
     if (this.y < 0 || this.y > h) this.vy *= -1;
   };
@@ -681,56 +665,22 @@ function observeReveal() {
 
   function draw() {
     ctx.clearRect(0, 0, w, h);
+
     particles.forEach(p => {
       ctx.beginPath();
       ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
       ctx.fillStyle = `rgba(201,147,58,${p.a})`;
       ctx.fill();
     });
-    for (let i = 0; i < particles.length; i++) {
-      for (let j = i + 1; j < particles.length; j++) {
-        const dx = particles[i].x - particles[j].x;
-        const dy = particles[i].y - particles[j].y;
-        const d  = Math.sqrt(dx * dx + dy * dy);
-        if (d < 120) {
-          ctx.beginPath();
-          ctx.moveTo(particles[i].x, particles[i].y);
-          ctx.lineTo(particles[j].x, particles[j].y);
-          ctx.strokeStyle = `rgba(201,147,58,${.06 * (1 - d / 120)})`;
-          ctx.lineWidth = .5;
-          ctx.stroke();
-        }
-      }
-    }
-    particles.forEach(p => p.update());
-    raf = requestAnimationFrame(draw);
+
+    requestAnimationFrame(draw);
   }
 
   init();
   draw();
 
-  // Pause when tab hidden, resume when visible (battery saver)
-  document.addEventListener('visibilitychange', () => {
-    if (document.hidden) cancelAnimationFrame(raf);
-    else draw();
-  });
-
-  window.addEventListener('resize', init, { passive: true });
+  window.addEventListener('resize', init);
 })();
-
-/* ── Nav scroll effect ──────────────────────────────────── */
-(function () {
-  const nav = document.getElementById('main-nav');
-  if (!nav) return;
-  window.addEventListener('scroll', () => {
-    nav.style.background = window.scrollY > 40
-      ? 'rgba(10,17,32,0.98)'
-      : 'rgba(12,20,37,0.96)';
-  }, { passive: true });
-})();
-
-window.addEventListener('load', observeReveal);
-window.addEventListener('scroll', observeReveal, { passive: true });
 </script>
 </body>
 </html>
