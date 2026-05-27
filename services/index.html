@@ -101,6 +101,46 @@ nav {
   text-align: center;
   padding: 80px 24px 72px;
 }
+.services-hero {
+  position: relative;
+  overflow: hidden;
+}
+
+/* video sits behind content */
+.hero-video {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  min-width: 100%;
+  min-height: 100%;
+  transform: translate(-50%, -50%);
+  object-fit: cover;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* dark overlay for readability */
+.hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(13, 27, 42, 0.65);
+  z-index: 1;
+}
+
+/* keep text above video */
+.services-hero > *:not(.hero-video):not(.hero-overlay) {
+  position: relative;
+  z-index: 2;
+}
+@media (max-width: 768px) {
+  .hero-video {
+    display: none;
+  }
+
+  .services-hero {
+    background: url("video-poster.jpg") center/cover no-repeat;
+  }
+}
 .breadcrumb {
   display: flex; align-items: center; justify-content: center;
   gap: 8px; font-size: .7rem; letter-spacing: .15em; text-transform: uppercase;
@@ -129,6 +169,37 @@ nav {
 }
 .model-pill:hover { color: rgba(255,255,255,.85); }
 .model-pill.active { background: var(--gold); color: var(--navy); }
+.services-hero {
+  position: relative;
+  overflow: hidden;
+}
+
+/* video sits behind content */
+.hero-video {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  min-width: 100%;
+  min-height: 100%;
+  transform: translate(-50%, -50%);
+  object-fit: cover;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* dark overlay for readability */
+.hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(13, 27, 42, 0.65);
+  z-index: 1;
+}
+
+/* keep text above video */
+.services-hero > *:not(.hero-video):not(.hero-overlay) {
+  position: relative;
+  z-index: 2;
+}
 
 /* ── TWO-MODEL SPLIT ────────────────────────────────────────── */
 .model-split { display: grid; grid-template-columns: 1fr 1fr; min-height: 200px; }
@@ -306,27 +377,13 @@ footer { background: #080f18; border-top: 1px solid rgba(255,255,255,.06); paddi
 <body>
 
 <!-- NAV -->
-<nav>
-  <div class="nav-inner">
-    <a href="index.html" class="nav-logo">
-      <div class="nav-logo-main">Above The Rest Business Advisors</div>
-      <div class="nav-logo-sub">ATRBA</div>
-    </a>
-    <div class="nav-links">
-      <a href="/services" class="hide-mobile">Services</a>
-      <a href="/atr-ai" class="hide-mobile">ATR AI</a>
-      <a href="/solutions" class="hide-mobile">Industries</a>
-      <a href="/case-studies class="hide-mobile">Case Studies</a>
-      <a href="/about" class="hide-mobile">About</a>
-      <a href="/contact" class="nav-cta">Book a Call</a>
-    </div>
-  </div>
-</nav>
-
-<a href="https://wa.me/18560000000" class="whatsapp-float" target="_blank" aria-label="Chat on WhatsApp">💬</a>
-
+<script src="/components/navbar-loader.js" defer></script>
 <!-- HERO -->
 <section class="services-hero">
+  <video class="hero-video" autoplay muted loop playsinline preload="none" poster="video-poster.jpg">
+    <source src="hero-video.mp4" type="video/mp4">
+  </video>
+  <div class="hero-overlay"></div>
   <div class="breadcrumb">
     <a href="index.html">Home</a>
     <span style="opacity:.4">/</span>
