@@ -31,13 +31,13 @@
   }());
 
   var siteRoot   = (scriptEl && scriptEl.getAttribute('data-root')) || '/';
-  var navbarURL  = siteRoot.replace(/\/$/, '') + '/components/navbar.html';
+  var navbarURL  = siteRoot.replace(/\/$/, '') + 'navbar.html';
 
   /* ── 2. Inject navbar CSS into <head> if not already there ─ */
   if (!document.querySelector('link[data-navbar-css]')) {
     var link = document.createElement('link');
     link.rel = 'stylesheet';
-    link.href = siteRoot.replace(/\/$/, '') + '/components/navbar.css';
+    link.href = siteRoot.replace(/\/$/, '') + 'navbar.css';
     link.setAttribute('data-navbar-css', '1');
     document.head.appendChild(link);
   }
