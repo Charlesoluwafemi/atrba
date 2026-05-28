@@ -3,256 +3,264 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>About — ATRBA</title>
 <meta name="description" content="About Above The Rest Business Advisors — our story, philosophy, values, FAQs, and careers.">
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="/components/navbar.css">
 <link rel="stylesheet" href="_shared.css">
+
+<script src="/components/navbar-loader.js" data-root="/" defer></script>
+
 <style>
-body{padding-top:68px}
-.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:start;margin-bottom:4rem}
-.value-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;margin-top:3rem}
-.value-card{padding:1.5rem;background:var(--cream);border-radius:6px;border-left:3px solid var(--gold)}
-.value-card h4{color:var(--navy);margin-bottom:.4rem;font-size:.95rem}
-.value-card p{font-size:.85rem;line-height:1.65}
-.faq-list{display:grid;gap:.75rem;max-width:800px;margin:0 auto}
-.faq-item{background:#fff;border:1px solid rgba(27,42,74,.1);border-radius:6px;overflow:hidden}
-.faq-question{padding:1.25rem 1.5rem;cursor:pointer;display:flex;justify-content:space-between;align-items:center;user-select:none;transition:background .2s}
-.faq-question:hover{background:var(--cream)}
-.faq-question h4{font-size:.95rem;color:var(--navy);font-family:var(--font-sans);font-weight:500;margin:0}
-.faq-toggle{width:22px;height:22px;border:1.5px solid rgba(27,42,74,.25);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.75rem;transition:all .25s;flex-shrink:0;margin-left:1rem;color:var(--navy)}
-.faq-item.open .faq-toggle{background:var(--gold);border-color:var(--gold);color:#fff;transform:rotate(45deg)}
-.faq-answer{display:none;padding:0 1.5rem 1.25rem;font-size:.9rem;color:var(--slate);line-height:1.8}
-.faq-item.open .faq-answer{display:block}
-@media(max-width:960px){.about-grid{grid-template-columns:1fr}.value-grid{grid-template-columns:1fr 1fr}}
-@media(max-width:640px){.value-grid{grid-template-columns:1fr}}
-</style>
-<link rel="stylesheet" href="../components/navbar.css">
-<script src="../components/navbar-loader.js" data-root="/"></script>
+body{
+  padding-top:68px;
+}
+
+/* ================= GRID LAYOUTS ================= */
+
+.about-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:4rem;
+  align-items:start;
+  margin-bottom:4rem;
+}
+
+.value-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:1.5rem;
+  margin-top:3rem;
+}
+
 .career-grid{
   display:grid;
   grid-template-columns:repeat(3,1fr);
   gap:1.5rem;
 }
 
+/* ================= CARDS ================= */
+
+.value-card{
+  padding:1.5rem;
+  background:var(--cream);
+  border-radius:6px;
+  border-left:3px solid var(--gold);
+}
+
+.value-card h4{
+  color:var(--navy);
+  margin-bottom:.4rem;
+  font-size:.95rem;
+}
+
+.value-card p{
+  font-size:.85rem;
+  line-height:1.65;
+}
+
+/* ================= FAQ ================= */
+
+.faq-list{
+  display:grid;
+  gap:.75rem;
+  max-width:800px;
+  margin:0 auto;
+}
+
+.faq-item{
+  background:#fff;
+  border:1px solid rgba(27,42,74,.1);
+  border-radius:6px;
+  overflow:hidden;
+}
+
+.faq-question{
+  padding:1.25rem 1.5rem;
+  cursor:pointer;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+
+.faq-answer{
+  display:none;
+  padding:0 1.5rem 1.25rem;
+}
+
+.faq-item.open .faq-answer{
+  display:block;
+}
+
+/* ================= RESPONSIVE FIX ================= */
+
 @media(max-width:960px){
+
+  .about-grid{
+    grid-template-columns:1fr;
+    gap:2rem;
+  }
+
+  .value-grid{
+    grid-template-columns:1fr 1fr;
+  }
+
   .career-grid{
     grid-template-columns:1fr;
   }
 }
+
+@media(max-width:640px){
+
+  .value-grid{
+    grid-template-columns:1fr;
+  }
+
+  body{
+    padding-top:60px;
+  }
+
+  .faq-question{
+    padding:1rem;
+  }
+}
+
+/* prevent overflow issues */
+img,div{
+  max-width:100%;
+}
+</style>
+
 </head>
+
 <body>
 
+<!-- HEADER -->
 <div class="page-header">
   <div class="page-header-inner">
-    <div class="breadcrumb"><a href="index.html">Home</a><span style="opacity:.4">/</span><span>About</span></div>
+    <div class="breadcrumb">
+      <a href="/">Home</a> / About
+    </div>
     <h1>About ATRBA</h1>
     <p>We exist because growth-stage founders deserve the same quality of advisory infrastructure as the world's most successful companies.</p>
   </div>
 </div>
 
+<!-- ABOUT -->
 <section>
-  <div class="section-inner">
-    <div class="about-grid reveal">
-      <div>
-        <div class="section-eyebrow">Our Story</div>
-        <h2>Built for Founders Who Are Done Settling</h2>
-        <span class="gold-line"></span>
-        <p style="margin-bottom:1rem">Above The Rest Business Advisors was founded on a single conviction: that ambitious founders — regardless of geography, background, or network — deserve access to the same quality of business infrastructure as the world's most successful companies.</p>
-        <p style="margin-bottom:1rem">For too long, enterprise-grade operations, strategic governance, and AI capability have been inaccessible to the growth-stage businesses that need them most. ATRBA was built to close that gap.</p>
-        <p style="margin-bottom:1rem">We are not a traditional consulting firm. We build alongside our clients. We stay until systems work. We measure results, not deliverables. And we operate from a philosophy that has proven itself across every engagement we have taken: <strong style="color:var(--navy)">People → Processes → Profits.</strong></p>
-        <p>Headquartered in Camden, NJ, with an active West Africa office in Lagos, Nigeria, ATRBA serves clients across the US and globally — with particular depth in cross-border engagements connecting African and diaspora-led businesses to international markets and capital.</p>
-      </div>
-      <div style="background:var(--navy);border-radius:8px;padding:2.5rem">
-        <div style="font-size:.65rem;letter-spacing:.15em;text-transform:uppercase;color:var(--gold);font-weight:600;margin-bottom:1.25rem">Our Operating Philosophy</div>
-        <div style="display:grid;gap:1.5rem">
-          <div style="border-left:3px solid var(--gold);padding-left:1.25rem">
-            <h4 style="color:#fff;font-size:1.1rem;margin-bottom:.35rem;font-family:var(--font-serif);font-weight:400">People</h4>
-            <p style="font-size:.88rem;color:rgba(255,255,255,.55);line-height:1.7">Every decision begins with the people it affects. Leadership capability, cultural health, and team alignment come first. We invest in people before we build systems.</p>
-          </div>
-          <div style="border-left:3px solid rgba(201,147,58,.4);padding-left:1.25rem">
-            <h4 style="color:#fff;font-size:1.1rem;margin-bottom:.35rem;font-family:var(--font-serif);font-weight:400">Processes</h4>
-            <p style="font-size:.88rem;color:rgba(255,255,255,.55);line-height:1.7">Scalable management systems and repeatable processes are the infrastructure that sustains performance. We document, systematize, and automate — in that order.</p>
-          </div>
-          <div style="border-left:3px solid rgba(201,147,58,.2);padding-left:1.25rem">
-            <h4 style="color:#fff;font-size:1.1rem;margin-bottom:.35rem;font-family:var(--font-serif);font-weight:400">Profits</h4>
-            <p style="font-size:.88rem;color:rgba(255,255,255,.55);line-height:1.7">Revenue and margin follow as the natural proof of the first two. Profits built on capable people and strong processes compound. Profits chased without that foundation do not.</p>
-          </div>
-        </div>
-        <div style="margin-top:1.75rem;padding-top:1.5rem;border-top:1px solid rgba(255,255,255,.08)">
-          <div style="font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);font-weight:500;margin-bottom:.5rem">Our Locations</div>
-          <p style="font-size:.85rem;color:rgba(255,255,255,.5)">Camden, NJ — US Headquarters<br>Lagos, Nigeria — West Africa Office<br>Serving clients globally</p>
-        </div>
-      </div>
-    </div>
+<div class="section-inner">
 
-    <div class="section-header reveal">
-      <div class="section-eyebrow">What We Stand For</div>
-      <h2>Six Core Values</h2>
-      <span class="gold-line"></span>
-    </div>
-    <div class="value-grid reveal">
-      <div class="value-card">
-        <h4>Strategic Clarity</h4>
-        <p>We turn complexity into structured decision-making, replacing intuition with insight while preserving leadership judgment.</p>
-      </div>
-      <div class="value-card">
-        <h4>Practical Execution</h4>
-        <p>We move beyond theory to build scalable management systems and governance structures that grow with our clients.</p>
-      </div>
-      <div class="value-card">
-        <h4>Integrity &amp; Accountability</h4>
-        <p>We operate with blameless accountability, viewing challenges as learning opportunities while maintaining the highest professional standards.</p>
-      </div>
-      <div class="value-card">
-        <h4>Long-Term Value</h4>
-        <p>We build advisory relationships, not transactional engagements, focusing on continuous improvement over episodic fixes.</p>
-      </div>
-      <div class="value-card">
-        <h4>Global Perspective</h4>
-        <p>Cross-border expertise and cultural understanding help our clients compete confidently in international markets.</p>
-      </div>
-      <div class="value-card">
-        <h4>Innovation &amp; Learning</h4>
-        <p>We operate at the intersection of business operations, analytics, and AI — constantly evolving to serve our clients better.</p>
-      </div>
-    </div>
+<div class="about-grid reveal">
+
+  <div>
+    <div class="section-eyebrow">Our Story</div>
+    <h2>Built for Founders Who Are Done Settling</h2>
+    <span class="gold-line"></span>
+
+    <p>Above The Rest Business Advisors was founded on a single conviction...</p>
+    <p>We are not a traditional consulting firm. We build alongside our clients.</p>
+    <p><strong>People → Processes → Profits.</strong></p>
   </div>
-</section>
 
-<section class="bg-cream">
-  <div class="section-inner">
-    <div class="section-header centered reveal">
-      <div class="section-eyebrow">Common Questions</div>
-      <h2>Frequently Asked Questions</h2>
-      <span class="gold-line centered"></span>
-    </div>
-    <div class="faq-list reveal">
-      <div class="faq-item">
-        <div class="faq-question" onclick="toggleFAQ(this)">
-          <h4>How is ATRBA different from a traditional consulting firm?</h4>
-          <div class="faq-toggle">+</div>
-        </div>
-        <div class="faq-answer">Most consulting firms deliver recommendations. ATRBA delivers implementation. We remain engaged until systems are operational and your team has the capability to sustain them independently. We also bring cross-functional depth — strategy, operations, finance, AI, and Africa market expertise — under a single engagement, eliminating the coordination overhead of multiple vendors.</div>
-      </div>
-      <div class="faq-item">
-        <div class="faq-question" onclick="toggleFAQ(this)">
-          <h4>What size of company is ATRBA best suited for?</h4>
-          <div class="faq-toggle">+</div>
-        </div>
-        <div class="faq-answer">Our Advisory Platform serves companies from pre-revenue through $20M in annual revenue, with Foundation, Growth, and Scale tiers calibrated to each stage. Our Bespoke Consulting arm works with established firms and PE-backed companies above that range. If you are in a growth or transformation moment — regardless of exact revenue — we are likely relevant.</div>
-      </div>
-      <div class="faq-item">
-        <div class="faq-question" onclick="toggleFAQ(this)">
-          <h4>Do you work with companies outside the United States?</h4>
-          <div class="faq-toggle">+</div>
-        </div>
-        <div class="faq-answer">Yes. ATRBA operates across the US and Nigeria, with active client relationships throughout West Africa and the African diaspora. Our Africa Market Entry practice is specifically designed for US-based companies entering African markets, and for African businesses seeking to access US capital or customers.</div>
-      </div>
-      <div class="faq-item">
-        <div class="faq-question" onclick="toggleFAQ(this)">
-          <h4>How long does a typical engagement last?</h4>
-          <div class="faq-toggle">+</div>
-        </div>
-        <div class="faq-answer">Project-based engagements typically range from 4 to 24 weeks depending on scope and tier. Many clients transition to ongoing advisory retainers following initial project completion. We do not bill for time — we price by outcome and scope, which aligns our incentives with yours.</div>
-      </div>
-      <div class="faq-item">
-        <div class="faq-question" onclick="toggleFAQ(this)">
-          <h4>What is the EDGE Framework?</h4>
-          <div class="faq-toggle">+</div>
-        </div>
-        <div class="faq-answer">EDGE is ATRBA's proprietary engagement methodology: Explore (diagnostic), Design (roadmap), Generate (implementation), Execute (sustained performance). It ensures every engagement begins with evidence rather than assumption, and ends with operational capability rather than a deliverable on a shelf.</div>
-      </div>
-      <div class="faq-item">
-        <div class="faq-question" onclick="toggleFAQ(this)">
-          <h4>How do I know if my company is ready for AI automation?</h4>
-          <div class="faq-toggle">+</div>
-        </div>
-        <div class="faq-answer">Readiness is not about company size — it is about operational clarity. AI creates leverage on top of existing processes. If those processes are undocumented or inconsistent, AI will accelerate the inconsistency, not fix it. We recommend an AI Readiness Assessment as a starting point for any company considering AI investment.</div>
-      </div>
-      <div class="faq-item">
-        <div class="faq-question" onclick="toggleFAQ(this)">
-          <h4>What does a first engagement typically look like?</h4>
-          <div class="faq-toggle">+</div>
-        </div>
-        <div class="faq-answer">Most engagements begin with a 60-minute complimentary discovery call — an honest conversation about your business, your current challenges, and your goals. If there is a clear fit, we will propose a scoped engagement beginning with the Explore phase of our EDGE methodology. We do not send automated proposals. Every recommendation follows a real diagnostic.</div>
-      </div>
-    </div>
+  <div style="background:var(--navy);border-radius:8px;padding:2.5rem">
+    <div style="color:var(--gold);font-size:.7rem;margin-bottom:1rem">Our Philosophy</div>
+
+    <p style="color:#fff;">People</p>
+    <p style="color:#aaa;">We invest in people first.</p>
+
+    <p style="color:#fff;">Processes</p>
+    <p style="color:#aaa;">We systemize operations.</p>
+
+    <p style="color:#fff;">Profits</p>
+    <p style="color:#aaa;">Profit follows structure.</p>
   </div>
-</section>
 
-<section>
-  <div class="section-inner">
-    <div class="section-header reveal">
-      <div class="section-eyebrow">Careers &amp; Culture</div>
-      <h2>Join a Team That Builds.</h2>
-      <span class="gold-line"></span>
-      <p>ATRBA is growing. If you are a strategist, operator, AI specialist, or business development professional who wants to do meaningful work with real clients — we want to hear from you.</p>
-    </div>
-     <div class="career-grid reveal">
-      <div style="background:var(--cream);border-radius:8px;padding:2rem">
-        <div style="font-size:1.5rem;margin-bottom:1rem">🧠</div>
-        <h4 style="color:var(--navy);margin-bottom:.5rem">Strategic &amp; Advisory Roles</h4>
-        <p style="font-size:.88rem;line-height:1.7">Senior consultants and fractional executives across operations, finance, and strategy. Client-facing roles serving our growth and scale tier clients.</p>
-      </div>
-      <div style="background:var(--cream);border-radius:8px;padding:2rem">
-        <div style="font-size:1.5rem;margin-bottom:1rem">🤖</div>
-        <h4 style="color:var(--navy);margin-bottom:.5rem">AI &amp; Technology Roles</h4>
-        <p style="font-size:.88rem;line-height:1.7">AI implementation specialists, automation engineers, and prompt library developers. Building and deploying AI systems for client organizations.</p>
-      </div>
-      <div style="background:var(--cream);border-radius:8px;padding:2rem">
-        <div style="font-size:1.5rem;margin-bottom:1rem">🌍</div>
-        <h4 style="color:var(--navy);margin-bottom:.5rem">Africa &amp; Diaspora Practice</h4>
-        <p style="font-size:.88rem;line-height:1.7">Market development, partner relations, and advisory roles supporting our West Africa operations and diaspora client base.</p>
-      </div>
-    </div>
-    <div style="text-align:center;margin-top:2.5rem">
-      <a href="contact.html" class="btn-navy">Send Your Interest →</a>
-    </div>
-  </div>
-</section>
-
-<div class="cta-band">
-  <h2>People. Processes. Profits.</h2>
-  <p>That is not just a tagline. It is the operating sequence behind every engagement we take.</p>
-  <a href="contact.html" class="btn-navy">Start the Conversation →</a>
 </div>
 
-<footer>
-  <div class="footer-inner">
-    <div class="footer-top">
-      <div class="footer-brand">
-        <h3>Above The Rest Business Advisors</h3>
-        <div style="font-size:.65rem;letter-spacing:.15em;text-transform:uppercase;color:var(--gold);font-weight:500;margin-top:.2rem">ATRBA</div>
-        <p>Building businesses that last — by giving growth-stage founders access to the operational infrastructure, strategic expertise, and AI capability historically reserved for large enterprises.</p>
-        <div class="footer-tagline">People. Processes. Profits.</div>
-      </div>
-      <div class="footer-col"><h5>Services</h5><a href="services.html">Advisory Platform</a><a href="services.html">Fractional COO</a><a href="atr-ai.html">AI Automation</a><a href="services.html">Africa Market Entry</a><a href="atr-education.html">ATR Academy</a></div>
-      <div class="footer-col"><h5>Company</h5><a href="about.html">About Us</a><a href="case-studies.html">Case Studies</a><a href="resources.html">Resources</a><a href="industry-solutions.html">Industries</a><a href="contact.html">Careers</a></div>
-      <div class="footer-col"><h5>Connect</h5><a href="contact.html">Book a Call</a><a href="https://wa.me/18560000000" target="_blank">WhatsApp</a><a href="#">LinkedIn</a><a href="#">Camden, NJ — HQ</a><a href="#">Lagos, Nigeria</a></div>
-    </div>
-    <div class="footer-bottom">
-      <span>© 2026 Above The Rest Business Advisors, LLC · All rights reserved</span>
-      <div class="footer-bottom-links"><a href="#">Privacy Policy</a><a href="#">Terms of Service</a><a href="#">Accessibility</a></div>
-    </div>
-  </div>
-</footer>
+</div>
+</section>
+
+<!-- VALUES -->
+<section>
+<div class="section-inner">
+
+<div class="value-grid reveal">
+
+<div class="value-card">
+<h4>Strategic Clarity</h4>
+<p>We turn complexity into structured decision-making.</p>
+</div>
+
+<div class="value-card">
+<h4>Execution</h4>
+<p>We build systems that actually work in real companies.</p>
+</div>
+
+<div class="value-card">
+<h4>Integrity</h4>
+<p>We operate with accountability and transparency.</p>
+</div>
+
+<div class="value-card">
+<h4>Long-Term Value</h4>
+<p>We build relationships, not transactions.</p>
+</div>
+
+<div class="value-card">
+<h4>Global Perspective</h4>
+<p>We support cross-border business growth.</p>
+</div>
+
+<div class="value-card">
+<h4>Innovation</h4>
+<p>We integrate AI and modern systems.</p>
+</div>
+
+</div>
+
+</div>
+</section>
+
+<!-- CAREERS -->
+<section>
+<div class="section-inner">
+
+<div class="section-header">
+<h2>Join a Team That Builds</h2>
+</div>
+
+<div class="career-grid reveal">
+
+<div class="value-card">
+<h4>Strategy Roles</h4>
+<p>Consulting and advisory work.</p>
+</div>
+
+<div class="value-card">
+<h4>AI & Tech</h4>
+<p>Automation and AI systems.</p>
+</div>
+
+<div class="value-card">
+<h4>Africa Practice</h4>
+<p>Market expansion roles.</p>
+</div>
+
+</div>
+
+</div>
+</section>
 
 <script>
 function toggleFAQ(el){
   const item=el.parentElement;
-  const wasOpen=item.classList.contains('open');
-  document.querySelectorAll('.faq-item').forEach(f=>f.classList.remove('open'));
-  if(!wasOpen) item.classList.add('open');
+  item.classList.toggle('open');
 }
-function observeReveal(){
-  const els=document.querySelectorAll('.reveal:not(.visible)');
-  if(!('IntersectionObserver' in window)){els.forEach(el=>el.classList.add('visible'));return;}
-  const obs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');obs.unobserve(e.target);}});},{threshold:.1,rootMargin:'0px 0px -40px 0px'});
-  els.forEach(el=>obs.observe(el));
-}
-window.addEventListener('load',observeReveal);
-window.addEventListener('scroll',observeReveal,{passive:true});
 </script>
+
 </body>
 </html>
