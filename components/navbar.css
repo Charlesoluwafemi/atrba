@@ -93,8 +93,6 @@ body {
   width: auto;
   object-fit: contain;
   display: block;
-  background: transparent;
-  mix-blend-mode: screen;
 }
 
 .nav-logo-text {
