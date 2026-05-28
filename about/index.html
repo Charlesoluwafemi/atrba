@@ -25,11 +25,26 @@
 .faq-item.open .faq-answer{display:block}
 @media(max-width:960px){.about-grid{grid-template-columns:1fr}.value-grid{grid-template-columns:1fr 1fr}}
 @media(max-width:640px){.value-grid{grid-template-columns:1fr}}
+<!-- ══════════════════════════════════════════════════════
+     NAVBAR FOUC PREVENTION
+     Inline + synchronous — runs before any paint.
+     navbar-loader.js removes this tag after injection.
+══════════════════════════════════════════════════════ -->
+
+<!-- Navbar CSS — blocking stylesheet -->
+<link rel="stylesheet" href="../components/navbar.css">
+
+<!-- Navbar loader — NO defer, NO async -->
+<script src="../components/navbar-loader.js" data-root="/"></script>
+
+<style>
+/* ── Reset & base ─────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
 </style>
 </head>
 <body>
-<!-- NAVBAR -->
-<script src="/components/navbar-loader.js"></script>
+
 
 <div class="page-header">
   <div class="page-header-inner">
