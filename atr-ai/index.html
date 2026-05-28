@@ -55,7 +55,6 @@ body { padding-top: 68px; }
     radial-gradient(ellipse 40% 40% at 85% 80%,  rgba(45,212,160,.04) 0%, transparent 60%);
   pointer-events: none;
 }
-/* Subtle grid overlay */
 .ai-hero::after {
   content: '';
   position: absolute; inset: 0;
@@ -119,6 +118,32 @@ body { padding-top: 68px; }
   max-width: 580px;
   margin: 0 auto 44px;
 }
+
+/* ── Hero Video ──────────────────────────────────────────────── */
+.hero-video-wrap {
+  width: 100%;
+  max-width: 860px;
+  margin: 0 auto 52px;
+  padding: 0;
+  box-sizing: border-box;
+}
+.hero-video-inner {
+  position: relative;
+  width: 100%;
+  padding-bottom: 56.25%;
+  overflow: hidden;
+  border-radius: 6px;
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 8%, black 92%, transparent 100%);
+  mask-image: linear-gradient(to bottom, transparent 0%, black 8%, black 92%, transparent 100%);
+}
+.hero-video-inner iframe {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  border: none;
+  pointer-events: none;
+}
+
 .hero-actions {
   display: flex;
   align-items: center;
@@ -295,7 +320,6 @@ body { padding-top: 68px; }
 .audit-section .section-h2 { color: #fff; max-width: 600px; }
 .audit-section .body-text  { color: rgba(255,255,255,.6); max-width: 640px; }
 
-/* Mandatory badge */
 .mandatory-badge {
   display: inline-flex;
   align-items: center;
@@ -312,7 +336,6 @@ body { padding-top: 68px; }
   margin-bottom: 24px;
 }
 
-/* Audit process steps */
 .audit-steps {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
@@ -366,7 +389,6 @@ body { padding-top: 68px; }
 }
 .audit-step p { font-size: .76rem; color: rgba(255,255,255,.45); line-height: 1.55; }
 
-/* Audit findings grid */
 .audit-findings {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -616,6 +638,42 @@ body { padding-top: 68px; }
 .uc-result::before { content: '↑'; color: #2dd4a0; font-weight: 700; }
 
 /* ══════════════════════════════════════════════════════════════
+   MID-PAGE VIDEO SECTION
+══════════════════════════════════════════════════════════════ */
+.midpage-video-section {
+  background: var(--cream);
+  padding: 0 24px 88px;
+}
+.midpage-video-grid {
+  max-width: 960px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 56px;
+  align-items: center;
+}
+.midpage-video-text .section-eyebrow { color: var(--gold); }
+.midpage-video-text .section-h2 { color: var(--navy); }
+.midpage-video-text .body-text { color: var(--text-muted); }
+.mid-video-wrap {
+  position: relative;
+  width: 100%;
+  padding-bottom: 56.25%;
+  overflow: hidden;
+  border-radius: 8px;
+  box-shadow: 0 24px 64px rgba(13,27,42,.12);
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 6%, black 94%, transparent 100%);
+  mask-image: linear-gradient(to bottom, transparent 0%, black 6%, black 94%, transparent 100%);
+}
+.mid-video-wrap iframe {
+  position: absolute;
+  top: -10%; left: 0;
+  width: 100%; height: 120%;
+  border: none;
+  pointer-events: none;
+}
+
+/* ══════════════════════════════════════════════════════════════
    INDUSTRY SOLUTIONS
 ══════════════════════════════════════════════════════════════ */
 .industry-section {
@@ -767,7 +825,6 @@ input[type=range]::-webkit-slider-thumb:hover { transform: scale(1.2); }
   margin-top: 8px;
 }
 
-/* Results panel */
 .roi-results {
   background: rgba(255,255,255,.04);
   border: 1px solid rgba(255,255,255,.1);
@@ -912,7 +969,7 @@ input[type=range]::-webkit-slider-thumb:hover { transform: scale(1.2); }
 .why-card.result p   { color: var(--text-muted); }
 
 /* ══════════════════════════════════════════════════════════════
-   FAQ (SEO / AEO optimized)
+   FAQ
 ══════════════════════════════════════════════════════════════ */
 .faq-section {
   background: var(--white);
@@ -1055,28 +1112,36 @@ input[type=range]::-webkit-slider-thumb:hover { transform: scale(1.2); }
 
 /* ── RESPONSIVE ─────────────────────────────────────────────── */
 @media (max-width: 900px) {
-  .position-band .inner   { grid-template-columns: 1fr; gap: 40px; }
-  .audit-steps            { grid-template-columns: 1fr 1fr; gap: 28px; }
-  .audit-steps::before    { display: none; }
-  .audit-findings         { grid-template-columns: 1fr 1fr; }
-  .service-tier-card      { grid-template-columns: 1fr; }
-  .stc-left               { padding: 24px; }
-  .stc-right              { padding: 24px; border-left: none; border-top: 1px solid var(--border-soft); flex-direction: row; align-items: center; justify-content: space-between; }
-  .uc-grid                { grid-template-columns: 1fr 1fr; }
-  .ind-grid               { grid-template-columns: 1fr 1fr; }
-  .outcomes-grid          { grid-template-columns: 1fr 1fr; }
-  .why-grid               { grid-template-columns: 1fr; }
-  .roi-calc               { grid-template-columns: 1fr; }
+  .position-band .inner       { grid-template-columns: 1fr; gap: 40px; }
+  .audit-steps                { grid-template-columns: 1fr 1fr; gap: 28px; }
+  .audit-steps::before        { display: none; }
+  .audit-findings             { grid-template-columns: 1fr 1fr; }
+  .service-tier-card          { grid-template-columns: 1fr; }
+  .stc-left                   { padding: 24px; }
+  .stc-right                  { padding: 24px; border-left: none; border-top: 1px solid var(--border-soft); flex-direction: row; align-items: center; justify-content: space-between; }
+  .uc-grid                    { grid-template-columns: 1fr 1fr; }
+  .ind-grid                   { grid-template-columns: 1fr 1fr; }
+  .outcomes-grid              { grid-template-columns: 1fr 1fr; }
+  .why-grid                   { grid-template-columns: 1fr; }
+  .roi-calc                   { grid-template-columns: 1fr; }
+  .midpage-video-grid         { grid-template-columns: 1fr; gap: 36px; }
+}
+@media (max-width: 768px) {
+  .midpage-video-grid         { grid-template-columns: 1fr; gap: 36px; }
+  /* Video comes first on mobile for visual impact */
+  .mid-video-wrap             { order: -1; }
 }
 @media (max-width: 600px) {
-  .hero-stats             { grid-template-columns: 1fr 1fr; }
-  .hero-stat:nth-child(2) { border-right: none; }
-  .hero-stat:nth-child(3) { border-top: 1px solid var(--border-navy); }
-  .audit-steps            { grid-template-columns: 1fr; }
-  .audit-findings         { grid-template-columns: 1fr; }
-  .uc-grid                { grid-template-columns: 1fr; }
-  .ind-grid               { grid-template-columns: 1fr; }
-  .outcomes-grid          { grid-template-columns: 1fr 1fr; }
+  .hero-stats                 { grid-template-columns: 1fr 1fr; }
+  .hero-stat:nth-child(2)     { border-right: none; }
+  .hero-stat:nth-child(3)     { border-top: 1px solid var(--border-navy); }
+  .audit-steps                { grid-template-columns: 1fr; }
+  .audit-findings             { grid-template-columns: 1fr; }
+  .uc-grid                    { grid-template-columns: 1fr; }
+  .ind-grid                   { grid-template-columns: 1fr; }
+  .outcomes-grid              { grid-template-columns: 1fr 1fr; }
+  .hero-video-wrap            { padding: 0; }
+  .midpage-video-section      { padding: 0 16px 72px; }
 }
 </style>
 </head>
@@ -1085,6 +1150,7 @@ input[type=range]::-webkit-slider-thumb:hover { transform: scale(1.2); }
 <!-- NAV -->
 <link rel="stylesheet" href="../components/navbar.css">
 <script src="../components/navbar-loader.js" data-root="/"></script>
+
 <!-- ════════════════════════════════════════════════════════════
      HERO
 ════════════════════════════════════════════════════════════ -->
@@ -1093,6 +1159,20 @@ input[type=range]::-webkit-slider-thumb:hover { transform: scale(1.2); }
     <div class="hero-eyebrow">ATR AI Division — ATRBA</div>
     <h1>AI That Actually<br><em>Changes</em> How You Operate</h1>
     <p class="hero-sub">Most companies collect AI tools. We build AI systems — diagnosed, designed, and deployed around your specific operations. Every engagement begins with an AI Audit. No exceptions.</p>
+
+    <!-- ── HERO VIDEO — autoplays silently on page load ── -->
+    <div class="hero-video-wrap">
+      <div class="hero-video-inner">
+        <iframe
+          src="https://www.youtube.com/embed/kd_zB1VeMoI?autoplay=1&mute=1&loop=1&playlist=kd_zB1VeMoI&controls=0&modestbranding=1&rel=0&showinfo=0&iv_load_policy=3&start=2"
+          title="AI technology in business operations"
+          allow="autoplay; encrypted-media"
+          allowfullscreen
+          loading="eager"
+        ></iframe>
+      </div>
+    </div>
+
     <div class="hero-actions">
       <a href="contact.html" class="btn-gold">Book Your AI Audit →</a>
       <a href="#services" class="btn-ghost-light">View Services</a>
@@ -1182,7 +1262,6 @@ input[type=range]::-webkit-slider-thumb:hover { transform: scale(1.2); }
       In one focused week, we examine your data quality and accessibility, your current technology stack, the maturity of your documented processes, your team's readiness to adopt AI-assisted workflows, and your leadership team's understanding of AI governance requirements. The output is a prioritized action plan — specific, sequenced, and built around your actual situation.
     </p>
 
-    <!-- Process steps -->
     <div class="audit-steps reveal">
       <div class="audit-step">
         <div class="step-circle"><span class="step-num">1</span></div>
@@ -1211,7 +1290,6 @@ input[type=range]::-webkit-slider-thumb:hover { transform: scale(1.2); }
       </div>
     </div>
 
-    <!-- What the audit finds -->
     <div class="audit-findings reveal">
       <div class="finding-card">
         <div class="f-icon">⚙️</div>
@@ -1265,7 +1343,6 @@ input[type=range]::-webkit-slider-thumb:hover { transform: scale(1.2); }
 
     <div class="service-tiers reveal">
 
-      <!-- Tier 1 -->
       <div class="service-tier-card">
         <div class="stc-left">
           <div class="stc-step">Step 01 · Prerequisite</div>
@@ -1290,7 +1367,6 @@ input[type=range]::-webkit-slider-thumb:hover { transform: scale(1.2); }
         </div>
       </div>
 
-      <!-- Tier 2 -->
       <div class="service-tier-card">
         <div class="stc-left">
           <div class="stc-step">Step 02 · Growth</div>
@@ -1316,7 +1392,6 @@ input[type=range]::-webkit-slider-thumb:hover { transform: scale(1.2); }
         </div>
       </div>
 
-      <!-- Tier 3 -->
       <div class="service-tier-card">
         <div class="stc-left">
           <div class="stc-step">Step 03 · Enterprise</div>
@@ -1456,6 +1531,37 @@ input[type=range]::-webkit-slider-thumb:hover { transform: scale(1.2); }
       </div>
 
     </div>
+  </div>
+</section>
+
+
+<!-- ════════════════════════════════════════════════════════════
+     MID-PAGE VIDEO SECTION
+     Placed between Use Cases and Industries — blends into
+     the cream background, no visible box or borders
+════════════════════════════════════════════════════════════ -->
+<section class="midpage-video-section">
+  <div class="midpage-video-grid">
+
+    <div class="midpage-video-text reveal">
+      <div class="section-eyebrow">Operational Intelligence</div>
+      <h2 class="section-h2">AI Working Silently<br>Across Every <em style="font-style:italic;color:var(--gold);">Function</em></h2>
+      <div class="gold-rule"></div>
+      <p class="body-text">This is what a properly integrated AI program looks like in practice — automation running simultaneously across customer intake, reporting, communications, and operations, without your team lifting a finger.</p>
+      <p class="body-text">Every ATR AI engagement is built to produce this kind of operational coherence. Systems that talk to each other, inform each other, and compound in value as your organization scales.</p>
+    </div>
+
+    <!-- Mid-page video — autoplays silently, loops, no controls -->
+    <div class="mid-video-wrap reveal reveal-delay-1">
+      <iframe
+        src="https://www.youtube.com/embed/ZJthWmSEEWM?autoplay=1&mute=1&loop=1&playlist=ZJthWmSEEWM&controls=0&modestbranding=1&rel=0&showinfo=0&iv_load_policy=3&start=5"
+        title="AI business automation systems at work"
+        allow="autoplay; encrypted-media"
+        allowfullscreen
+        loading="lazy"
+      ></iframe>
+    </div>
+
   </div>
 </section>
 
@@ -1679,7 +1785,7 @@ input[type=range]::-webkit-slider-thumb:hover { transform: scale(1.2); }
 
 
 <!-- ════════════════════════════════════════════════════════════
-     FAQ — SEO / AEO OPTIMIZED
+     FAQ
 ════════════════════════════════════════════════════════════ -->
 <section class="faq-section">
   <div class="inner">
@@ -1873,17 +1979,15 @@ function updateROI() {
 
 /* ── FAQ Accordion ─────────────────────────────────────────── */
 function toggleFaq(btn) {
-  const item     = btn.closest('.faq-item');
-  const isOpen   = item.classList.contains('open');
-  const chevron  = btn.querySelector('.faq-chevron');
+  const item    = btn.closest('.faq-item');
+  const isOpen  = item.classList.contains('open');
+  const chevron = btn.querySelector('.faq-chevron');
 
-  // Close all
   document.querySelectorAll('.faq-item.open').forEach(el => {
     el.classList.remove('open');
     el.querySelector('.faq-q').setAttribute('aria-expanded', 'false');
   });
 
-  // Open clicked if it was closed
   if (!isOpen) {
     item.classList.add('open');
     btn.setAttribute('aria-expanded', 'true');
