@@ -11,8 +11,26 @@
 <link rel="preload" as="fetch" href="/components/navbar.html">
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="_shared.css">
-<script src="/components/navbar-loader.js" defer></script>
 
+  <style>
+    /* Hide nav elements until loader reveals them */
+    .site-nav, .nav-drawer {
+      visibility: hidden;
+    }
+    /* Reserve the space so page doesn't jump */
+    body {
+      padding-top: 68px; /* matches --nav-h */
+    }
+    @media (max-width: 640px) {
+      body { padding-top: 60px; }
+    }
+  </style>
+
+  <!-- Load navbar CSS blocking (not async) -->
+  <link rel="stylesheet" href="/components/navbar.css">
+
+  <!-- Load navbar script — NO defer, NO async -->
+  <script src="/components/navbar-loader.js" data-root="/"></script>
 <style>
 /* ── Page-specific: Hero ───────────────────────────────────── */
 .hero {
