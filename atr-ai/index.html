@@ -36,9 +36,21 @@ body { padding-top: 68px; }
   --font-sans:   'Inter', sans-serif;
 }
 
-/* ══════════════════════════════════════════════════════════════
-   HERO
-══════════════════════════════════════════════════════════════ */
+/* ── Global: strip ALL browser-native video UI ──────────────── */
+video::-webkit-media-controls              { display: none !important; }
+video::-webkit-media-controls-enclosure   { display: none !important; }
+video::-webkit-media-controls-overlay-play-button { display: none !important; }
+video::-webkit-media-controls-panel       { display: none !important; }
+video::-webkit-media-controls-play-button { display: none !important; }
+video::-webkit-media-controls-timeline    { display: none !important; }
+video::-webkit-media-controls-volume-slider { display: none !important; }
+video::-webkit-media-controls-mute-button { display: none !important; }
+video::-webkit-media-controls-fullscreen-button { display: none !important; }
+video::-webkit-media-controls-current-time-display { display: none !important; }
+video::-webkit-media-controls-time-remaining-display { display: none !important; }
+video { outline: none; }
+
+
 .ai-hero {
   background: var(--navy-dark);
   position: relative;
@@ -130,17 +142,21 @@ body { padding-top: 68px; }
 .hero-video-inner {
   position: relative;
   width: 100%;
-  padding-bottom: 56.25%;
   overflow: hidden;
   border-radius: 6px;
   -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 8%, black 92%, transparent 100%);
   mask-image: linear-gradient(to bottom, transparent 0%, black 8%, black 92%, transparent 100%);
+  line-height: 0; /* removes inline gap below video */
 }
-.hero-video-inner iframe {
-  position: absolute;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
+.hero-video-inner video {
+  width: 100%;
+  height: auto;
+  display: block;
   border: none;
+  outline: none;
+  background: transparent;
+  /* Kill any browser-injected UI */
+  -webkit-media-controls: none;
   pointer-events: none;
 }
 
@@ -656,20 +672,22 @@ body { padding-top: 68px; }
 .midpage-video-text .section-h2 { color: var(--navy); }
 .midpage-video-text .body-text { color: var(--text-muted); }
 .mid-video-wrap {
-  position: relative;
   width: 100%;
-  padding-bottom: 56.25%;
   overflow: hidden;
   border-radius: 8px;
   box-shadow: 0 24px 64px rgba(13,27,42,.12);
   -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 6%, black 94%, transparent 100%);
   mask-image: linear-gradient(to bottom, transparent 0%, black 6%, black 94%, transparent 100%);
+  line-height: 0;
 }
-.mid-video-wrap iframe {
-  position: absolute;
-  top: -10%; left: 0;
-  width: 100%; height: 120%;
+.mid-video-wrap video {
+  width: 100%;
+  height: auto;
+  display: block;
   border: none;
+  outline: none;
+  background: transparent;
+  -webkit-media-controls: none;
   pointer-events: none;
 }
 
@@ -1163,13 +1181,18 @@ input[type=range]::-webkit-slider-thumb:hover { transform: scale(1.2); }
     <!-- ── HERO VIDEO — autoplays silently on page load ── -->
     <div class="hero-video-wrap">
       <div class="hero-video-inner">
-        <iframe
-          src="/ai.mp4"
-          title="AI technology in business operations"
-          allow="autoplay; encrypted-media"
-          allowfullscreen
-          loading="eager"
-        ></iframe>
+        <video
+          autoplay
+          muted
+          loop
+          playsinline
+          preload="auto"
+          disablepictureinpicture
+          disableremoteplayback
+          x-webkit-airplay="deny"
+        >
+          <source src="/ai.mp4" type="video/mp4">
+        </video>
       </div>
     </div>
 
@@ -1553,13 +1576,18 @@ input[type=range]::-webkit-slider-thumb:hover { transform: scale(1.2); }
 
     <!-- Mid-page video — autoplays silently, loops, no controls -->
     <div class="mid-video-wrap reveal reveal-delay-1">
-      <iframe
-        src="https://www.youtube.com/embed/ZJthWmSEEWM?autoplay=1&mute=1&loop=1&playlist=ZJthWmSEEWM&controls=0&modestbranding=1&rel=0&showinfo=0&iv_load_policy=3&start=5"
-        title="AI business automation systems at work"
-        allow="autoplay; encrypted-media"
-        allowfullscreen
-        loading="lazy"
-      ></iframe>
+      <video
+        autoplay
+        muted
+        loop
+        playsinline
+        preload="auto"
+        disablepictureinpicture
+        disableremoteplayback
+        x-webkit-airplay="deny"
+      >
+        <source src="videos/operations-ai.mp4" type="video/mp4">
+      </video>
     </div>
 
   </div>
@@ -2012,8 +2040,33 @@ function observeReveal() {
   els.forEach(el => obs.observe(el));
 }
 
+
 window.addEventListener('load', () => { observeReveal(); updateROI(); });
 window.addEventListener('scroll', observeReveal, { passive: true });
+
+/* ── Mobile autoplay fallback ──────────────────────────────── */
+/* Some mobile browsers block autoplay until the first touch.   */
+/* This resumes all muted videos on first interaction.          */
+(function () {
+  const videos = document.querySelectorAll('video[autoplay]');
+
+  function tryPlay() {
+    videos.forEach(function (v) {
+      if (v.paused) {
+        v.muted = true; // ensure muted — required by all mobile browsers
+        v.play().catch(function () {});
+      }
+    });
+  }
+
+  // Attempt immediate play on DOMContentLoaded
+  document.addEventListener('DOMContentLoaded', tryPlay);
+
+  // Retry on first user interaction (covers strict mobile autoplay policies)
+  ['touchstart', 'touchend', 'click', 'scroll'].forEach(function (evt) {
+    document.addEventListener(evt, tryPlay, { once: true, passive: true });
+  });
+})();
 </script>
 
 </body>
