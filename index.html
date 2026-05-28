@@ -14,10 +14,6 @@
 <!-- Shared styles -->
 <link rel="stylesheet" href="_shared.css">
 
-<!-- ═══════════════════════════════════════════════════
-
-</style>
-
 <!-- Navbar CSS — blocking stylesheet, not preload -->
 <link rel="stylesheet" href="./components/navbar.css">
 
@@ -226,6 +222,32 @@ body {
 }
 
 /* ══════════════════════════════════════════════════════
+   EDGE VIDEO SECTION — seamless autoplay video
+   sits between "What We Build" and EDGE Framework
+══════════════════════════════════════════════════════ */
+.edge-video-section {
+  background: #fff;
+  padding: 0;
+  line-height: 0;
+}
+
+.edge-video-section video {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  max-height: 540px;
+}
+
+@media (max-width: 768px) {
+  .edge-video-section video {
+    max-height: none;
+    aspect-ratio: 16 / 9;
+  }
+}
+
+/* ══════════════════════════════════════════════════════
    HERO RESPONSIVE
 ══════════════════════════════════════════════════════ */
 
@@ -242,16 +264,14 @@ body {
   .hero-metrics { max-width: 480px; }
 }
 
-/* Mobile: hide video, show poster as bg instead */
+/* Mobile */
 @media (max-width: 768px) {
-
-    .hero-video {
-    display: block; /* keep it visible */
+  .hero-video {
+    display: block;
     object-fit: cover;
-    opacity: 0.85; /* reduce performance strain */
+    opacity: 0.85;
   }
 
-  /* Slightly darker overlay on mobile for legibility */
   .hero-overlay {
     background:
       linear-gradient(
@@ -266,7 +286,6 @@ body {
     color: rgba(255,255,255,.85);
   }
 
-  /* Full-width CTA buttons on small screens */
   .hero-ctas {
     flex-direction: column;
   }
@@ -289,7 +308,6 @@ body {
 
 <!-- ═══════════════════════════════════════════════════════════
      NAVBAR — injected here by navbar-loader.js
-     (no placeholder div needed; loader prepends to body)
 ════════════════════════════════════════════════════════════ -->
 
 <!-- ═══════════════════════════════════════════════════════════
@@ -297,7 +315,7 @@ body {
 ════════════════════════════════════════════════════════════ -->
 <div class="hero">
 
-  <!-- Background video — hidden on mobile via CSS -->
+  <!-- Background video -->
   <video
     autoplay
     muted
@@ -435,6 +453,22 @@ body {
     </div>
   </div>
 </section>
+
+
+<!-- ═══════════════════════════════════════════════════════════
+     EDGE VIDEO — autoplay, no controls, seamless
+════════════════════════════════════════════════════════════ -->
+<div class="edge-video-section">
+  <video
+    src="video3.mp4"
+    autoplay
+    muted
+    loop
+    playsinline
+    preload="auto"
+    disablepictureinpicture
+  ></video>
+</div>
 
 
 <!-- ═══════════════════════════════════════════════════════════
@@ -696,7 +730,7 @@ window.addEventListener('load', observeReveal);
 
 /* ── PARTICLES (desktop only) ── */
 (function () {
-  if (window.innerWidth <= 768) return; // skip on mobile entirely
+  if (window.innerWidth <= 768) return;
 
   const canvas = document.getElementById('particles-canvas');
   if (!canvas) return;
