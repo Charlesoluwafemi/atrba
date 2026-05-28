@@ -244,11 +244,11 @@ body {
 
 /* Mobile: hide video, show poster as bg instead */
 @media (max-width: 768px) {
-  .hero-video { display: none; }
 
-  /* Poster image replaces video on mobile */
-  .hero {
-    background: url("video-poster.jpg") center / cover no-repeat;
+    .hero-video {
+    display: block; /* keep it visible */
+    object-fit: cover;
+    opacity: 0.85; /* reduce performance strain */
   }
 
   /* Slightly darker overlay on mobile for legibility */
@@ -303,9 +303,10 @@ body {
     muted
     loop
     playsinline
+    webkit-playsinline
     class="hero-video"
     fetchpriority="high"
-    preload="metadata"
+    preload="auto"
   >
     <source src="video1.mp4" type="video/mp4">
   </video>
