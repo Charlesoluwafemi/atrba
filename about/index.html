@@ -29,6 +29,17 @@ body{padding-top:68px}
 </style>
 <link rel="stylesheet" href="../components/navbar.css">
 <script src="../components/navbar-loader.js" data-root="/"></script>
+.career-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:1.5rem;
+}
+
+@media(max-width:960px){
+  .career-grid{
+    grid-template-columns:1fr;
+  }
+}
 </head>
 <body>
 
@@ -178,7 +189,7 @@ body{padding-top:68px}
       <span class="gold-line"></span>
       <p>ATRBA is growing. If you are a strategist, operator, AI specialist, or business development professional who wants to do meaningful work with real clients — we want to hear from you.</p>
     </div>
-    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem" class="reveal">
+     <div class="career-grid reveal">
       <div style="background:var(--cream);border-radius:8px;padding:2rem">
         <div style="font-size:1.5rem;margin-bottom:1rem">🧠</div>
         <h4 style="color:var(--navy);margin-bottom:.5rem">Strategic &amp; Advisory Roles</h4>
