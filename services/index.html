@@ -2,47 +2,35 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Services — Advisory Platform — ATRBA</title>
 <meta name="description" content="Two distinct engagement models: ATRBA's productized advisory packages for structured, fast-track transformation — and bespoke consulting for complex, enterprise-scale engagements.">
+<meta name="theme-color" content="#0C1425">
+
+<!-- Fonts -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<!-- ══════════════════════════════════════════════════════
+     NAVBAR FOUC PREVENTION
+     Inline + synchronous — runs before any paint.
+     navbar-loader.js removes this tag after injection.
+══════════════════════════════════════════════════════ -->
+<style id="nav-hide-fouc">
+  .site-nav, .nav-drawer { visibility: hidden !important; }
+</style>
+
+<!-- Navbar CSS — blocking stylesheet -->
+<link rel="stylesheet" href="/components/navbar.css">
+
+<!-- Navbar loader — NO defer, NO async -->
+<script src="/components/navbar-loader.js" data-root="/"></script>
+
 <style>
-
-/* ── Reset & base ───────────────────────────────────────────── */
+/* ── Reset & base ─────────────────────────────────────── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-body {
-  font-family: 'Inter', sans-serif;
-  font-weight: 400;
-  font-size: 15px;
-  color: #3a3a3a;
-  background: #fff;
-  padding-top: 68px;
-}
 
-<head>
-  <!-- ... your other tags ... -->
-
-  <!-- NAVBAR FOUC PREVENTION — must be in <head>, before loader script -->
-  <style>
-    
-    /* Reserve the space so page doesn't jump */
-    body {
-      padding-top: 68px; /* matches --nav-h */
-    }
-    @media (max-width: 640px) {
-      body { padding-top: 60px; }
-    }
-  </style>
-
-  <!-- Load navbar CSS blocking (not async) -->
-  <link rel="stylesheet" href="./components/navbar.css">
-
-  <!-- Load navbar script — NO defer, NO async -->
-  <script src="./components/navbar-loader.js" data-root="/"></script>
-</head>
-
-/* ── Design tokens ──────────────────────────────────────────── */
+/* ── Design tokens ────────────────────────────────────── */
 :root {
   --navy:        #0d1b2a;
   --navy-mid:    #122035;
@@ -57,50 +45,23 @@ body {
   --border:      rgba(201,168,76,0.18);
   --border-soft: rgba(0,0,0,0.07);
   --radius:      4px;
+  --nav-h:       68px;
 }
 
-/* ── NAV ────────────────────────────────────────────────────── */
-nav {
-  position: fixed;
-  top: 0; left: 0; right: 0;
-  height: 68px;
-  background: rgba(13,27,42,0.97);
-  backdrop-filter: blur(10px);
-  z-index: 100;
-  border-bottom: 1px solid rgba(201,168,76,0.12);
+body {
+  font-family: 'Outfit', 'Inter', system-ui, sans-serif;
+  font-weight: 400;
+  font-size: 15px;
+  color: var(--text-body);
+  background: #fff;
+  padding-top: var(--nav-h);
 }
-.nav-inner {
-  max-width: 1100px;
-  margin: 0 auto;
-  padding: 0 24px;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-.nav-logo { text-decoration: none; }
-.nav-logo-main { font-family: 'DM Serif Display', serif; font-size: 1.1rem; color: #fff; letter-spacing: -.01em; }
-.nav-logo-sub { font-size: .6rem; font-weight: 500; letter-spacing: .18em; text-transform: uppercase; color: var(--gold); margin-top: 2px; }
-.nav-links { display: flex; align-items: center; gap: 28px; }
-.nav-links a { font-size: .78rem; font-weight: 500; letter-spacing: .04em; color: rgba(255,255,255,.6); text-decoration: none; transition: color .2s; }
-.nav-links a:hover { color: #fff; }
-.nav-cta {
-  display: inline-block;
-  background: var(--gold);
-  color: var(--navy) !important;
-  font-size: .75rem !important;
-  font-weight: 600 !important;
-  letter-spacing: .08em;
-  text-transform: uppercase;
-  padding: 9px 20px;
-  border-radius: 2px;
-  text-decoration: none;
-  transition: background .2s !important;
-}
-.nav-cta:hover { background: var(--gold-light) !important; }
-@media (max-width: 860px) { .hide-mobile { display: none; } }
 
-/* WhatsApp float */
+@media (max-width: 640px) {
+  :root { --nav-h: 60px; }
+}
+
+/* ── WhatsApp float ───────────────────────────────────── */
 .whatsapp-float {
   position: fixed;
   bottom: 28px; right: 28px;
@@ -110,75 +71,78 @@ nav {
   display: flex; align-items: center; justify-content: center;
   font-size: 1.4rem;
   text-decoration: none;
-  z-index: 99;
+  z-index: 200;
   box-shadow: 0 4px 20px rgba(37,211,102,.35);
   transition: transform .2s;
 }
 .whatsapp-float:hover { transform: scale(1.08); }
 
-/* ── HERO ───────────────────────────────────────────────────── */
+/* ══════════════════════════════════════════════════════
+   HERO
+══════════════════════════════════════════════════════ */
 .services-hero {
+  position: relative;
+  overflow: hidden;
   background: var(--navy);
   color: #fff;
   text-align: center;
   padding: 80px 24px 72px;
-}
-.services-hero {
-  position: relative;
-  overflow: hidden;
+  min-height: 420px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
-/* video sits behind content */
 .hero-video {
   position: absolute;
-  top: 50%;
-  left: 50%;
-  min-width: 100%;
-  min-height: 100%;
-  transform: translate(-50%, -50%);
+  inset: 0;
+  width: 100%;
+  height: 100%;
   object-fit: cover;
   z-index: 0;
   pointer-events: none;
 }
 
-/* dark overlay for readability */
 .hero-overlay {
   position: absolute;
   inset: 0;
-  background: rgba(13, 27, 42, 0.65);
+  background: rgba(13,27,42,0.65);
   z-index: 1;
 }
 
-/* keep text above video */
+/* All direct children above video/overlay */
 .services-hero > *:not(.hero-video):not(.hero-overlay) {
   position: relative;
   z-index: 2;
 }
-@media (max-width: 768px) {
-  .hero-video {
-    display: none;
-  }
 
+@media (max-width: 768px) {
+  .hero-video { display: none; }
   .services-hero {
-    background: url("video-poster.jpg") center/cover no-repeat;
+    background: url("video-poster.jpg") center / cover no-repeat;
   }
 }
+
 .breadcrumb {
   display: flex; align-items: center; justify-content: center;
   gap: 8px; font-size: .7rem; letter-spacing: .15em; text-transform: uppercase;
   color: rgba(255,255,255,.4); margin-bottom: 28px;
 }
 .breadcrumb a { color: var(--gold); text-decoration: none; }
+
 .services-hero h1 {
   font-family: 'DM Serif Display', serif;
   font-size: clamp(2.4rem, 5vw, 4rem);
   font-weight: 400; letter-spacing: -.02em; line-height: 1.1; margin-bottom: 24px;
 }
 .services-hero h1 em { font-style: italic; color: var(--gold-light); }
+
 .hero-sub {
   font-size: 1.05rem; font-weight: 300; color: rgba(255,255,255,.65);
   max-width: 560px; margin: 0 auto 40px; line-height: 1.7;
 }
+
 .model-pills {
   display: inline-flex;
   border: 1px solid rgba(255,255,255,.12);
@@ -191,39 +155,10 @@ nav {
 }
 .model-pill:hover { color: rgba(255,255,255,.85); }
 .model-pill.active { background: var(--gold); color: var(--navy); }
-.services-hero {
-  position: relative;
-  overflow: hidden;
-}
 
-/* video sits behind content */
-.hero-video {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  min-width: 100%;
-  min-height: 100%;
-  transform: translate(-50%, -50%);
-  object-fit: cover;
-  z-index: 0;
-  pointer-events: none;
-}
-
-/* dark overlay for readability */
-.hero-overlay {
-  position: absolute;
-  inset: 0;
-  background: rgba(13, 27, 42, 0.65);
-  z-index: 1;
-}
-
-/* keep text above video */
-.services-hero > *:not(.hero-video):not(.hero-overlay) {
-  position: relative;
-  z-index: 2;
-}
-
-/* ── TWO-MODEL SPLIT ────────────────────────────────────────── */
+/* ══════════════════════════════════════════════════════
+   TWO-MODEL SPLIT
+══════════════════════════════════════════════════════ */
 .model-split { display: grid; grid-template-columns: 1fr 1fr; min-height: 200px; }
 .model-half { padding: 48px 44px; display: flex; flex-direction: column; gap: 14px; }
 .model-half.left  { background: var(--cream); border-right: 1px solid var(--border-soft); }
@@ -243,14 +178,18 @@ nav {
 .model-half.right .model-cta { color: var(--gold); }
 .model-cta:hover { gap: 10px; }
 
-/* ── SECTION CHROME ─────────────────────────────────────────── */
+/* ══════════════════════════════════════════════════════
+   SECTION CHROME
+══════════════════════════════════════════════════════ */
 .section-label { display: inline-flex; align-items: center; gap: 8px; font-size: .68rem; font-weight: 600; letter-spacing: .18em; text-transform: uppercase; margin-bottom: 16px; }
 .section-label::before { content: ''; display: block; width: 24px; height: 1px; background: currentColor; opacity: .5; }
 .section-headline { font-family: 'DM Serif Display', serif; font-size: clamp(1.8rem, 3.5vw, 2.6rem); font-weight: 400; letter-spacing: -.02em; line-height: 1.15; margin-bottom: 16px; }
 .section-body { font-size: .93rem; line-height: 1.75; max-width: 580px; }
 .gold-rule { width: 48px; height: 2px; background: var(--gold); margin: 20px 0 32px; }
 
-/* ── PRODUCTIZED INTRO ──────────────────────────────────────── */
+/* ══════════════════════════════════════════════════════
+   PRODUCTIZED INTRO
+══════════════════════════════════════════════════════ */
 .productized-intro { background: var(--cream); padding: 72px 24px 56px; }
 .productized-intro .inner { max-width: 900px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: start; }
 
@@ -261,15 +200,19 @@ nav {
 .productized-callout li { font-size: .83rem; color: rgba(255,255,255,.65); display: flex; align-items: flex-start; gap: 10px; line-height: 1.5; }
 .productized-callout li::before { content: '✓'; color: var(--gold); font-weight: 600; flex-shrink: 0; margin-top: 1px; }
 
-/* ── DOMAIN HEADER BAR ──────────────────────────────────────── */
+/* ══════════════════════════════════════════════════════
+   DOMAIN HEADER BAR
+══════════════════════════════════════════════════════ */
 .domain-header { background: var(--navy-mid); color: #fff; padding: 36px 24px 32px; text-align: center; }
-.domain-header.alt { background: var(--navy-light); }
+.domain-header.alt  { background: var(--navy-light); }
 .domain-header.dark { background: #091623; }
 .domain-badge { display: inline-block; background: rgba(201,168,76,.15); border: 1px solid rgba(201,168,76,.3); color: var(--gold-light); font-size: .66rem; font-weight: 600; letter-spacing: .16em; text-transform: uppercase; padding: 5px 14px; border-radius: 999px; margin-bottom: 14px; }
 .domain-header h3 { font-family: 'DM Serif Display', serif; font-size: 1.65rem; font-weight: 400; margin-bottom: 10px; letter-spacing: -.01em; }
 .domain-header p { font-size: .86rem; color: rgba(255,255,255,.52); max-width: 500px; margin: 0 auto; line-height: 1.65; }
 
-/* ── SERVICE CARDS GRID ─────────────────────────────────────── */
+/* ══════════════════════════════════════════════════════
+   SERVICE CARDS GRID
+══════════════════════════════════════════════════════ */
 .services-grid { display: grid; grid-template-columns: repeat(3, 1fr); }
 .services-grid.two-col { grid-template-columns: repeat(2, 1fr); }
 
@@ -286,24 +229,29 @@ nav {
 .svc-card .card-desc { font-size: .85rem; line-height: 1.68; color: var(--text-muted); flex: 1; margin-bottom: 20px; }
 .svc-card .card-tag { display: inline-flex; align-items: center; gap: 5px; font-size: .75rem; font-weight: 500; color: var(--navy); background: var(--cream); border: 1px solid var(--border-soft); padding: 4px 11px; border-radius: 999px; align-self: flex-start; margin-top: auto; }
 
-/* Cream bg variant */
 .bg-cream { background: var(--cream); }
 .bg-cream .svc-card { background: #fff; }
 
-/* ── BETWEEN-DOMAIN CTA ─────────────────────────────────────── */
+/* ══════════════════════════════════════════════════════
+   BETWEEN-DOMAIN CTA
+══════════════════════════════════════════════════════ */
 .domain-cta-mini { background: var(--cream-dark); border-top: 1px solid var(--border-soft); border-bottom: 1px solid var(--border-soft); padding: 24px; text-align: center; }
 .domain-cta-mini p { font-size: .85rem; color: var(--text-muted); margin-bottom: 10px; }
 .domain-cta-mini a { font-size: .75rem; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--navy); text-decoration: none; border-bottom: 1px solid var(--gold); padding-bottom: 1px; transition: color .2s; }
 .domain-cta-mini a:hover { color: var(--gold); }
 
-/* ── MODEL SEPARATOR ────────────────────────────────────────── */
+/* ══════════════════════════════════════════════════════
+   MODEL SEPARATOR
+══════════════════════════════════════════════════════ */
 .model-separator { background: var(--navy); padding: 64px 24px; text-align: center; }
 .sep-label { font-size: .65rem; font-weight: 600; letter-spacing: .2em; text-transform: uppercase; color: var(--gold); margin-bottom: 20px; }
 .model-separator h2 { font-family: 'DM Serif Display', serif; font-size: clamp(1.6rem, 3vw, 2.4rem); font-weight: 400; color: #fff; letter-spacing: -.02em; margin-bottom: 16px; max-width: 640px; margin-left: auto; margin-right: auto; line-height: 1.2; }
 .model-separator p { font-size: .93rem; color: rgba(255,255,255,.52); max-width: 500px; margin: 0 auto; line-height: 1.7; }
 .sep-divider { width: 1px; height: 40px; background: linear-gradient(to bottom, transparent, var(--gold), transparent); margin: 32px auto; }
 
-/* ── BESPOKE INTRO ──────────────────────────────────────────── */
+/* ══════════════════════════════════════════════════════
+   BESPOKE INTRO
+══════════════════════════════════════════════════════ */
 .bespoke-intro { background: var(--navy); padding: 72px 24px 64px; }
 .bespoke-intro .inner { max-width: 900px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: start; }
 
@@ -317,7 +265,9 @@ nav {
 .contrast-cell.b-side { color: var(--gold-light); background: rgba(201,168,76,.06); }
 .contrast-cell.head.b-side { background: rgba(201,168,76,.12); }
 
-/* ── BESPOKE DOMAINS ────────────────────────────────────────── */
+/* ══════════════════════════════════════════════════════
+   BESPOKE CAPABILITIES
+══════════════════════════════════════════════════════ */
 .bespoke-capabilities { background: #fff; padding: 72px 24px; }
 .bespoke-capabilities .inner { max-width: 960px; margin: 0 auto; }
 
@@ -333,7 +283,9 @@ nav {
 .engagement-note { font-size: .77rem; font-weight: 500; color: var(--navy); display: flex; align-items: center; gap: 6px; margin-top: 4px; }
 .engagement-note::before { content: ''; display: block; width: 16px; height: 1px; background: var(--gold); }
 
-/* ── PROCESS STEPS ──────────────────────────────────────────── */
+/* ══════════════════════════════════════════════════════
+   PROCESS STEPS
+══════════════════════════════════════════════════════ */
 .bespoke-process { background: var(--cream); padding: 72px 24px; }
 .bespoke-process .inner { max-width: 960px; margin: 0 auto; }
 .process-steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; margin-top: 48px; position: relative; }
@@ -343,7 +295,9 @@ nav {
 .process-step h5 { font-size: .86rem; font-weight: 600; color: var(--navy); letter-spacing: -.01em; }
 .process-step p { font-size: .8rem; color: var(--text-muted); line-height: 1.6; }
 
-/* ── FINAL CTA ──────────────────────────────────────────────── */
+/* ══════════════════════════════════════════════════════
+   FINAL CTA
+══════════════════════════════════════════════════════ */
 .final-cta { background: var(--navy); padding: 80px 24px; text-align: center; }
 .final-cta .inner { max-width: 680px; margin: 0 auto; }
 .cta-eyebrow { font-size: .68rem; font-weight: 600; letter-spacing: .2em; text-transform: uppercase; color: var(--gold); margin-bottom: 20px; }
@@ -355,7 +309,9 @@ nav {
 .btn-outline-light { display: inline-block; border: 1px solid rgba(255,255,255,.2); color: rgba(255,255,255,.75); font-size: .78rem; font-weight: 500; letter-spacing: .06em; text-transform: uppercase; padding: 14px 26px; border-radius: 2px; text-decoration: none; transition: border-color .2s, color .2s; }
 .btn-outline-light:hover { border-color: var(--gold); color: var(--gold-light); }
 
-/* ── FOOTER ─────────────────────────────────────────────────── */
+/* ══════════════════════════════════════════════════════
+   FOOTER
+══════════════════════════════════════════════════════ */
 footer { background: #080f18; border-top: 1px solid rgba(255,255,255,.06); padding: 64px 24px 32px; }
 .footer-inner { max-width: 1100px; margin: 0 auto; }
 .footer-top { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 48px; margin-bottom: 48px; }
@@ -365,13 +321,28 @@ footer { background: #080f18; border-top: 1px solid rgba(255,255,255,.06); paddi
 .footer-col h5 { font-size: .68rem; font-weight: 600; letter-spacing: .15em; text-transform: uppercase; color: rgba(255,255,255,.35); margin-bottom: 16px; }
 .footer-col a { display: block; font-size: .82rem; color: rgba(255,255,255,.5); text-decoration: none; margin-bottom: 10px; transition: color .2s; }
 .footer-col a:hover { color: #fff; }
-.footer-bottom { display: flex; justify-content: space-between; align-items: center; padding-top: 24px; border-top: 1px solid rgba(255,255,255,.06); font-size: .72rem; color: rgba(255,255,255,.25); }
+.footer-bottom { display: flex; justify-content: space-between; align-items: center; padding-top: 24px; border-top: 1px solid rgba(255,255,255,.06); font-size: .72rem; color: rgba(255,255,255,.25); flex-wrap: wrap; gap: 12px; }
 .footer-bottom-links { display: flex; gap: 20px; }
 .footer-bottom-links a { color: rgba(255,255,255,.25); text-decoration: none; }
 .footer-bottom-links a:hover { color: rgba(255,255,255,.5); }
+
+/* ══════════════════════════════════════════════════════
+   REVEAL ANIMATION
+══════════════════════════════════════════════════════ */
+.reveal { opacity: 0; transform: translateY(18px); transition: opacity .5s ease, transform .5s ease; }
+.reveal.visible { opacity: 1; transform: translateY(0); }
+.reveal-delay-1 { transition-delay: .08s; }
+.reveal-delay-2 { transition-delay: .16s; }
+.reveal-delay-3 { transition-delay: .24s; }
+
+/* ══════════════════════════════════════════════════════
+   RESPONSIVE
+══════════════════════════════════════════════════════ */
 @media (max-width: 860px) {
   .footer-top { grid-template-columns: 1fr 1fr; }
-  .model-split, .bespoke-intro .inner, .productized-intro .inner { grid-template-columns: 1fr; }
+  .model-split,
+  .bespoke-intro .inner,
+  .productized-intro .inner { grid-template-columns: 1fr; }
   .model-half.left { border-right: none; border-bottom: 1px solid var(--border-soft); }
   .services-grid { grid-template-columns: 1fr; }
   .services-grid .svc-card + .svc-card { border-left: 1px solid var(--border-soft); border-top: none; }
@@ -380,34 +351,32 @@ footer { background: #080f18; border-top: 1px solid rgba(255,255,255,.06); paddi
   .process-steps { grid-template-columns: 1fr 1fr; gap: 32px; }
   .process-steps::before { display: none; }
 }
+
 @media (max-width: 540px) {
   .model-half { padding: 36px 22px; }
   .svc-card, .bespoke-card { padding: 26px 22px; }
   .process-steps { grid-template-columns: 1fr; }
   .footer-top { grid-template-columns: 1fr; }
+  .cta-buttons { flex-direction: column; }
+  .cta-buttons a { width: 100%; text-align: center; }
 }
-
-/* ── Reveal animation ───────────────────────────────────────── */
-.reveal { opacity: 0; transform: translateY(18px); transition: opacity .5s ease, transform .5s ease; }
-.reveal.visible { opacity: 1; transform: translateY(0); }
-.reveal-delay-1 { transition-delay: .08s; }
-.reveal-delay-2 { transition-delay: .16s; }
-.reveal-delay-3 { transition-delay: .24s; }
-
 </style>
 </head>
 <body>
 
-<!-- NAV -->
+<!-- Navbar injected here by navbar-loader.js -->
 
-<!-- HERO -->
+<!-- ══════════════════════════════════════════════════════
+     HERO
+══════════════════════════════════════════════════════ -->
 <section class="services-hero">
   <video class="hero-video" autoplay muted loop playsinline preload="none" poster="video-poster.jpg">
     <source src="video2.mp4" type="video/mp4">
   </video>
   <div class="hero-overlay"></div>
+
   <div class="breadcrumb">
-    <a href="index.html">Home</a>
+    <a href="/">Home</a>
     <span style="opacity:.4">/</span>
     <span>Services</span>
   </div>
@@ -419,7 +388,10 @@ footer { background: #080f18; border-top: 1px solid rgba(255,255,255,.06); paddi
   </div>
 </section>
 
-<!-- TWO-MODEL SPLIT -->
+
+<!-- ══════════════════════════════════════════════════════
+     TWO-MODEL SPLIT
+══════════════════════════════════════════════════════ -->
 <div class="model-split">
   <div class="model-half left reveal">
     <div class="model-tag"><span class="tag-dot"></span> Model 01</div>
@@ -436,9 +408,9 @@ footer { background: #080f18; border-top: 1px solid rgba(255,255,255,.06); paddi
 </div>
 
 
-<!-- ═══════════════════════════════════════════════════════
+<!-- ══════════════════════════════════════════════════════
      PART 1 — PRODUCTIZED ADVISORY PLATFORM
-════════════════════════════════════════════════════════ -->
+══════════════════════════════════════════════════════ -->
 <div id="productized"></div>
 
 <section class="productized-intro">
@@ -447,9 +419,7 @@ footer { background: #080f18; border-top: 1px solid rgba(255,255,255,.06); paddi
       <div class="section-label" style="color:var(--navy)">Productized Advisory Platform</div>
       <h2 class="section-headline" style="color:var(--navy)">Business transformation — packaged for clarity and speed.</h2>
       <div class="gold-rule"></div>
-      <p class="section-body" style="color:var(--text-muted)">
-        Not vague retainers. Each package is a structured product with a defined scope and specific outcomes. You know the deliverables before you start — no surprises, no scope creep.
-      </p>
+      <p class="section-body" style="color:var(--text-muted)">Not vague retainers. Each package is a structured product with a defined scope and specific outcomes. You know the deliverables before you start — no surprises, no scope creep.</p>
       <p style="font-size:.86rem;color:var(--text-light);margin-top:14px;">Organized by domain — pick what your business needs most right now.</p>
     </div>
     <div class="productized-callout reveal">
@@ -467,7 +437,7 @@ footer { background: #080f18; border-top: 1px solid rgba(255,255,255,.06); paddi
 </section>
 
 
-<!-- ── DOMAIN 1: STRATEGY & ADVISORY ─────────────────────── -->
+<!-- ── DOMAIN 1: STRATEGY & ADVISORY ──────────────────────── -->
 <div class="domain-header">
   <div class="domain-badge">Domain 01 &nbsp;·&nbsp; Strategy & Advisory</div>
   <h3>Data Leadership Without the Full-Time Cost</h3>
@@ -482,7 +452,6 @@ footer { background: #080f18; border-top: 1px solid rgba(255,255,255,.06); paddi
     <p class="card-desc">Senior data leadership on-demand. Strategy guidance, KPI frameworks, and architecture decisions — without the overhead of a full-time executive.</p>
     <div class="card-tag">⏱ Ongoing retainer</div>
   </div>
-
   <div class="svc-card reveal reveal-delay-2">
     <div class="card-num">Strategy · 02</div>
     <span class="card-icon">👔</span>
@@ -490,7 +459,6 @@ footer { background: #080f18; border-top: 1px solid rgba(255,255,255,.06); paddi
     <p class="card-desc">Part-time CDO, full-time impact. Embedded data leadership that drives your data agenda — aligned to your executive team and budget.</p>
     <div class="card-tag">⏱ Flexible engagement</div>
   </div>
-
   <div class="svc-card reveal reveal-delay-3">
     <div class="card-num">Strategy · 03</div>
     <span class="card-icon">📊</span>
@@ -502,11 +470,11 @@ footer { background: #080f18; border-top: 1px solid rgba(255,255,255,.06); paddi
 
 <div class="domain-cta-mini">
   <p>Not sure which strategy package fits your organization?</p>
-  <a href="contact.html">Book a free 20-minute diagnostic call →</a>
+  <a href="/contact">Book a free 20-minute diagnostic call →</a>
 </div>
 
 
-<!-- ── DOMAIN 2: AI SERVICES & ML ────────────────────────── -->
+<!-- ── DOMAIN 2: AI SERVICES & ML ──────────────────────────── -->
 <div class="domain-header alt">
   <div class="domain-badge">Domain 02 &nbsp;·&nbsp; AI Services & ML</div>
   <h3>AI That Drives ROI — Not Just Demos</h3>
@@ -521,7 +489,6 @@ footer { background: #080f18; border-top: 1px solid rgba(255,255,255,.06); paddi
     <p class="card-desc">Autonomous AI workflows that connect your CRM, databases, and internal tools. Manual processes replaced with intelligent, self-running systems.</p>
     <div class="card-tag">⏱ 6 – 10 weeks delivery</div>
   </div>
-
   <div class="svc-card reveal reveal-delay-2">
     <div class="card-num">AI · 02</div>
     <span class="card-icon">⚡</span>
@@ -529,7 +496,6 @@ footer { background: #080f18; border-top: 1px solid rgba(255,255,255,.06); paddi
     <p class="card-desc">Deploy a reliable analytics agent your business team actually uses. Ask questions in plain language, get answers instantly — no SQL required.</p>
     <div class="card-tag">⏱ 4 – 8 weeks delivery</div>
   </div>
-
   <div class="svc-card reveal reveal-delay-3">
     <div class="card-num">AI · 03</div>
     <span class="card-icon">🎯</span>
@@ -537,7 +503,6 @@ footer { background: #080f18; border-top: 1px solid rgba(255,255,255,.06); paddi
     <p class="card-desc">Identify where AI moves the needle in your business and build the implementation plan. We assess, prioritize, and execute — no wasted pilots.</p>
     <div class="card-tag">⏱ 4 – 6 weeks delivery</div>
   </div>
-
   <div class="svc-card reveal reveal-delay-1">
     <div class="card-num">AI · 04</div>
     <span class="card-icon">📈</span>
@@ -545,7 +510,6 @@ footer { background: #080f18; border-top: 1px solid rgba(255,255,255,.06); paddi
     <p class="card-desc">Replace spreadsheet guesswork with statistical models that actually predict outcomes — churn, demand, risk, revenue. Built for your data, not generic templates.</p>
     <div class="card-tag">⏱ 6 – 12 weeks delivery</div>
   </div>
-
   <div class="svc-card reveal reveal-delay-2">
     <div class="card-num">AI · 05</div>
     <span class="card-icon">🔬</span>
@@ -553,7 +517,6 @@ footer { background: #080f18; border-top: 1px solid rgba(255,255,255,.06); paddi
     <p class="card-desc">From problem framing to production-ready models. We handle the full lifecycle — analysis, model development, deployment, and ongoing refinement.</p>
     <div class="card-tag">⏱ Scoped per project</div>
   </div>
-
   <div class="svc-card reveal reveal-delay-3">
     <div class="card-num">AI · 06</div>
     <span class="card-icon">🛠</span>
@@ -565,7 +528,7 @@ footer { background: #080f18; border-top: 1px solid rgba(255,255,255,.06); paddi
 
 <div class="domain-cta-mini">
   <p>Have an AI use case in mind but unsure where to start?</p>
-  <a href="contact.html">Schedule a free AI Readiness Assessment →</a>
+  <a href="/contact">Schedule a free AI Readiness Assessment →</a>
 </div>
 
 
@@ -584,7 +547,6 @@ footer { background: #080f18; border-top: 1px solid rgba(255,255,255,.06); paddi
     <p class="card-desc">BI built around decisions, not data dumps. Executives get what they actually need to act — no bloated reports, no confusion about which number to trust.</p>
     <div class="card-tag">⏱ 4 – 8 weeks delivery</div>
   </div>
-
   <div class="svc-card reveal reveal-delay-2">
     <div class="card-num">Analytics · 02</div>
     <span class="card-icon">📊</span>
@@ -592,7 +554,6 @@ footer { background: #080f18; border-top: 1px solid rgba(255,255,255,.06); paddi
     <p class="card-desc">Dashboards people actually use and analytics workflows that drive real decisions. We align metrics to your goals — not to what's easy to measure.</p>
     <div class="card-tag">⏱ 3 – 6 weeks delivery</div>
   </div>
-
   <div class="svc-card reveal reveal-delay-3">
     <div class="card-num">Analytics · 03</div>
     <span class="card-icon">🎨</span>
@@ -600,7 +561,6 @@ footer { background: #080f18; border-top: 1px solid rgba(255,255,255,.06); paddi
     <p class="card-desc">Clear, interactive visualizations that turn complex data into action. Built for your audience — whether that's the boardroom or the ops team.</p>
     <div class="card-tag">⏱ 2 – 4 weeks delivery</div>
   </div>
-
   <div class="svc-card reveal reveal-delay-1">
     <div class="card-num">Analytics · 04</div>
     <span class="card-icon">⚙️</span>
@@ -612,7 +572,7 @@ footer { background: #080f18; border-top: 1px solid rgba(255,255,255,.06); paddi
 
 <div class="domain-cta-mini">
   <p>Running on disconnected spreadsheets? Let's fix that.</p>
-  <a href="contact.html">Book a free BI Discovery Call →</a>
+  <a href="/contact">Book a free BI Discovery Call →</a>
 </div>
 
 
@@ -631,7 +591,6 @@ footer { background: #080f18; border-top: 1px solid rgba(255,255,255,.06); paddi
     <p class="card-desc">Scalable architecture designed for today's volume and tomorrow's growth. We design the stack, validate it against your use cases, and build it end-to-end.</p>
     <div class="card-tag">⏱ Scoped per project</div>
   </div>
-
   <div class="svc-card reveal reveal-delay-2">
     <div class="card-num">Engineering · 02</div>
     <span class="card-icon">🗄</span>
@@ -639,7 +598,6 @@ footer { background: #080f18; border-top: 1px solid rgba(255,255,255,.06); paddi
     <p class="card-desc">One source of truth — all your data unified, modeled, and query-ready. No more conflicting numbers across teams or tools.</p>
     <div class="card-tag">⏱ 6 – 12 weeks delivery</div>
   </div>
-
   <div class="svc-card reveal reveal-delay-3">
     <div class="card-num">Engineering · 03</div>
     <span class="card-icon">☁️</span>
@@ -647,7 +605,6 @@ footer { background: #080f18; border-top: 1px solid rgba(255,255,255,.06); paddi
     <p class="card-desc">Migrate to cloud, cut infrastructure costs, and unlock elastic scale. We handle the full migration — zero data loss, minimal downtime.</p>
     <div class="card-tag">⏱ 8 – 16 weeks delivery</div>
   </div>
-
   <div class="svc-card reveal reveal-delay-1">
     <div class="card-num">Engineering · 04</div>
     <span class="card-icon">🔐</span>
@@ -658,9 +615,9 @@ footer { background: #080f18; border-top: 1px solid rgba(255,255,255,.06); paddi
 </div>
 
 
-<!-- ═══════════════════════════════════════════════════════
+<!-- ══════════════════════════════════════════════════════
      MODEL SEPARATOR → BESPOKE
-════════════════════════════════════════════════════════ -->
+══════════════════════════════════════════════════════ -->
 <div class="model-separator" id="bespoke">
   <div class="sep-label">End of Productized Platform &nbsp;·&nbsp; Beginning of Bespoke</div>
   <h2>Some Challenges Don't Fit a Package.</h2>
@@ -670,21 +627,17 @@ footer { background: #080f18; border-top: 1px solid rgba(255,255,255,.06); paddi
 </div>
 
 
-<!-- ═══════════════════════════════════════════════════════
+<!-- ══════════════════════════════════════════════════════
      PART 2 — BESPOKE CONSULTING
-════════════════════════════════════════════════════════ -->
+══════════════════════════════════════════════════════ -->
 <section class="bespoke-intro">
   <div class="inner">
     <div>
       <div class="section-label" style="color:var(--gold)">Bespoke Consulting</div>
       <h2 class="section-headline" style="color:#fff;font-size:clamp(1.6rem,3vw,2.4rem)">Fully custom. No predefined scope. Designed entirely around your situation.</h2>
       <div class="gold-rule"></div>
-      <p class="section-body" style="color:rgba(255,255,255,.6)">
-        Built from a blank page. No standard package, no fixed deliverable list. We spend time understanding your context — then design a program that addresses it precisely.
-      </p>
-      <p style="font-size:.86rem;color:rgba(255,255,255,.45);margin-top:16px;line-height:1.7;">
-        Right for organizations navigating enterprise transformation, complex market entry, multi-entity restructuring, or strategic challenges that require deep, sustained advisory involvement.
-      </p>
+      <p class="section-body" style="color:rgba(255,255,255,.6)">Built from a blank page. No standard package, no fixed deliverable list. We spend time understanding your context — then design a program that addresses it precisely.</p>
+      <p style="font-size:.86rem;color:rgba(255,255,255,.45);margin-top:16px;line-height:1.7;">Right for organizations navigating enterprise transformation, complex market entry, multi-entity restructuring, or strategic challenges that require deep, sustained advisory involvement.</p>
     </div>
     <div class="bespoke-contrast reveal">
       <div class="contrast-label">How it compares to the Productized Platform</div>
@@ -718,7 +671,7 @@ footer { background: #080f18; border-top: 1px solid rgba(255,255,255,.06); paddi
   </div>
 </section>
 
-<!-- Bespoke domains -->
+
 <section class="bespoke-capabilities">
   <div class="inner">
     <div class="section-label" style="color:var(--navy)">Engagement Domains</div>
@@ -734,7 +687,6 @@ footer { background: #080f18; border-top: 1px solid rgba(255,255,255,.06); paddi
         <p class="card-desc">Large-scale operational, structural, or cultural transformation for multi-entity organizations. We work at the intersection of strategy, operations, and change management — over extended engagements — to shift how an organization fundamentally operates.</p>
         <div class="engagement-note">Typical engagement: 6 – 24 months</div>
       </div>
-
       <div class="bespoke-card reveal reveal-delay-1">
         <div class="card-num">Domain · 02</div>
         <span class="card-icon">🌍</span>
@@ -742,7 +694,6 @@ footer { background: #080f18; border-top: 1px solid rgba(255,255,255,.06); paddi
         <p class="card-desc">Entering a new geography, vertical, or channel with strategic rigor. We design the full entry thesis — regulatory mapping, competitive positioning, partnership architecture, and execution sequencing — from scratch.</p>
         <div class="engagement-note">Typical engagement: 4 – 12 months</div>
       </div>
-
       <div class="bespoke-card reveal reveal-delay-2">
         <div class="card-num">Domain · 03</div>
         <span class="card-icon">🏛</span>
@@ -750,7 +701,6 @@ footer { background: #080f18; border-top: 1px solid rgba(255,255,255,.06); paddi
         <p class="card-desc">For PE-backed companies, post-merger integrations, and leadership transitions. We redesign the organizational model, management hierarchy, and operating cadences required for the next phase of growth.</p>
         <div class="engagement-note">Typical engagement: 3 – 9 months</div>
       </div>
-
       <div class="bespoke-card reveal reveal-delay-3">
         <div class="card-num">Domain · 04</div>
         <span class="card-icon">🌐</span>
@@ -762,7 +712,7 @@ footer { background: #080f18; border-top: 1px solid rgba(255,255,255,.06); paddi
   </div>
 </section>
 
-<!-- Bespoke process -->
+
 <section class="bespoke-process">
   <div class="inner">
     <div class="section-label" style="color:var(--navy)">How Bespoke Engagements Begin</div>
@@ -796,7 +746,9 @@ footer { background: #080f18; border-top: 1px solid rgba(255,255,255,.06); paddi
 </section>
 
 
-<!-- FINAL CTA -->
+<!-- ══════════════════════════════════════════════════════
+     FINAL CTA
+══════════════════════════════════════════════════════ -->
 <section class="final-cta">
   <div class="inner">
     <div class="cta-eyebrow">Ready to start?</div>
@@ -810,7 +762,9 @@ footer { background: #080f18; border-top: 1px solid rgba(255,255,255,.06); paddi
 </section>
 
 
-<!-- FOOTER -->
+<!-- ══════════════════════════════════════════════════════
+     FOOTER
+══════════════════════════════════════════════════════ -->
 <footer>
   <div class="footer-inner">
     <div class="footer-top">
@@ -838,8 +792,8 @@ footer { background: #080f18; border-top: 1px solid rgba(255,255,255,.06); paddi
       <div class="footer-col">
         <h5>Connect</h5>
         <a href="/contact">Book a Call</a>
-        <a href="https://wa.me/18560000000" target="_blank">WhatsApp</a>
-        <a href="#">LinkedIn</a>
+        <a href="https://wa.me/18560000000" target="_blank" rel="noopener">WhatsApp</a>
+        <a href="#" rel="noopener">LinkedIn</a>
         <a href="#">Camden, NJ — HQ</a>
         <a href="#">Lagos, Nigeria</a>
       </div>
@@ -855,23 +809,27 @@ footer { background: #080f18; border-top: 1px solid rgba(255,255,255,.06); paddi
   </div>
 </footer>
 
+<!-- WhatsApp float -->
+<a href="https://wa.me/18560000000" class="whatsapp-float" target="_blank" rel="noopener" aria-label="Chat on WhatsApp">💬</a>
+
+
+<!-- ══════════════════════════════════════════════════════
+     SCRIPTS
+══════════════════════════════════════════════════════ -->
 <script>
+/* ── Scroll reveal ── */
 function observeReveal() {
   const els = document.querySelectorAll('.reveal:not(.visible)');
-  if (!('IntersectionObserver' in window)) {
-    els.forEach(el => el.classList.add('visible'));
-    return;
-  }
+  if (!('IntersectionObserver' in window)) { els.forEach(el => el.classList.add('visible')); return; }
   const obs = new IntersectionObserver(entries => {
-    entries.forEach(e => {
-      if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); }
-    });
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } });
   }, { threshold: .1, rootMargin: '0px 0px -40px 0px' });
   els.forEach(el => obs.observe(el));
 }
 window.addEventListener('load', observeReveal);
 window.addEventListener('scroll', observeReveal, { passive: true });
 
+/* ── Smooth scroll for anchor links ── */
 document.querySelectorAll('a[href^="#"]').forEach(a => {
   a.addEventListener('click', e => {
     const target = document.querySelector(a.getAttribute('href'));
@@ -881,17 +839,19 @@ document.querySelectorAll('a[href^="#"]').forEach(a => {
   });
 });
 
+/* ── Active pill on scroll ── */
 const bespokeSection = document.getElementById('bespoke');
 const pills = document.querySelectorAll('.model-pill');
 function updatePills() {
+  if (!bespokeSection) return;
   const scrollY = window.scrollY + 120;
-  const bTop = bespokeSection ? bespokeSection.getBoundingClientRect().top + window.scrollY : Infinity;
+  const bTop = bespokeSection.getBoundingClientRect().top + window.scrollY;
   pills.forEach(p => p.classList.remove('active'));
   if (scrollY >= bTop) { pills[1]?.classList.add('active'); }
   else { pills[0]?.classList.add('active'); }
 }
 window.addEventListener('scroll', updatePills, { passive: true });
 </script>
-<script src="/components/nav-init.js"></script>
+
 </body>
 </html>
