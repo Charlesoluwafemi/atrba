@@ -29,7 +29,33 @@
   --mono:       'DM Mono', monospace;
   --transition: .28s cubic-bezier(.4,0,.2,1);
 }
+.hero-inner {
+  display: flex;
+  align-items: center;
+  gap: 48px;
+}
 
+.hero-video-wrap {
+  flex: 0 0 340px;
+  width: 340px;
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid rgba(201,147,58,.25);
+  background: #000;
+  align-self: center;
+}
+
+.hero-video-wrap video {
+  display: block;
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+}
+
+@media (max-width: 780px) {
+  .hero-inner { flex-direction: column; gap: 32px; }
+  .hero-video-wrap { flex: none; width: 100%; max-width: 100%; }
+}
 body { padding-top: 68px; background: var(--pearl); font-family: var(--sans); color: var(--navy); -webkit-font-smoothing: antialiased; }
 
 /* ── Page header ───────────────────────────────────────── */
@@ -394,6 +420,16 @@ body { padding-top: 68px; background: var(--pearl); font-family: var(--sans); co
 <script src="../components/navbar-loader.js" data-root="/"></script>
 <!-- ── Hero ─────────────────────────────────────────────── -->
 <section class="resources-hero">
+<div class="hero-video-wrap">
+  <video
+    src="video2.mp4"
+    autoplay
+    muted
+    loop
+    playsinline
+    preload="auto"
+  ></video>
+</div>
   <div class="hero-inner">
     <div class="hero-eyebrow">Knowledge Hub</div>
     <h1 class="hero-title">Frameworks for <em>building</em><br>businesses that last.</h1>
