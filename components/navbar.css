@@ -93,6 +93,8 @@ body {
   width: auto;
   object-fit: contain;
   display: block;
+  background: transparent;
+  mix-blend-mode: screen;
 }
 
 .nav-logo-text {
@@ -384,8 +386,18 @@ body {
 @media (max-width: 640px) {
   :root { --nav-h: 60px; }
 }
-
 @media (max-width: 380px) {
-  .nav-logo-main { font-size: .85rem; }
-  .nav-logo-sub  { display: none; }
+  .nav-logo-main {
+    font-size: .9rem;
+  }
+
+  .nav-logo-sub {
+    display: block;
+    font-size: .55rem;
+    opacity: .8;
+  }
+
+  .nav-logo {
+    gap: .4rem;
+  }
 }
