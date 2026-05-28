@@ -1,15 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>About — ATRBA</title>
 <meta name="description" content="About Above The Rest Business Advisors — our story, philosophy, values, FAQs, and careers.">
-
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
-
 <link rel="stylesheet" href="_shared.css">
-
 <style>
+body{padding-top:68px}
 .about-grid{display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:start;margin-bottom:4rem}
 .value-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;margin-top:3rem}
 .value-card{padding:1.5rem;background:var(--cream);border-radius:6px;border-left:3px solid var(--gold)}
@@ -24,26 +24,14 @@
 .faq-item.open .faq-toggle{background:var(--gold);border-color:var(--gold);color:#fff;transform:rotate(45deg)}
 .faq-answer{display:none;padding:0 1.5rem 1.25rem;font-size:.9rem;color:var(--slate);line-height:1.8}
 .faq-item.open .faq-answer{display:block}
-
-@media(max-width:960px){
-  .about-grid{grid-template-columns:1fr}
-  .value-grid{grid-template-columns:1fr 1fr}
-}
-@media(max-width:640px){
-  .value-grid{grid-template-columns:1fr}
-}
-
-/* Reset */
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+@media(max-width:960px){.about-grid{grid-template-columns:1fr}.value-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:640px){.value-grid{grid-template-columns:1fr}}
 </style>
-
-<link rel="stylesheet" href="../components/navbar.css">
-<script src="../components/navbar-loader.js" data-root="/"></script>
-
 </head>
 <body>
 
-
+<link rel="stylesheet" href="../components/navbar.css">
+<script src="../components/navbar-loader.js" data-root="/"></script>
 <div class="page-header">
   <div class="page-header-inner">
     <div class="breadcrumb"><a href="index.html">Home</a><span style="opacity:.4">/</span><span>About</span></div>
@@ -208,7 +196,7 @@
       </div>
     </div>
     <div style="text-align:center;margin-top:2.5rem">
-      <a href="/contact" class="btn-navy">Send Your Interest →</a>
+      <a href="contact.html" class="btn-navy">Send Your Interest →</a>
     </div>
   </div>
 </section>
@@ -216,7 +204,7 @@
 <div class="cta-band">
   <h2>People. Processes. Profits.</h2>
   <p>That is not just a tagline. It is the operating sequence behind every engagement we take.</p>
-  <a href="/contact" class="btn-navy">Start the Conversation →</a>
+  <a href="contact.html" class="btn-navy">Start the Conversation →</a>
 </div>
 
 <footer>
@@ -239,30 +227,6 @@
   </div>
 </footer>
 
-<!-- NAV SCRIPT -->
-<script>
-(function () {
-  const toggle = document.getElementById('nav-toggle');
-  const drawer = document.getElementById('nav-drawer');
-
-  if (!toggle || !drawer) return;
-
-  function setOpen(open){
-    toggle.classList.toggle('open', open);
-    drawer.classList.toggle('open', open);
-    document.body.style.overflow = open ? 'hidden' : '';
-  }
-
-  toggle.addEventListener('click', () => {
-    setOpen(!drawer.classList.contains('open'));
-  });
-
-  drawer.querySelectorAll('a').forEach(a=>{
-    a.addEventListener('click', ()=> setOpen(false));
-  });
-})();
-</script>
-
 <script>
 function toggleFAQ(el){
   const item=el.parentElement;
@@ -270,7 +234,14 @@ function toggleFAQ(el){
   document.querySelectorAll('.faq-item').forEach(f=>f.classList.remove('open'));
   if(!wasOpen) item.classList.add('open');
 }
+function observeReveal(){
+  const els=document.querySelectorAll('.reveal:not(.visible)');
+  if(!('IntersectionObserver' in window)){els.forEach(el=>el.classList.add('visible'));return;}
+  const obs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');obs.unobserve(e.target);}});},{threshold:.1,rootMargin:'0px 0px -40px 0px'});
+  els.forEach(el=>obs.observe(el));
+}
+window.addEventListener('load',observeReveal);
+window.addEventListener('scroll',observeReveal,{passive:true});
 </script>
-
 </body>
 </html>
