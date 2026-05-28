@@ -1,141 +1,43 @@
-<!DOCTYPE html>
+DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <title>About — ATRBA</title>
 <meta name="description" content="About Above The Rest Business Advisors — our story, philosophy, values, FAQs, and careers.">
-
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
-
 <link rel="stylesheet" href="_shared.css">
+<style>
+.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:start;margin-bottom:4rem}
+.value-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;margin-top:3rem}
+.value-card{padding:1.5rem;background:var(--cream);border-radius:6px;border-left:3px solid var(--gold)}
+.value-card h4{color:var(--navy);margin-bottom:.4rem;font-size:.95rem}
+.value-card p{font-size:.85rem;line-height:1.65}
+.faq-list{display:grid;gap:.75rem;max-width:800px;margin:0 auto}
+.faq-item{background:#fff;border:1px solid rgba(27,42,74,.1);border-radius:6px;overflow:hidden}
+.faq-question{padding:1.25rem 1.5rem;cursor:pointer;display:flex;justify-content:space-between;align-items:center;user-select:none;transition:background .2s}
+.faq-question:hover{background:var(--cream)}
+.faq-question h4{font-size:.95rem;color:var(--navy);font-family:var(--font-sans);font-weight:500;margin:0}
+.faq-toggle{width:22px;height:22px;border:1.5px solid rgba(27,42,74,.25);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.75rem;transition:all .25s;flex-shrink:0;margin-left:1rem;color:var(--navy)}
+.faq-item.open .faq-toggle{background:var(--gold);border-color:var(--gold);color:#fff;transform:rotate(45deg)}
+.faq-answer{display:none;padding:0 1.5rem 1.25rem;font-size:.9rem;color:var(--slate);line-height:1.8}
+.faq-item.open .faq-answer{display:block}
+@media(max-width:960px){.about-grid{grid-template-columns:1fr}.value-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:640px){.value-grid{grid-template-columns:1fr}}
+<!-- ══════════════════════════════════════════════════════
+     NAVBAR FOUC PREVENTION
+     Inline + synchronous — runs before any paint.
+     navbar-loader.js removes this tag after injection.
+══════════════════════════════════════════════════════ -->
 
-<!-- Navbar CSS -->
+<!-- Navbar CSS — blocking stylesheet -->
 <link rel="stylesheet" href="../components/navbar.css">
 
-<style>
-.about-grid{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:4rem;
-  align-items:start;
-  margin-bottom:4rem;
-}
-
-.value-grid{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:1.5rem;
-  margin-top:3rem;
-}
-
-.value-card{
-  padding:1.5rem;
-  background:var(--cream);
-  border-radius:6px;
-  border-left:3px solid var(--gold);
-}
-
-.value-card h4{
-  color:var(--navy);
-  margin-bottom:.4rem;
-  font-size:.95rem;
-}
-
-.value-card p{
-  font-size:.85rem;
-  line-height:1.65;
-}
-
-.faq-list{
-  display:grid;
-  gap:.75rem;
-  max-width:800px;
-  margin:0 auto;
-}
-
-.faq-item{
-  background:#fff;
-  border:1px solid rgba(27,42,74,.1);
-  border-radius:6px;
-  overflow:hidden;
-}
-
-.faq-question{
-  padding:1.25rem 1.5rem;
-  cursor:pointer;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  user-select:none;
-}
-
-.faq-question:hover{
-  background:var(--cream);
-}
-
-.faq-question h4{
-  font-size:.95rem;
-  color:var(--navy);
-  font-weight:500;
-  margin:0;
-}
-
-.faq-toggle{
-  width:22px;
-  height:22px;
-  border:1.5px solid rgba(27,42,74,.25);
-  border-radius:50%;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-size:.75rem;
-  flex-shrink:0;
-  margin-left:1rem;
-  color:var(--navy);
-}
-
-.faq-item.open .faq-toggle{
-  background:var(--gold);
-  border-color:var(--gold);
-  color:#fff;
-  transform:rotate(45deg);
-}
-
-.faq-answer{
-  display:none;
-  padding:0 1.5rem 1.25rem;
-  font-size:.9rem;
-  color:var(--slate);
-  line-height:1.8;
-}
-
-.faq-item.open .faq-answer{
-  display:block;
-}
-
-@media(max-width:960px){
-  .about-grid{grid-template-columns:1fr}
-  .value-grid{grid-template-columns:1fr 1fr}
-}
-
-@media(max-width:640px){
-  .value-grid{grid-template-columns:1fr}
-}
-</style>
-</head>
-
-<body>
-
-<!-- NAVBAR (loaded by JS or included HTML) -->
-<div id="navbar"></div>
-
-<!-- Navbar loader -->
+<!-- Navbar loader — NO defer, NO async -->
 <script src="../components/navbar-loader.js" data-root="/"></script>
 
-<!-- PAGE HEADER -->
+</head>
 <body>
 
 
@@ -366,5 +268,6 @@ function toggleFAQ(el){
   if(!wasOpen) item.classList.add('open');
 }
 </script>
+
 </body>
 </html>
