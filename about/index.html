@@ -5,12 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>About — ATRBA</title>
 <meta name="description" content="About Above The Rest Business Advisors — our story, philosophy, values, FAQs, and careers.">
-
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
-
 <link rel="stylesheet" href="_shared.css">
-
 <style>
 .about-grid{display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:start;margin-bottom:4rem}
 .value-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;margin-top:3rem}
@@ -26,21 +23,28 @@
 .faq-item.open .faq-toggle{background:var(--gold);border-color:var(--gold);color:#fff;transform:rotate(45deg)}
 .faq-answer{display:none;padding:0 1.5rem 1.25rem;font-size:.9rem;color:var(--slate);line-height:1.8}
 .faq-item.open .faq-answer{display:block}
-
 @media(max-width:960px){.about-grid{grid-template-columns:1fr}.value-grid{grid-template-columns:1fr 1fr}}
 @media(max-width:640px){.value-grid{grid-template-columns:1fr}}
-</style>
-
 <!-- ══════════════════════════════════════════════════════
      NAVBAR FOUC PREVENTION
+     Inline + synchronous — runs before any paint.
+     navbar-loader.js removes this tag after injection.
 ══════════════════════════════════════════════════════ -->
 
+<!-- Navbar CSS — blocking stylesheet -->
 <link rel="stylesheet" href="../components/navbar.css">
+
+<!-- Navbar loader — NO defer, NO async -->
 <script src="../components/navbar-loader.js" data-root="/"></script>
 
-</head>
+<style>
+/* ── Reset & base ─────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
+</style>
+</head>
 <body>
+
 
 <div class="page-header">
   <div class="page-header-inner">
@@ -49,6 +53,7 @@
     <p>We exist because growth-stage founders deserve the same quality of advisory infrastructure as the world's most successful companies.</p>
   </div>
 </div>
+
 <section>
   <div class="section-inner">
     <div class="about-grid reveal">
@@ -259,6 +264,7 @@
   });
 })();
 </script>
+
 <script>
 function toggleFAQ(el){
   const item=el.parentElement;
