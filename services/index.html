@@ -20,6 +20,28 @@ body {
   padding-top: 68px;
 }
 
+<head>
+  <!-- ... your other tags ... -->
+
+  <!-- NAVBAR FOUC PREVENTION — must be in <head>, before loader script -->
+  <style>
+    
+    /* Reserve the space so page doesn't jump */
+    body {
+      padding-top: 68px; /* matches --nav-h */
+    }
+    @media (max-width: 640px) {
+      body { padding-top: 60px; }
+    }
+  </style>
+
+  <!-- Load navbar CSS blocking (not async) -->
+  <link rel="stylesheet" href="./components/navbar.css">
+
+  <!-- Load navbar script — NO defer, NO async -->
+  <script src="./components/navbar-loader.js" data-root="/"></script>
+</head>
+
 /* ── Design tokens ──────────────────────────────────────────── */
 :root {
   --navy:        #0d1b2a;
@@ -377,8 +399,7 @@ footer { background: #080f18; border-top: 1px solid rgba(255,255,255,.06); paddi
 <body>
 
 <!-- NAV -->
-<nav id="navbar"></nav>
-<script src="/components/navbar-loader.js" defer></script>
+
 <!-- HERO -->
 <section class="services-hero">
   <video class="hero-video" autoplay muted loop playsinline preload="none" poster="video-poster.jpg">
