@@ -66,7 +66,7 @@ body {
 .whatsapp-float:hover { transform: scale(1.08); }
 
 /* ══════════════════════════════════════════════════════
-   HERO — no background video, clean dark gradient
+   HERO
 ══════════════════════════════════════════════════════ */
 .services-hero {
   position: relative;
@@ -82,7 +82,6 @@ body {
   justify-content: center;
 }
 
-/* subtle grain texture overlay */
 .services-hero::before {
   content: '';
   position: absolute;
@@ -129,7 +128,7 @@ body {
 .model-pill.active { background: var(--gold); color: var(--navy); }
 
 /* ══════════════════════════════════════════════════════
-   HERO INLINE VIDEO — seamless, no controls
+   HERO INLINE VIDEO
 ══════════════════════════════════════════════════════ */
 .hero-video-wrap {
   width: 100%;
@@ -137,7 +136,6 @@ body {
   margin: 32px auto 36px;
   border-radius: 12px;
   overflow: hidden;
-  /* soft fade into the navy hero above and below */
   box-shadow:
     0 -40px 60px 20px var(--navy),
     0  40px 60px 20px var(--navy),
@@ -149,249 +147,7 @@ body {
   height: auto;
   aspect-ratio: 16 / 9;
   object-fit: cover;
-  pointer-events: none; /* no right-click / tap controls */
-}
-
-
-.video-section {
-  background: var(--navy);
-  padding: 0 0 64px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-/* gold accent bar connecting hero to video */
-.video-section-connector {
-  width: 1px;
-  height: 48px;
-  background: linear-gradient(to bottom, var(--gold), transparent);
-  margin-bottom: 0;
-}
-
-.video-wrapper {
-  width: 100%;
-  max-width: 960px;
-  margin: 0 auto;
-  padding: 0 24px;
-}
-
-.video-label {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  font-size: .68rem;
-  font-weight: 600;
-  letter-spacing: .18em;
-  text-transform: uppercase;
-  color: var(--gold);
-  margin-bottom: 20px;
-}
-.video-label::before,
-.video-label::after {
-  content: '';
-  display: block;
-  width: 32px;
-  height: 1px;
-  background: var(--gold);
-  opacity: .45;
-}
-
-/* The video container — elegant 16:9 frame */
-.video-frame {
-  position: relative;
-  width: 100%;
-  border-radius: 6px;
-  overflow: hidden;
-  background: #000;
-  box-shadow:
-    0 0 0 1px rgba(201,168,76,.2),
-    0 24px 80px rgba(0,0,0,.55),
-    0 4px 20px rgba(0,0,0,.4);
-}
-
-/* gold corner accents */
-.video-frame::before,
-.video-frame::after {
-  content: '';
-  position: absolute;
-  width: 24px;
-  height: 24px;
-  z-index: 10;
   pointer-events: none;
-}
-.video-frame::before {
-  top: -1px; left: -1px;
-  border-top: 2px solid var(--gold);
-  border-left: 2px solid var(--gold);
-  border-radius: 6px 0 0 0;
-}
-.video-frame::after {
-  bottom: -1px; right: -1px;
-  border-bottom: 2px solid var(--gold);
-  border-right: 2px solid var(--gold);
-  border-radius: 0 0 6px 0;
-}
-
-/* additional corner accents via child spans */
-.video-corner {
-  position: absolute;
-  width: 24px;
-  height: 24px;
-  z-index: 10;
-  pointer-events: none;
-}
-.video-corner.tr {
-  top: -1px; right: -1px;
-  border-top: 2px solid var(--gold);
-  border-right: 2px solid var(--gold);
-  border-radius: 0 6px 0 0;
-}
-.video-corner.bl {
-  bottom: -1px; left: -1px;
-  border-bottom: 2px solid var(--gold);
-  border-left: 2px solid var(--gold);
-  border-radius: 0 0 0 6px;
-}
-
-.video-frame video {
-  display: block;
-  width: 100%;
-  height: auto;
-  aspect-ratio: 16 / 9;
-  object-fit: cover;
-  background: #000;
-}
-
-/* custom play overlay shown before user interacts */
-.video-play-overlay {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  background: linear-gradient(to bottom, rgba(13,27,42,.35), rgba(13,27,42,.6));
-  cursor: pointer;
-  transition: opacity .3s ease;
-  z-index: 5;
-}
-.video-play-overlay.hidden { opacity: 0; pointer-events: none; }
-
-.play-btn {
-  width: 72px;
-  height: 72px;
-  border-radius: 50%;
-  border: 2px solid rgba(201,168,76,.7);
-  background: rgba(13,27,42,.7);
-  backdrop-filter: blur(8px);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: transform .2s ease, border-color .2s ease, background .2s ease;
-  margin-bottom: 16px;
-}
-.play-btn svg {
-  width: 28px; height: 28px;
-  fill: var(--gold-light);
-  margin-left: 4px; /* optical center for triangle */
-  transition: fill .2s;
-}
-.video-play-overlay:hover .play-btn {
-  transform: scale(1.1);
-  border-color: var(--gold-light);
-  background: rgba(201,168,76,.15);
-}
-.video-play-overlay:hover .play-btn svg { fill: #fff; }
-
-.play-caption {
-  font-size: .72rem;
-  font-weight: 600;
-  letter-spacing: .12em;
-  text-transform: uppercase;
-  color: rgba(255,255,255,.7);
-}
-
-/* custom controls bar */
-.video-controls {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  margin-top: 16px;
-  padding: 0 4px;
-}
-
-.ctrl-btn {
-  background: none;
-  border: none;
-  cursor: pointer;
-  color: rgba(255,255,255,.55);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 4px;
-  border-radius: 3px;
-  transition: color .2s;
-  flex-shrink: 0;
-}
-.ctrl-btn:hover { color: var(--gold-light); }
-.ctrl-btn svg { width: 18px; height: 18px; fill: currentColor; }
-
-/* progress bar */
-.progress-track {
-  flex: 1;
-  height: 3px;
-  background: rgba(255,255,255,.15);
-  border-radius: 999px;
-  cursor: pointer;
-  position: relative;
-  overflow: hidden;
-}
-.progress-fill {
-  height: 100%;
-  background: var(--gold);
-  border-radius: 999px;
-  width: 0%;
-  transition: width .1s linear;
-  pointer-events: none;
-}
-.progress-track:hover .progress-fill { background: var(--gold-light); }
-
-.time-display {
-  font-size: .72rem;
-  font-weight: 500;
-  color: rgba(255,255,255,.4);
-  font-variant-numeric: tabular-nums;
-  white-space: nowrap;
-  flex-shrink: 0;
-  min-width: 72px;
-  text-align: right;
-}
-
-/* caption below video */
-.video-caption {
-  text-align: center;
-  margin-top: 28px;
-  font-size: .82rem;
-  color: rgba(255,255,255,.4);
-  line-height: 1.6;
-  max-width: 500px;
-  margin-left: auto;
-  margin-right: auto;
-}
-.video-caption strong {
-  color: rgba(255,255,255,.7);
-  font-weight: 500;
-}
-
-/* responsive */
-@media (max-width: 640px) {
-  .video-section { padding-bottom: 48px; }
-  .play-btn { width: 58px; height: 58px; }
-  .play-btn svg { width: 22px; height: 22px; }
-  .video-controls { gap: 8px; }
-  .time-display { display: none; }
 }
 
 /* ══════════════════════════════════════════════════════
@@ -479,13 +235,74 @@ body {
 .domain-cta-mini a:hover { color: var(--gold); }
 
 /* ══════════════════════════════════════════════════════
-   MODEL SEPARATOR
+   MODEL SEPARATOR — two-column: text left, video right
 ══════════════════════════════════════════════════════ */
-.model-separator { background: var(--navy); padding: 64px 24px; text-align: center; }
-.sep-label { font-size: .65rem; font-weight: 600; letter-spacing: .2em; text-transform: uppercase; color: var(--gold); margin-bottom: 20px; }
-.model-separator h2 { font-family: 'DM Serif Display', serif; font-size: clamp(1.6rem, 3vw, 2.4rem); font-weight: 400; color: #fff; letter-spacing: -.02em; margin-bottom: 16px; max-width: 640px; margin-left: auto; margin-right: auto; line-height: 1.2; }
-.model-separator p { font-size: .93rem; color: rgba(255,255,255,.52); max-width: 500px; margin: 0 auto; line-height: 1.7; }
-.sep-divider { width: 1px; height: 40px; background: linear-gradient(to bottom, transparent, var(--gold), transparent); margin: 32px auto; }
+.model-separator {
+  background: var(--navy);
+  padding: 80px 24px;
+}
+
+.sep-inner {
+  max-width: 1040px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 64px;
+  align-items: center;
+}
+
+.sep-text {
+  text-align: left;
+}
+
+.sep-label {
+  font-size: .65rem;
+  font-weight: 600;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 20px;
+}
+
+.model-separator h2 {
+  font-family: 'DM Serif Display', serif;
+  font-size: clamp(1.6rem, 3vw, 2.4rem);
+  font-weight: 400;
+  color: #fff;
+  letter-spacing: -.02em;
+  margin-bottom: 16px;
+  line-height: 1.2;
+}
+
+.model-separator p {
+  font-size: .93rem;
+  color: rgba(255,255,255,.52);
+  line-height: 1.7;
+  margin: 0;
+}
+
+.sep-divider {
+  width: 1px;
+  height: 40px;
+  background: linear-gradient(to bottom, transparent, var(--gold), transparent);
+  margin: 28px 0;
+}
+
+.sep-video {
+  border-radius: 8px;
+  overflow: hidden;
+  line-height: 0;
+  flex-shrink: 0;
+}
+
+.sep-video video {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  border-radius: 8px;
+}
 
 /* ══════════════════════════════════════════════════════
    BESPOKE INTRO
@@ -578,16 +395,38 @@ footer { background: #080f18; border-top: 1px solid rgba(255,255,255,.06); paddi
 ══════════════════════════════════════════════════════ */
 @media (max-width: 860px) {
   .footer-top { grid-template-columns: 1fr 1fr; }
+
   .model-split,
   .bespoke-intro .inner,
   .productized-intro .inner { grid-template-columns: 1fr; }
+
   .model-half.left { border-right: none; border-bottom: 1px solid var(--border-soft); }
+
   .services-grid { grid-template-columns: 1fr; }
   .services-grid .svc-card + .svc-card { border-left: 1px solid var(--border-soft); border-top: none; }
   .services-grid.two-col { grid-template-columns: 1fr; }
+
   .bespoke-grid { grid-template-columns: 1fr; }
+
   .process-steps { grid-template-columns: 1fr 1fr; gap: 32px; }
   .process-steps::before { display: none; }
+
+  /* Separator stacks on mobile */
+  .sep-inner {
+    grid-template-columns: 1fr;
+    gap: 36px;
+  }
+  .sep-text {
+    text-align: center;
+  }
+  .sep-divider {
+    margin: 28px auto;
+  }
+  .model-separator p {
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 520px;
+  }
 }
 
 @media (max-width: 540px) {
@@ -597,6 +436,8 @@ footer { background: #080f18; border-top: 1px solid rgba(255,255,255,.06); paddi
   .footer-top { grid-template-columns: 1fr; }
   .cta-buttons { flex-direction: column; }
   .cta-buttons a { width: 100%; text-align: center; }
+  .model-separator { padding: 56px 20px; }
+  .sep-inner { gap: 28px; }
 }
 </style>
 </head>
@@ -616,7 +457,6 @@ footer { background: #080f18; border-top: 1px solid rgba(255,255,255,.06); paddi
   <h1>Two Ways to Work<br>with <em>ATRBA</em></h1>
   <p class="hero-sub">Structured packages for fast-track transformation — or fully bespoke advisory for complex engagements. Choose the model that fits your situation.</p>
 
-  <!-- ── HERO VIDEO — replace "your-video.mp4" with your file path ── -->
   <div class="hero-video-wrap">
     <video src="video2.mp4" autoplay muted loop playsinline preload="auto" disablepictureinpicture aria-hidden="true"></video>
   </div>
@@ -855,14 +695,21 @@ footer { background: #080f18; border-top: 1px solid rgba(255,255,255,.06); paddi
 
 
 <!-- ══════════════════════════════════════════════════════
-     MODEL SEPARATOR → BESPOKE
+     MODEL SEPARATOR — text left, video right
 ══════════════════════════════════════════════════════ -->
 <div class="model-separator" id="bespoke">
-  <div class="sep-label">End of Productized Platform &nbsp;·&nbsp; Beginning of Bespoke</div>
-  <h2>Some Challenges Don't Fit a Package.</h2>
-  <p>When the scope is too complex, the organization too large, or the strategic stakes too high — we design the engagement from scratch.</p>
-  <div class="sep-divider"></div>
-  <p style="font-size:.8rem;color:rgba(255,255,255,.3);letter-spacing:.05em">ATRBA Bespoke Consulting &nbsp;↓</p>
+  <div class="sep-inner">
+    <div class="sep-text">
+      <div class="sep-label">End of Productized Platform &nbsp;·&nbsp; Beginning of Bespoke</div>
+      <h2>Some Challenges Don't Fit a Package.</h2>
+      <p>When the scope is too complex, the organization too large, or the strategic stakes too high — we design the engagement from scratch.</p>
+      <div class="sep-divider"></div>
+      <p style="font-size:.8rem;color:rgba(255,255,255,.3);letter-spacing:.05em">ATRBA Bespoke Consulting &nbsp;↓</p>
+    </div>
+    <div class="sep-video">
+      <video src="video2.mp4" autoplay muted loop playsinline preload="auto" disablepictureinpicture></video>
+    </div>
+  </div>
 </div>
 
 
@@ -1090,8 +937,6 @@ function updatePills() {
   else { pills[0]?.classList.add('active'); }
 }
 window.addEventListener('scroll', updatePills, { passive: true });
-
-
 </script>
 
 </body>
