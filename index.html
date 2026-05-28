@@ -6,46 +6,112 @@
 <title>ATRBA — Engineering the EDGE of Business Transformation</title>
 <meta name="description" content="Above The Rest Business Advisors — the multidisciplinary advisory firm that builds operational infrastructure, deploys AI systems, and opens international markets for growth-stage founders.">
 <meta name="theme-color" content="#0C1425">
+
+<!-- Fonts -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preload" as="video" href="video1.mp4" type="video/mp4">
-<link rel="preload" as="fetch" href="/components/navbar.html">
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<!-- Shared styles -->
 <link rel="stylesheet" href="_shared.css">
 
-  <style>
-    /* Hide nav elements until loader reveals them */
-    .site-nav, .nav-drawer {
-      visibility: hidden;
-    }
-    /* Reserve the space so page doesn't jump */
-    body {
-      padding-top: 68px; /* matches --nav-h */
-    }
-    @media (max-width: 640px) {
-      body { padding-top: 60px; }
-    }
-  </style>
+<!-- ═══════════════════════════════════════════════════
+     NAVBAR FOUC PREVENTION
+     Must be inline + before navbar-loader.js so it runs
+     synchronously at parse time — zero delay, zero flash.
+     The loader's revealNav() removes #nav-hide-fouc after
+     injection is confirmed complete.
+═══════════════════════════════════════════════════ -->
+<style id="nav-hide-fouc">
+  .site-nav,
+  .nav-drawer { visibility: hidden !important; }
+</style>
 
-  <!-- Load navbar CSS blocking (not async) -->
-  <link rel="stylesheet" href="/components/navbar.css">
+<!-- Navbar CSS — blocking stylesheet, not preload -->
+<link rel="stylesheet" href="/components/navbar.css">
 
-  <!-- Load navbar script — NO defer, NO async -->
-  <script src="/components/navbar-loader.js" data-root="/"></script>
+<!-- Navbar loader — NO defer, NO async so it runs before paint -->
+<script src="/components/navbar-loader.js" data-root="/"></script>
+
 <style>
-/* ── Page-specific: Hero ───────────────────────────────────── */
+/* ══════════════════════════════════════════════════════
+   BODY OFFSET — reserve space for fixed nav
+══════════════════════════════════════════════════════ */
+:root {
+  --nav-h: 68px;
+}
+body {
+  padding-top: var(--nav-h);
+}
+@media (max-width: 640px) {
+  :root { --nav-h: 60px; }
+}
+
+/* ══════════════════════════════════════════════════════
+   HERO
+══════════════════════════════════════════════════════ */
 .hero {
+  position: relative;
   background: var(--navy-dark);
   min-height: calc(100svh - var(--nav-h));
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ── Video background ── */
+.hero-video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  z-index: 0;
+  display: block;
+}
+
+/* ── Gradient overlay ── */
+.hero-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background:
+    linear-gradient(
+      to bottom,
+      rgba(11,18,35,0.55) 0%,
+      rgba(11,18,35,0.45) 50%,
+      rgba(11,18,35,0.75) 100%
+    );
+}
+
+/* ── Particle canvas ── */
+#particles-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 2;
+  pointer-events: none;
+}
+
+/* ── Hero content sits above video + overlay ── */
+.hero-content {
+  position: relative;
+  z-index: 3;
+  flex: 1;
+  display: flex;
+  align-items: center;
 }
 
 .hero-content-inner {
   max-width: 1200px;
   margin: 0 auto;
-  padding: clamp(3rem, 8vw, 5rem) var(--section-px);
+  padding: clamp(3rem, 8vw, 5rem) clamp(1.25rem, 5vw, 2rem);
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: clamp(2rem, 5vw, 4rem);
   align-items: center;
+  width: 100%;
 }
 
 .hero-eyebrow {
@@ -72,8 +138,8 @@
 .hero h1 {
   color: #fff;
   margin-bottom: 1.4rem;
-  animation: slideUp .9s var(--ease-out) .3s both;
-  text-shadow: 0 2px 30px rgba(0,0,0,.3);
+  animation: slideUp .9s var(--ease-out, cubic-bezier(0.19,1,0.22,1)) .3s both;
+  text-shadow: 0 2px 30px rgba(0,0,0,.4);
 }
 
 .hero h1 em {
@@ -82,11 +148,11 @@
 }
 
 .hero-sub {
-  color: rgba(255,255,255,.68);
+  color: rgba(255,255,255,.75);
   font-size: clamp(.9rem, 1.8vw, 1.05rem);
   line-height: 1.82;
   margin-bottom: 2.25rem;
-  animation: slideUp .9s var(--ease-out) .5s both;
+  animation: slideUp .9s var(--ease-out, cubic-bezier(0.19,1,0.22,1)) .5s both;
   max-width: 520px;
 }
 
@@ -94,42 +160,12 @@
   display: flex;
   gap: .875rem;
   flex-wrap: wrap;
-  animation: slideUp .9s var(--ease-out) .7s both;
-}
-/* ── Mobile Hero Video Fix ────────────────────────────────── */
-@media (max-width: 768px) {
-
-  .hero {
-    position: relative;
-    overflow: hidden;
-    background: #0C1425;
-  }
-
-  .hero-video {
-    display: block;
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    z-index: 0;
-  }
-
-  .hero-overlay,
-  #particles-canvas,
-  .hero-content {
-    position: relative;
-    z-index: 1;
-  }
-
-  .hero-content-inner {
-    grid-template-columns: 1fr;
-  }
+  animation: slideUp .9s var(--ease-out, cubic-bezier(0.19,1,0.22,1)) .7s both;
 }
 
-/* Hero metrics panel */
+/* ── Metric tiles ── */
 .hero-visual {
-  animation: fadeIn 1.2s var(--ease-out) .8s both;
+  animation: fadeIn 1.2s var(--ease-out, cubic-bezier(0.19,1,0.22,1)) .8s both;
 }
 
 .hero-metrics {
@@ -139,21 +175,22 @@
   background: rgba(255,255,255,.08);
   border-radius: 12px;
   overflow: hidden;
-  border: 1px solid rgba(255,255,255,.08);
-  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255,255,255,.1);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
 }
 
 .hero-metric {
-  background: rgba(255,255,255,.04);
+  background: rgba(255,255,255,.05);
   padding: clamp(1rem, 3vw, 1.5rem);
   text-align: center;
   transition: background .25s;
 }
 
-.hero-metric:hover { background: rgba(201,147,58,.07); }
+.hero-metric:hover { background: rgba(201,147,58,.09); }
 
 .hero-metric-val {
-  font-family: var(--font-serif);
+  font-family: var(--font-serif, 'DM Serif Display', Georgia, serif);
   font-size: clamp(1.8rem, 3.5vw, 2.5rem);
   color: var(--gold);
   display: block;
@@ -162,7 +199,7 @@
 
 .hero-metric-label {
   font-size: clamp(.6rem, 1.2vw, .72rem);
-  color: rgba(255,255,255,.48);
+  color: rgba(255,255,255,.55);
   letter-spacing: .08em;
   text-transform: uppercase;
   margin-top: .4rem;
@@ -178,7 +215,7 @@
 }
 
 .hero-tagline p {
-  color: rgba(255,255,255,.48);
+  color: rgba(255,255,255,.5);
   font-size: .76rem;
   font-style: italic;
   text-align: center;
@@ -186,59 +223,103 @@
   line-height: 1.5;
 }
 
+/* ── Animations ── */
 @keyframes slideUp {
   from { opacity: 0; transform: translateY(28px); }
   to   { opacity: 1; transform: translateY(0); }
 }
-
 @keyframes fadeIn {
   from { opacity: 0; }
   to   { opacity: 1; }
 }
 
-/* ── Responsive hero grid ─────────────────────────────────── */
+/* ══════════════════════════════════════════════════════
+   HERO RESPONSIVE
+══════════════════════════════════════════════════════ */
+
+/* Tablet: stack columns */
 @media (max-width: 900px) {
   .hero-content-inner {
     grid-template-columns: 1fr;
     gap: 2.5rem;
+    padding-top: clamp(2rem, 6vw, 4rem);
+    padding-bottom: clamp(2rem, 6vw, 4rem);
   }
   .hero-visual { order: -1; }
-  .hero-sub { max-width: 100%; }
+  .hero-sub    { max-width: 100%; }
   .hero-metrics { max-width: 480px; }
 }
 
+/* Mobile: hide video, show poster as bg instead */
+@media (max-width: 768px) {
+  .hero-video { display: none; }
+
+  /* Poster image replaces video on mobile */
+  .hero {
+    background: url("video-poster.jpg") center / cover no-repeat;
+  }
+
+  /* Slightly darker overlay on mobile for legibility */
+  .hero-overlay {
+    background:
+      linear-gradient(
+        to bottom,
+        rgba(11,18,35,0.65) 0%,
+        rgba(11,18,35,0.55) 50%,
+        rgba(11,18,35,0.82) 100%
+      );
+  }
+
+  .hero-sub {
+    color: rgba(255,255,255,.85);
+  }
+
+  /* Full-width CTA buttons on small screens */
+  .hero-ctas {
+    flex-direction: column;
+  }
+  .hero-ctas a {
+    width: 100%;
+    text-align: center;
+    justify-content: center;
+  }
+}
+
 @media (max-width: 480px) {
-  .hero-metrics { max-width: 100%; }
-  .hero-metric { padding: 1rem .875rem; }
+  .hero-metrics  { max-width: 100%; }
+  .hero-metric   { padding: 1rem .875rem; }
   .hero-metric-val { font-size: 1.6rem; }
+  .hero-content-inner { padding-top: 1.75rem; padding-bottom: 1.75rem; }
 }
 </style>
 </head>
 <body>
 
 <!-- ═══════════════════════════════════════════════════════════
-     NAVIGATION
+     NAVBAR — injected here by navbar-loader.js
+     (no placeholder div needed; loader prepends to body)
 ════════════════════════════════════════════════════════════ -->
 
 <!-- ═══════════════════════════════════════════════════════════
      HERO
 ════════════════════════════════════════════════════════════ -->
 <div class="hero">
-  <!-- Background video — fully responsive via object-fit:cover -->
-  <video
-  autoplay
-  muted
-  loop
-  playsinline
-  class="hero-video"
-  poster="video-poster.jpg"
-  fetchpriority="high"
-  preload="metadata"
->
-  <source src="video1.mp4" type="video/mp4">
-</video>
 
-  <!-- Gradient overlay for legibility -->
+  <!-- Background video — hidden on mobile via CSS -->
+  <video
+    autoplay
+    muted
+    loop
+    playsinline
+    class="hero-video"
+    poster="video-poster.jpg"
+    fetchpriority="high"
+    preload="metadata"
+  >
+    <source src="video1.mp4" type="video/mp4">
+  </video>
+
+  <!-- Gradient overlay -->
   <div class="hero-overlay" aria-hidden="true"></div>
 
   <!-- Particle canvas -->
@@ -377,59 +458,32 @@
     </div>
 
     <div class="edge-container reveal">
-      <!-- Desktop sidebar nav -->
       <div class="edge-nav">
         <div class="edge-nav-item active" onclick="switchEdge(0)">
           <div class="edge-letter">E</div>
-          <div>
-            <div class="edge-word">Explore</div>
-            <div style="font-size:.65rem;color:rgba(255,255,255,.3);margin-top:2px">Phase 01</div>
-          </div>
+          <div><div class="edge-word">Explore</div><div style="font-size:.65rem;color:rgba(255,255,255,.3);margin-top:2px">Phase 01</div></div>
         </div>
         <div class="edge-nav-item" onclick="switchEdge(1)">
           <div class="edge-letter">D</div>
-          <div>
-            <div class="edge-word">Design</div>
-            <div style="font-size:.65rem;color:rgba(255,255,255,.3);margin-top:2px">Phase 02</div>
-          </div>
+          <div><div class="edge-word">Design</div><div style="font-size:.65rem;color:rgba(255,255,255,.3);margin-top:2px">Phase 02</div></div>
         </div>
         <div class="edge-nav-item" onclick="switchEdge(2)">
           <div class="edge-letter">G</div>
-          <div>
-            <div class="edge-word">Generate</div>
-            <div style="font-size:.65rem;color:rgba(255,255,255,.3);margin-top:2px">Phase 03</div>
-          </div>
+          <div><div class="edge-word">Generate</div><div style="font-size:.65rem;color:rgba(255,255,255,.3);margin-top:2px">Phase 03</div></div>
         </div>
         <div class="edge-nav-item" onclick="switchEdge(3)">
           <div class="edge-letter">E</div>
-          <div>
-            <div class="edge-word">Execute</div>
-            <div style="font-size:.65rem;color:rgba(255,255,255,.3);margin-top:2px">Phase 04</div>
-          </div>
+          <div><div class="edge-word">Execute</div><div style="font-size:.65rem;color:rgba(255,255,255,.3);margin-top:2px">Phase 04</div></div>
         </div>
       </div>
 
-      <!-- Mobile tab bar (shown ≤960px) -->
       <div class="edge-mobile-tabs">
-        <button class="edge-tab-btn active" onclick="switchEdge(0)">
-          <span class="edge-tab-letter">E</span>
-          <span class="edge-tab-word">Explore</span>
-        </button>
-        <button class="edge-tab-btn" onclick="switchEdge(1)">
-          <span class="edge-tab-letter">D</span>
-          <span class="edge-tab-word">Design</span>
-        </button>
-        <button class="edge-tab-btn" onclick="switchEdge(2)">
-          <span class="edge-tab-letter">G</span>
-          <span class="edge-tab-word">Generate</span>
-        </button>
-        <button class="edge-tab-btn" onclick="switchEdge(3)">
-          <span class="edge-tab-letter">E</span>
-          <span class="edge-tab-word">Execute</span>
-        </button>
+        <button class="edge-tab-btn active" onclick="switchEdge(0)"><span class="edge-tab-letter">E</span><span class="edge-tab-word">Explore</span></button>
+        <button class="edge-tab-btn" onclick="switchEdge(1)"><span class="edge-tab-letter">D</span><span class="edge-tab-word">Design</span></button>
+        <button class="edge-tab-btn" onclick="switchEdge(2)"><span class="edge-tab-letter">G</span><span class="edge-tab-word">Generate</span></button>
+        <button class="edge-tab-btn" onclick="switchEdge(3)"><span class="edge-tab-letter">E</span><span class="edge-tab-word">Execute</span></button>
       </div>
 
-      <!-- Content panels -->
       <div>
         <div class="edge-content active" id="edge-0">
           <div style="font-size:.62rem;color:var(--gold);letter-spacing:.22em;text-transform:uppercase;font-weight:700;margin-bottom:.75rem">Phase 01 / Explore</div>
@@ -454,11 +508,10 @@
             </div>
           </div>
         </div>
-
         <div class="edge-content" id="edge-1">
           <div style="font-size:.62rem;color:var(--gold);letter-spacing:.22em;text-transform:uppercase;font-weight:700;margin-bottom:.75rem">Phase 02 / Design</div>
           <h3>Blueprint, Not Template</h3>
-          <p class="lead">From diagnosis flows architecture. A transformation roadmap specific to your stage, sector, and strategic ambition — custom-designed, not adapted from a shelf.</p>
+          <p class="lead">From diagnosis flows architecture. A transformation roadmap specific to your stage, sector, and strategic ambition.</p>
           <ul class="edge-details">
             <li>Phased roadmap with milestones and resource allocation</li>
             <li>Governance structure and decision-system design</li>
@@ -478,11 +531,10 @@
             </div>
           </div>
         </div>
-
         <div class="edge-content" id="edge-2">
           <div style="font-size:.62rem;color:var(--gold);letter-spacing:.22em;text-transform:uppercase;font-weight:700;margin-bottom:.75rem">Phase 03 / Generate</div>
           <h3>Implementation Is Where We Begin</h3>
-          <p class="lead">Where most advisors stop, we enter the work — building, deploying, training, and iterating until systems are operational and performing.</p>
+          <p class="lead">Where most advisors stop, we enter the work — building, deploying, training, and iterating until systems are operational.</p>
           <ul class="edge-details">
             <li>Hands-on process deployment with change management support</li>
             <li>AI and automation workflow implementation</li>
@@ -502,11 +554,10 @@
             </div>
           </div>
         </div>
-
         <div class="edge-content" id="edge-3">
           <div style="font-size:.62rem;color:var(--gold);letter-spacing:.22em;text-transform:uppercase;font-weight:700;margin-bottom:.75rem">Phase 04 / Execute</div>
           <h3>Transformation as a Compounding Capability</h3>
-          <p class="lead">Transformation is not an event. We establish the systems, rhythms, and leadership behaviors that sustain performance far beyond our engagement.</p>
+          <p class="lead">Transformation is not an event. We establish the systems, rhythms, and leadership behaviors that sustain performance.</p>
           <ul class="edge-details">
             <li>Quarterly performance reviews and optimization cycles</li>
             <li>Leadership coaching and organizational development</li>
@@ -545,21 +596,21 @@
     <div class="testimonial-grid">
       <div class="testimonial-card reveal reveal-delay-1">
         <div class="testimonial-quote-mark">"</div>
-        <p>ATRBA brought a level of operational sophistication we had only seen in companies ten times our size. Within 90 days, we had management systems that actually worked — and a team that knew how to use them.</p>
+        <p>ATRBA brought a level of operational sophistication we had only seen in companies ten times our size. Within 90 days, we had management systems that actually worked.</p>
         <div class="testimonial-author">Adaeze O.</div>
         <div class="testimonial-title">CEO · Lagos-Based Technology Firm</div>
         <div class="sample-badge">Sample Testimonial</div>
       </div>
       <div class="testimonial-card reveal reveal-delay-2">
         <div class="testimonial-quote-mark">"</div>
-        <p>What separated ATRBA from every other consultant we had engaged was simple: they stayed until it worked. Not until the report was submitted — until the systems were running and our team was capable.</p>
+        <p>What separated ATRBA from every other consultant we had engaged was simple: they stayed until it worked. Not until the report was submitted — until the systems were running.</p>
         <div class="testimonial-author">Marcus T.</div>
         <div class="testimonial-title">Managing Partner · Professional Services Firm, Philadelphia</div>
         <div class="sample-badge">Sample Testimonial</div>
       </div>
       <div class="testimonial-card reveal reveal-delay-3">
         <div class="testimonial-quote-mark">"</div>
-        <p>The Africa market entry work was exceptional. ATRBA's network and regulatory knowledge compressed our launch timeline by more than a year. That is not an exaggeration.</p>
+        <p>The Africa market entry work was exceptional. ATRBA's network and regulatory knowledge compressed our launch timeline by more than a year.</p>
         <div class="testimonial-author">Jennifer K.</div>
         <div class="testimonial-title">Founder & CEO · US-Based Fintech Company</div>
         <div class="sample-badge">Sample Testimonial</div>
@@ -586,13 +637,7 @@
   <div class="footer-inner">
     <div class="footer-top">
       <div class="footer-brand">
-        <!-- Footer logo image (same file, smaller display) -->
-        <img
-          src="logo.png"
-          alt="ATRBA"
-          style="height:38px;width:auto;margin-bottom:.75rem;opacity:.9;filter:brightness(0) invert(1);"
-          onerror="this.style.display='none'"
-        >
+        <img src="logo.png" alt="ATRBA" style="height:38px;width:auto;margin-bottom:.75rem;opacity:.9;filter:brightness(0) invert(1);" onerror="this.style.display='none'">
         <h3>Above The Rest Business Advisors</h3>
         <div style="font-size:.6rem;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);font-weight:600;margin-top:.2rem">ATRBA</div>
         <p>Building businesses that last — by giving growth-stage founders access to the operational infrastructure, strategic expertise, and AI capability historically reserved for large enterprises.</p>
@@ -641,72 +686,43 @@
 <script>
 /* ── EDGE TABS ── */
 function switchEdge(idx) {
-  document.querySelectorAll('.edge-nav-item').forEach((el, i) =>
-    el.classList.toggle('active', i === idx)
-  );
-
-  document.querySelectorAll('.edge-tab-btn').forEach((el, i) =>
-    el.classList.toggle('active', i === idx)
-  );
-
-  document.querySelectorAll('.edge-content').forEach((el, i) =>
-    el.classList.toggle('active', i === idx)
-  );
+  document.querySelectorAll('.edge-nav-item').forEach((el,i) => el.classList.toggle('active', i===idx));
+  document.querySelectorAll('.edge-tab-btn').forEach((el,i)  => el.classList.toggle('active', i===idx));
+  document.querySelectorAll('.edge-content').forEach((el,i)  => el.classList.toggle('active', i===idx));
 }
 
 /* ── SCROLL REVEAL ── */
 function observeReveal() {
   const els = document.querySelectorAll('.reveal:not(.visible)');
-
-  if (!('IntersectionObserver' in window)) {
-    els.forEach(el => el.classList.add('visible'));
-    return;
-  }
-
+  if (!('IntersectionObserver' in window)) { els.forEach(el => el.classList.add('visible')); return; }
   const obs = new IntersectionObserver(entries => {
-    entries.forEach(e => {
-      if (e.isIntersecting) {
-        e.target.classList.add('visible');
-        obs.unobserve(e.target);
-      }
-    });
-  }, {
-    threshold: 0.12,
-    rootMargin: '0px 0px -40px 0px'
-  });
-
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } });
+  }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
   els.forEach(el => obs.observe(el));
 }
-
 window.addEventListener('load', observeReveal);
-window.addEventListener('scroll', observeReveal, { passive: true });
 
-/* ── PARTICLES ── */
+/* ── PARTICLES (desktop only) ── */
 (function () {
+  if (window.innerWidth <= 768) return; // skip on mobile entirely
+
   const canvas = document.getElementById('particles-canvas');
   if (!canvas) return;
-
   const ctx = canvas.getContext('2d');
   let w, h, particles = [];
 
-  function resize() {
-    w = canvas.width = canvas.offsetWidth;
-    h = canvas.height = canvas.offsetHeight;
-  }
+  function resize() { w = canvas.width = canvas.offsetWidth; h = canvas.height = canvas.offsetHeight; }
 
   function Particle() {
-    this.x = Math.random() * w;
-    this.y = Math.random() * h;
+    this.x  = Math.random() * w;
+    this.y  = Math.random() * h;
     this.vx = (Math.random() - 0.5) * 0.3;
     this.vy = (Math.random() - 0.5) * 0.3;
-    this.r = Math.random() * 1.5 + 0.5;
-    this.a = Math.random() * 0.35 + 0.08;
+    this.r  = Math.random() * 1.5 + 0.5;
+    this.a  = Math.random() * 0.35 + 0.08;
   }
-
   Particle.prototype.update = function () {
-    this.x += this.vx;
-    this.y += this.vy;
-
+    this.x += this.vx; this.y += this.vy;
     if (this.x < 0 || this.x > w) this.vx *= -1;
     if (this.y < 0 || this.y > h) this.vy *= -1;
   };
@@ -720,26 +736,20 @@ window.addEventListener('scroll', observeReveal, { passive: true });
 
   function draw() {
     ctx.clearRect(0, 0, w, h);
-
     particles.forEach(p => {
+      p.update();
       ctx.beginPath();
       ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
       ctx.fillStyle = `rgba(201,147,58,${p.a})`;
       ctx.fill();
     });
-
     requestAnimationFrame(draw);
   }
 
- init();
-
-window.addEventListener("load", () => {
-  if (window.innerWidth > 768) {
-    requestAnimationFrame(draw);
-  }
-});
+  window.addEventListener('load', () => { init(); requestAnimationFrame(draw); });
   window.addEventListener('resize', init);
 })();
 </script>
+
 </body>
 </html>
