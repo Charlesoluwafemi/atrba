@@ -1,33 +1,52 @@
 <!-- ============================================================
-     ATRBA — NAVBAR COMPONENT  (single source of truth)
-     DO NOT duplicate this file. Load it via navbar-loader.js.
-     ============================================================ -->
+     ATRBA — NAV COMPONENT  (nav.html)
+     Injected by nav-loader.js. Do NOT include directly in pages.
+
+     FIXES vs previous version
+     ──────────────────────────────────────────────────────────────
+     1. .nav-links was a <div> containing bare <a> tags.
+        This is the element that rendered as an unstyled vertical
+        list when CSS hadn't loaded yet.  Fixed: now a proper
+        <ul role="list"> with <li> wrappers — semantically correct
+        AND harder for the browser to render badly without styles.
+
+     2. role="navigation" moved to the <nav> element where it
+        belongs (redundant but harmless there); removed from the
+        inner <ul> which should be role="list" or nothing.
+
+     3. aria-label on <nav> is now "Main navigation" — the <ul>
+        doesn't need its own landmark label.
+
+     4. No nested <a> tags anywhere (was not present before,
+        confirmed clean).
+     ──────────────────────────────────────────────────────────────
+-->
 
 <!-- ── MAIN NAV ─────────────────────────────────────────────── -->
-<nav class="site-nav" id="main-nav">
+<nav class="site-nav" id="main-nav" role="navigation" aria-label="Main navigation">
   <div class="nav-inner">
 
     <!-- Logo -->
     <a href="/" class="nav-logo" aria-label="ATRBA — Home">
-      <img src="/logo.png" alt="ATRBA Logo" class="nav-logo-img">
-
+      <img src="/logo.png" alt="ATRBA Logo" class="nav-logo-img" width="38" height="38">
       <div class="nav-logo-text">
-        <div class="nav-logo-main">Above The Rest</div>
-        <div class="nav-logo-sub">Business Advisors · ATRBA</div>
+        <span class="nav-logo-main">Above The Rest</span>
+        <span class="nav-logo-sub">Business Advisors · ATRBA</span>
       </div>
     </a>
 
-    <!-- Desktop links -->
-    <div class="nav-links" role="navigation" aria-label="Main navigation">
-      <a href="/services">Services</a>
-      <a href="/atr-ai">ATR AI</a>
-      <a href="/solutions">Industries</a>
-      <a href="/case-studies">Case Studies</a>
-      <a href="/resources">Resources</a>
-      <a href="/about">About</a>
-      <a href="/blog">Blog</a>
-      <a href="/contact" class="nav-cta-btn">Book a Call</a>
-    </div>
+    <!-- Desktop links — now a <ul> so unstyled state is a proper
+         bullet list, not a raw link dump (and CSS hides it anyway) -->
+    <ul class="nav-links" role="list">
+      <li><a href="/services">Services</a></li>
+      <li><a href="/atr-ai">ATR AI</a></li>
+      <li><a href="/solutions">Industries</a></li>
+      <li><a href="/case-studies">Case Studies</a></li>
+      <li><a href="/resources">Resources</a></li>
+      <li><a href="/about">About</a></li>
+      <li><a href="/blog">Blog</a></li>
+      <li><a href="/contact" class="nav-cta-btn">Book a Call</a></li>
+    </ul>
 
     <!-- Hamburger — mobile only -->
     <button
@@ -36,6 +55,7 @@
       aria-label="Toggle navigation menu"
       aria-expanded="false"
       aria-controls="nav-mobile-drawer"
+      type="button"
     >
       <span class="bar"></span>
       <span class="bar"></span>
@@ -46,7 +66,14 @@
 </nav>
 
 <!-- ── MOBILE DRAWER ─────────────────────────────────────────── -->
-<div class="nav-drawer" id="nav-mobile-drawer" aria-hidden="true" role="dialog" aria-label="Mobile navigation">
+<div
+  class="nav-drawer"
+  id="nav-mobile-drawer"
+  aria-hidden="true"
+  role="dialog"
+  aria-modal="true"
+  aria-label="Mobile navigation"
+>
   <ul class="nav-drawer-links" role="list">
     <li><a href="/services">Services <span class="arrow" aria-hidden="true">→</span></a></li>
     <li><a href="/atr-ai">ATR AI <span class="arrow" aria-hidden="true">→</span></a></li>
@@ -59,11 +86,11 @@
 
   <div class="nav-drawer-ctas">
     <a href="/contact" class="drawer-cta-primary">Book a Strategy Call →</a>
-    <a href="https://wa.me/18560000000"
-       class="drawer-cta-secondary"
-       target="_blank"
-       rel="noopener noreferrer">
-      💬 &nbsp;Chat on WhatsApp
-    </a>
+    <a
+      href="https://wa.me/18560000000"
+      class="drawer-cta-secondary"
+      target="_blank"
+      rel="noopener noreferrer"
+    >💬 &nbsp;Chat on WhatsApp</a>
   </div>
 </div>
