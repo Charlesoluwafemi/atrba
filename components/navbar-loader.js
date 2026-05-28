@@ -33,8 +33,8 @@
   var scriptEl  = document.currentScript;
   var siteRoot  = (scriptEl && scriptEl.getAttribute('data-root')) || '/';
   var base      = siteRoot.replace(/\/$/, '');
-  var navHTML   = base + '/components/nav.html';
-  var navCSS    = base + '/components/nav.css';
+  var navHTML   = base + '/components/navbar.html';
+  var navCSS    = base + '/components/navbar.css';
 
   /* ── STEP 1 — Hide nav shell immediately (sync, inline style) ─
      This runs before any paint. It targets only the two nav
