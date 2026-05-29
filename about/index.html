@@ -7,9 +7,7 @@
 <meta name="description" content="About Above The Rest Business Advisors — our story, philosophy, values, FAQs, and careers.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
-<!-- Base shared styles (ensuring no style changes, only responsiveness) -->
 <style>
-  /* ----- RESET & VARIABLES (preserved exactly) ----- */
   :root {
     --navy: #1B2A4A;
     --gold: #C9933A;
@@ -19,11 +17,7 @@
     --font-serif: 'DM Serif Display', serif;
     --font-sans: 'Inter', sans-serif;
   }
-  * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
   body {
     font-family: var(--font-sans);
     color: var(--slate);
@@ -40,424 +34,201 @@
   }
   h1 { font-size: clamp(2.2rem, 8vw, 3.5rem); line-height: 1.2; margin-bottom: 1rem; }
   h2 { font-size: clamp(1.8rem, 6vw, 2.5rem); margin-bottom: 1rem; }
-  .section-inner {
-    max-width: 1280px;
-    margin: 0 auto;
-    padding: 0 2rem;
-    width: 100%;
-  }
-  section {
-    padding: 5rem 0;
-  }
-  .bg-cream {
-    background: var(--cream);
-  }
-  /* page header */
+  .section-inner { max-width: 1280px; margin: 0 auto; padding: 0 2rem; width: 100%; }
+  section { padding: 5rem 0; }
+  .bg-cream { background: var(--cream); }
   .page-header {
-    background: var(--navy);
+    position: relative;
     color: white;
-    padding: 3rem 2rem;
+    padding: 6rem 2rem;
     text-align: center;
+    overflow: hidden;
+    background: var(--navy);
+  }
+  .page-header-video {
+    position: absolute;
+    inset: 0;
+    width: 100%; height: 100%;
+    object-fit: cover;
+    object-position: center;
+    z-index: 0;
+    opacity: 0;
+    transition: opacity 1s ease;
+  }
+  .page-header-video.loaded { opacity: 1; }
+  /* dark overlay — navy tint so text always reads clearly */
+  .page-header::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      to bottom,
+      rgba(27,42,74,0.72) 0%,
+      rgba(27,42,74,0.60) 60%,
+      rgba(27,42,74,0.80) 100%
+    );
+    z-index: 1;
   }
   .page-header-inner {
     max-width: 900px;
     margin: 0 auto;
+    position: relative;
+    z-index: 2;
   }
-  .page-header h1 {
-    color: white;
+  .page-header h1 { color: white; text-shadow: 0 2px 20px rgba(0,0,0,0.3); }
+  .page-header p { font-size: 1.2rem; opacity: 0.9; max-width: 700px; margin: 1rem auto 0; text-shadow: 0 1px 8px rgba(0,0,0,0.25); }
+  @media (max-width: 640px) {
+    .page-header { padding: 4rem 1.25rem; }
+    .page-header p { font-size: 1rem; }
   }
-  .page-header p {
-    font-size: 1.2rem;
-    opacity: 0.85;
-    max-width: 700px;
-    margin: 1rem auto 0;
-  }
-  .breadcrumb {
-    font-size: 0.8rem;
-    margin-bottom: 1.5rem;
-    color: rgba(255,255,255,0.6);
-  }
-  .breadcrumb a {
-    color: var(--gold);
-    text-decoration: none;
-  }
+  .breadcrumb { font-size: 0.8rem; margin-bottom: 1.5rem; color: rgba(255,255,255,0.6); }
+  .breadcrumb a { color: var(--gold); text-decoration: none; }
   .section-eyebrow {
-    font-size: 0.7rem;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    color: var(--gold);
-    font-weight: 600;
-    margin-bottom: 0.75rem;
+    font-size: 0.7rem; letter-spacing: 0.15em; text-transform: uppercase;
+    color: var(--gold); font-weight: 600; margin-bottom: 0.75rem;
   }
-  .gold-line {
-    display: block;
-    width: 60px;
-    height: 2px;
-    background: var(--gold);
-    margin: 1rem 0 1.5rem 0;
-  }
-  .gold-line.centered {
-    margin-left: auto;
-    margin-right: auto;
-  }
-  .section-header {
-    text-align: left;
-    margin-bottom: 2.5rem;
-  }
-  .section-header.centered {
-    text-align: center;
-  }
+  .gold-line { display: block; width: 60px; height: 2px; background: var(--gold); margin: 1rem 0 1.5rem 0; }
+  .gold-line.centered { margin-left: auto; margin-right: auto; }
+  .section-header { text-align: left; margin-bottom: 2.5rem; }
+  .section-header.centered { text-align: center; }
   .btn-navy {
-    display: inline-block;
-    background: var(--navy);
-    color: white;
-    padding: 0.9rem 2rem;
-    text-decoration: none;
-    font-weight: 500;
-    border-radius: 40px;
-    transition: all 0.2s;
-    border: none;
-    cursor: pointer;
-    font-size: 0.9rem;
+    display: inline-block; background: var(--navy); color: white;
+    padding: 0.9rem 2rem; text-decoration: none; font-weight: 500;
+    border-radius: 40px; transition: all 0.2s; border: none; cursor: pointer; font-size: 0.9rem;
   }
-  .btn-navy:hover {
-    background: #0f1f3a;
-    transform: translateY(-2px);
-  }
-  .cta-band {
-    background: var(--cream);
-    text-align: center;
-    padding: 4rem 2rem;
-  }
-  .cta-band h2 {
-    margin-bottom: 1rem;
-  }
-  .cta-band p {
-    max-width: 550px;
-    margin: 0 auto 2rem;
-  }
-  /* footer styles (preserved) */
-  footer {
-    background: var(--navy);
-    color: rgba(255,255,255,0.7);
-    padding: 3rem 2rem 2rem;
-  }
-  .footer-inner {
-    max-width: 1280px;
-    margin: 0 auto;
-  }
-  .footer-top {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    gap: 2rem;
-    margin-bottom: 2rem;
-  }
-  .footer-brand {
-    flex: 2;
-    min-width: 220px;
-  }
-  .footer-brand h3 {
-    color: white;
-    font-size: 1.3rem;
-    margin-bottom: 0.2rem;
-  }
-  .footer-brand p {
-    margin: 1rem 0;
-    font-size: 0.85rem;
-    line-height: 1.6;
-  }
-  .footer-tagline {
-    font-size: 0.7rem;
-    letter-spacing: 0.1em;
-    color: var(--gold);
-    margin-top: 0.5rem;
-  }
-  .footer-col {
-    flex: 1;
-    min-width: 140px;
-  }
-  .footer-col h5 {
-    color: white;
-    font-family: var(--font-sans);
-    font-weight: 600;
-    margin-bottom: 1rem;
-    font-size: 0.9rem;
-  }
-  .footer-col a {
-    display: block;
-    color: rgba(255,255,255,0.6);
-    text-decoration: none;
-    font-size: 0.85rem;
-    margin-bottom: 0.6rem;
-    transition: color 0.2s;
-  }
-  .footer-col a:hover {
-    color: var(--gold);
-  }
+  .btn-navy:hover { background: #0f1f3a; transform: translateY(-2px); }
+  .cta-band { background: var(--cream); text-align: center; padding: 4rem 2rem; }
+  .cta-band h2 { margin-bottom: 1rem; }
+  .cta-band p { max-width: 550px; margin: 0 auto 2rem; }
+  footer { background: var(--navy); color: rgba(255,255,255,0.7); padding: 3rem 2rem 2rem; }
+  .footer-inner { max-width: 1280px; margin: 0 auto; }
+  .footer-top { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 2rem; margin-bottom: 2rem; }
+  .footer-brand { flex: 2; min-width: 220px; }
+  .footer-brand h3 { color: white; font-size: 1.3rem; margin-bottom: 0.2rem; }
+  .footer-brand p { margin: 1rem 0; font-size: 0.85rem; line-height: 1.6; }
+  .footer-tagline { font-size: 0.7rem; letter-spacing: 0.1em; color: var(--gold); margin-top: 0.5rem; }
+  .footer-col { flex: 1; min-width: 140px; }
+  .footer-col h5 { color: white; font-family: var(--font-sans); font-weight: 600; margin-bottom: 1rem; font-size: 0.9rem; }
+  .footer-col a { display: block; color: rgba(255,255,255,0.6); text-decoration: none; font-size: 0.85rem; margin-bottom: 0.6rem; transition: color 0.2s; }
+  .footer-col a:hover { color: var(--gold); }
   .footer-bottom {
-    border-top: 1px solid rgba(255,255,255,0.1);
-    padding-top: 1.5rem;
-    display: flex;
-    justify-content: space-between;
-    flex-wrap: wrap;
+    border-top: 1px solid rgba(255,255,255,0.1); padding-top: 1.5rem;
+    display: flex; justify-content: space-between; flex-wrap: wrap; gap: 1rem; font-size: 0.75rem;
+  }
+  .footer-bottom-links { display: flex; gap: 1.5rem; }
+  .footer-bottom-links a { color: rgba(255,255,255,0.5); text-decoration: none; }
+  .reveal { opacity: 0; transform: translateY(20px); transition: opacity 0.7s ease, transform 0.7s ease; }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+  .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: start; margin-bottom: 4rem; }
+  .value-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; margin-top: 3rem; }
+  .value-card { padding: 1.5rem; background: var(--cream); border-radius: 6px; border-left: 3px solid var(--gold); }
+
+  /* ── FAQ ACCORDION ── */
+  .faq-list { display: flex; flex-direction: column; gap: 0; }
+  .faq-item { border-bottom: 1px solid rgba(74,90,114,0.15); }
+  .faq-item:first-child { border-top: 1px solid rgba(74,90,114,0.15); }
+  .faq-question {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 1.25rem 1rem; cursor: pointer; user-select: none;
+    transition: background 0.2s;
     gap: 1rem;
-    font-size: 0.75rem;
   }
-  .footer-bottom-links {
-    display: flex;
-    gap: 1.5rem;
+  .faq-question:hover { background: rgba(201,147,58,0.06); }
+  .faq-question h4 {
+    font-family: var(--font-sans); font-weight: 500; font-size: 0.95rem;
+    color: var(--navy); line-height: 1.4; flex: 1;
   }
-  .footer-bottom-links a {
-    color: rgba(255,255,255,0.5);
-    text-decoration: none;
+  .faq-toggle {
+    width: 28px; height: 28px; border-radius: 50%;
+    border: 1.5px solid var(--gold); color: var(--gold);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.1rem; font-weight: 400; flex-shrink: 0;
+    transition: transform 0.3s, background 0.3s, color 0.3s;
+    line-height: 1;
   }
-  /* reveal animation intact */
-  .reveal {
-    opacity: 0;
-    transform: translateY(20px);
-    transition: opacity 0.7s ease, transform 0.7s ease;
+  /* Answer hidden by default */
+  .faq-answer {
+    max-height: 0;
+    overflow: hidden;
+    font-size: 0.9rem;
+    line-height: 1.75;
+    color: var(--slate);
+    padding: 0 1rem;
+    transition: max-height 0.35s ease, padding 0.35s ease;
   }
-  .reveal.visible {
-    opacity: 1;
-    transform: translateY(0);
+  /* Open state */
+  .faq-item.open .faq-answer {
+    max-height: 500px;
+    padding: 0 1rem 1.25rem;
   }
-  /* ----- FLEX/GRID RESPONSIVE FIXES (preserving design, only responsiveness) ----- */
-  /* about-grid original: 1fr 1fr, but mobile fix already included, enhance overflow handling */
-  .about-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 4rem;
-    align-items: start;
-    margin-bottom: 4rem;
+  .faq-item.open .faq-toggle {
+    transform: rotate(45deg);
+    background: var(--gold);
+    color: white;
+    border-color: var(--gold);
   }
-  /* value-grid base 3 cols */
-  .value-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 1.5rem;
-    margin-top: 3rem;
-  }
-  .value-card {
-    padding: 1.5rem;
-    background: var(--cream);
-    border-radius: 6px;
-    border-left: 3px solid var(--gold);
-  }
-  /* careers grid 3 cols */
-  .careers-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 1.5rem;
-  }
-  /* Extra safe images / containers no overflow */
-  img, iframe, video {
-    max-width: 100%;
-    height: auto;
-  }
-  /* ensure body overflow hidden horizontally */
-  body {
-    overflow-x: hidden;
-  }
-  /* fix for potential long words */
-  p, h1, h2, h3, .value-card, .faq-answer {
-    overflow-wrap: break-word;
-    word-wrap: break-word;
-  }
-  /* navbar placeholder styles (navbar-loader driven) but keep original */
-  /* responsiveness: breakpoints mobile-first adjustments */
-  
-  /* Tablet (max-width: 960px) - existing adjustments + additional refinements */
+  .faq-item.open .faq-question { background: rgba(201,147,58,0.06); }
+
+  img, iframe, video { max-width: 100%; height: auto; }
+  body { overflow-x: hidden; }
+  p, h1, h2, h3, .value-card, .faq-answer { overflow-wrap: break-word; word-wrap: break-word; }
+
   @media (max-width: 960px) {
-    .about-grid {
-      grid-template-columns: 1fr;
-      gap: 2.5rem;
-    }
-    .value-grid {
-      grid-template-columns: repeat(2, 1fr);
-    }
-    .careers-grid {
-      grid-template-columns: repeat(2, 1fr);
-    }
-    .footer-top {
-      flex-wrap: wrap;
-      gap: 2rem;
-    }
-    .section-inner {
-      padding: 0 1.75rem;
-    }
-    section {
-      padding: 3.5rem 0;
-    }
-    .about-grid > div:last-child {
-      margin-top: 0;
-    }
+    .about-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+    .value-grid { grid-template-columns: repeat(2, 1fr); }
+    .footer-top { flex-wrap: wrap; gap: 2rem; }
+    .section-inner { padding: 0 1.75rem; }
+    section { padding: 3.5rem 0; }
   }
-  
-  /* Mobile (max-width: 640px) */
   @media (max-width: 640px) {
-    .section-inner {
-      padding: 0 1.25rem;
-    }
-    section {
-      padding: 2.5rem 0;
-    }
-    .page-header {
-      padding: 2rem 1.25rem;
-    }
-    .page-header p {
-      font-size: 1rem;
-    }
-    .about-grid {
-      gap: 2rem;
-    }
-    .value-grid {
-      grid-template-columns: 1fr;
-    }
-    .careers-grid {
-      grid-template-columns: 1fr;
-      gap: 1.25rem;
-    }
-    .footer-top {
-      flex-direction: column;
-      gap: 2rem;
-    }
-    .footer-bottom {
-      flex-direction: column;
-      text-align: center;
-    }
-    .footer-bottom-links {
-      justify-content: center;
-    }
-    .cta-band {
-      padding: 3rem 1.25rem;
-    }
-    .btn-navy {
-      padding: 0.7rem 1.5rem;
-      font-size: 0.85rem;
-    }
-    .value-card {
-      padding: 1.25rem;
-    }
-    .faq-question {
-      padding: 1rem 1.25rem;
-    }
-    .faq-answer {
-      padding: 0 1.25rem 1.25rem;
-    }
-    /* fix overflow on gold-line margins */
-    .gold-line {
-      margin: 0.75rem 0 1.25rem 0;
-    }
-    /* inner philosophy block padding fix */
-    .about-grid > div[style*="background:var(--navy)"] {
-      padding: 1.5rem !important;
-    }
-    /* ensure grid for careers inside html (I used inline style but we wrap with class) */
-  }
-  
-  /* small mobile (max-width: 480px) extra safety */
-  @media (max-width: 480px) {
-    h1 {
-      font-size: 2rem;
-    }
-    h2 {
-      font-size: 1.6rem;
-    }
-    .section-eyebrow {
-      font-size: 0.65rem;
-    }
-    .faq-question h4 {
-      font-size: 0.85rem;
-    }
-    .btn-navy {
-      width: 100%;
-      text-align: center;
-    }
-    .cta-band .btn-navy {
-      width: auto;
-    }
-    .footer-brand p {
-      font-size: 0.8rem;
-    }
-  }
-  
-  /* Additional overrides to ensure no horizontal scroll, inline max-width for all containers */
-  .page-header, .cta-band, footer, .bg-cream, section {
-    overflow-x: clip;
-  }
-  .about-grid > div:first-child, .value-card, .faq-item {
-    max-width: 100%;
-  }
-  /* preserve navbar overlay but not overriding design, just ensuring it wraps */
-  nav, .navbar, [class*="navbar"] {
-    max-width: 100%;
-    overflow-x: visible;
-  }
-  
-  /* specifically ensure the locations block inside navy container doesn't overflow */
-  .about-grid > div[style*="background:var(--navy)"] {
-    word-break: break-word;
-  }
-  
-  /* careers inline grid (original had inline style) but we added class .careers-grid, but original uses inline style: 
-  style="display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem" -> we keep, but must override on mobile using media query for that grid */
-  /* I'll target using attribute selector OR keep as class, safer to override inline grid via media !important? but not needed because I'll add a style that any div with grid-template-columns inline? We'll apply mobile fix for the specific careers section. */
-  @media (max-width: 640px) {
-    .section-inner > div[style*="grid-template-columns: repeat(3, 1fr)"] {
-      grid-template-columns: 1fr !important;
-    }
+    .section-inner { padding: 0 1.25rem; }
+    section { padding: 2.5rem 0; }
+    .page-header { padding: 2rem 1.25rem; }
+    .page-header p { font-size: 1rem; }
+    .about-grid { gap: 2rem; }
+    .value-grid { grid-template-columns: 1fr; }
+    .footer-top { flex-direction: column; gap: 2rem; }
+    .footer-bottom { flex-direction: column; text-align: center; }
+    .footer-bottom-links { justify-content: center; }
+    .cta-band { padding: 3rem 1.25rem; }
+    .btn-navy { padding: 0.7rem 1.5rem; font-size: 0.85rem; }
+    .value-card { padding: 1.25rem; }
+    .faq-question { padding: 1rem; }
+    .gold-line { margin: 0.75rem 0 1.25rem 0; }
+    .about-grid > div[style*="background:var(--navy)"] { padding: 1.5rem !important; }
+    div[style*="display:grid"][style*="grid-template-columns:repeat(3,1fr)"] { grid-template-columns: 1fr !important; }
   }
   @media (max-width: 960px) and (min-width: 641px) {
-    .section-inner > div[style*="grid-template-columns: repeat(3, 1fr)"] {
-      grid-template-columns: repeat(2, 1fr) !important;
-    }
+    div[style*="display:grid"][style*="grid-template-columns:repeat(3,1fr)"] { grid-template-columns: repeat(2, 1fr) !important; }
   }
-  /* ensure that the career grid uses safe breakpoints without breaking original style */
-  /* better: make selector robust */
-  .responsive-careers-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 1.5rem;
-  }
-  /* but since it's inline style, I will override using CSS specificity */
-  div[style*="display:grid"][style*="grid-template-columns:repeat(3,1fr)"] {
-    display: grid !important;
-    grid-template-columns: repeat(3, 1fr) !important;
-    gap: 1.5rem !important;
-  }
-  @media (max-width: 960px) {
-    div[style*="display:grid"][style*="grid-template-columns:repeat(3,1fr)"] {
-      grid-template-columns: repeat(2, 1fr) !important;
-    }
-  }
-  @media (max-width: 640px) {
-    div[style*="display:grid"][style*="grid-template-columns:repeat(3,1fr)"] {
-      grid-template-columns: 1fr !important;
-    }
-  }
-  /* also fix for the careers grid style background ensures no overflow */
-  div[style*="background:var(--cream)"].career-card-like {
-    overflow-x: hidden;
-  }
-  /* adjust padding for smaller devices on the "Our Operating Philosophy" block to prevent content overflow */
   @media (max-width: 480px) {
-    .about-grid > div[style*="background:var(--navy)"] {
-      padding: 1.25rem !important;
-    }
-    .about-grid > div[style*="background:var(--navy)"] div[style*="display:grid"] {
-      gap: 1rem;
-    }
+    h1 { font-size: 2rem; }
+    h2 { font-size: 1.6rem; }
+    .section-eyebrow { font-size: 0.65rem; }
+    .faq-question h4 { font-size: 0.85rem; }
+    .btn-navy { width: 100%; text-align: center; }
+    .cta-band .btn-navy { width: auto; }
+    .footer-brand p { font-size: 0.8rem; }
+    .about-grid > div[style*="background:var(--navy)"] { padding: 1.25rem !important; }
   }
+  .page-header, .cta-band, footer, .bg-cream, section { overflow-x: clip; }
 </style>
-
-<!-- Additional overrides to ensure the navbar component does not break responsiveness (loader will append navbar but won't conflict) -->
 <link rel="stylesheet" href="../components/navbar.css">
 <script src="../components/navbar-loader.js" data-root="/" defer></script>
 </head>
 <body>
 
 <div class="page-header">
+  <!-- Background video — replace src with your own video file -->
+  <video
+    class="page-header-video"
+    autoplay
+    muted
+    loop
+    playsinline
+    preload="auto"
+    src="https://videos.pexels.com/video-files/3193322/3193322-uhd_2560_1440_25fps.mp4"
+  ></video>
   <div class="page-header-inner">
     <div class="breadcrumb"><a href="index.html">Home</a><span style="opacity:.4">/</span><span>About</span></div>
     <h1>About ATRBA</h1>
@@ -477,7 +248,7 @@
         <p style="margin-bottom:1rem">We are not a traditional consulting firm. We build alongside our clients. We stay until systems work. We measure results, not deliverables. And we operate from a philosophy that has proven itself across every engagement we have taken: <strong style="color:var(--navy)">People → Processes → Profits.</strong></p>
         <p>Headquartered in Camden, NJ, with an active West Africa office in Lagos, Nigeria, ATRBA serves clients across the US and globally — with particular depth in cross-border engagements connecting African and diaspora-led businesses to international markets and capital.</p>
       </div>
-      <div style="background:var(--navy);border-radius:8px;padding:2.5rem; overflow-wrap: break-word;">
+      <div style="background:var(--navy);border-radius:8px;padding:2.5rem;overflow-wrap:break-word;">
         <div style="font-size:.65rem;letter-spacing:.15em;text-transform:uppercase;color:var(--gold);font-weight:600;margin-bottom:1.25rem">Our Operating Philosophy</div>
         <div style="display:grid;gap:1.5rem">
           <div style="border-left:3px solid var(--gold);padding-left:1.25rem">
@@ -603,7 +374,6 @@
       <span class="gold-line"></span>
       <p>ATRBA is growing. If you are a strategist, operator, AI specialist, or business development professional who wants to do meaningful work with real clients — we want to hear from you.</p>
     </div>
-    <!-- preserved original careers grid layout with responsiveness fixes via global CSS overriding -->
     <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem" class="reveal">
       <div style="background:var(--cream);border-radius:8px;padding:2rem">
         <div style="font-size:1.5rem;margin-bottom:1rem">🧠</div>
@@ -654,20 +424,27 @@
 </footer>
 
 <script>
+// Fade in video once it can play
+document.querySelectorAll('.page-header-video').forEach(function(v){
+  v.addEventListener('canplay', function(){ v.classList.add('loaded'); }, { once: true });
+  if (v.readyState >= 3) v.classList.add('loaded');
+});
 function toggleFAQ(el){
-  const item=el.parentElement;
-  const wasOpen=item.classList.contains('open');
-  document.querySelectorAll('.faq-item').forEach(f=>f.classList.remove('open'));
-  if(!wasOpen) item.classList.add('open');
+  const item = el.parentElement;
+  const wasOpen = item.classList.contains('open');
+  document.querySelectorAll('.faq-item').forEach(f => f.classList.remove('open'));
+  if (!wasOpen) item.classList.add('open');
 }
 function observeReveal(){
-  const els=document.querySelectorAll('.reveal:not(.visible)');
-  if(!('IntersectionObserver' in window)){els.forEach(el=>el.classList.add('visible'));return;}
-  const obs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');obs.unobserve(e.target);}});},{threshold:.1,rootMargin:'0px 0px -40px 0px'});
-  els.forEach(el=>obs.observe(el));
+  const els = document.querySelectorAll('.reveal:not(.visible)');
+  if (!('IntersectionObserver' in window)) { els.forEach(el => el.classList.add('visible')); return; }
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } });
+  }, { threshold: .1, rootMargin: '0px 0px -40px 0px' });
+  els.forEach(el => obs.observe(el));
 }
-window.addEventListener('load',observeReveal);
-window.addEventListener('scroll',observeReveal,{passive:true});
+window.addEventListener('load', observeReveal);
+window.addEventListener('scroll', observeReveal, { passive: true });
 </script>
 </body>
 </html>
