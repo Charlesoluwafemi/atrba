@@ -3,7 +3,7 @@
 // Fixes: reliable auth guard, token expiry check, safe authFetch error handling
 // ─────────────────────────────────────────────────────────────────────────────
 
-const API_BASE = 'http://localhost:8000';
+const API_BASE = 'https://www.abovetherestadvisors.com';
 
 const RESOURCES_API = 'http://localhost:8001';
 
