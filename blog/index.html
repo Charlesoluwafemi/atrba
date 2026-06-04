@@ -519,7 +519,7 @@ function observeReveal() {
 async function init() {
   try {
     const [blogsRes, featuredRes] = await Promise.all([
-      fetch(`${API_BASE}/admin/blogs`),
+      fetch(`${API_BASE}/blogs`),
       fetch(`${API_BASE}/blogs/featured`),
     ]);
     allBlogs = await blogsRes.json();
