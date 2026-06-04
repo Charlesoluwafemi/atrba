@@ -36,6 +36,7 @@ select.form-input{appearance:none;cursor:pointer}
 @media(max-width:640px){.form-row{grid-template-columns:1fr}}
 </style>
 </head>
+<script src="https://assets.calendly.com/assets/external/widget.js" async></script>
 <body>
 <link rel="stylesheet" href="../components/navbar.css">
 <script src="../components/navbar-loader.js" data-root="/"></script>
@@ -64,9 +65,13 @@ select.form-input{appearance:none;cursor:pointer}
             <p>60 minutes. No pitch. An honest conversation about your business, your challenges, and whether ATRBA is the right fit. Most clients leave with actionable clarity regardless of whether we engage.</p>
             <div class="calendly-box">
               <p style="font-size:.82rem;color:var(--slate);margin-bottom:1rem">Select a date and time that works for you.</p>
-              <a href="#" class="calendly-btn" onclick="alert('Production: Opens Calendly scheduling widget'); return false;">
-                &#128197; &nbsp;Schedule Your Call
-              </a>
+              <a href="#" class="calendly-btn"
+
+   onclick="Calendly.initPopupWidget({url: 'https://calendly.com/atrceo2023/30min'}); return false;">
+
+  📅 &nbsp;Schedule Your Call
+
+</a>
               <p style="font-size:.72rem;color:var(--slate);margin-top:.75rem">Calendly integration — 60-minute strategy session</p>
             </div>
           </div>
