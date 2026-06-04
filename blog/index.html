@@ -456,7 +456,7 @@ function renderCard(post, index) {
   const delays = ['', 'reveal-delay-1', 'reveal-delay-2'];
   const delay = delays[index % 3];
   return `
-  <a class="blog-card reveal ${delay}" href="/admin/public/post.html?slug=${post.slug}">
+  <a class="blog-card reveal ${delay}" href="/ADMIN/public/post.html?slug=${post.slug}">
     <div class="card-image-wrap">
       <div class="card-image-inner" style="background:${getCategoryGradient(post.category)}"></div>
       <div class="card-image-pattern"></div>
