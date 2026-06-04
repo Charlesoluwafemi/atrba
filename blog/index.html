@@ -144,6 +144,18 @@
       position: absolute; inset: 0;
       background: linear-gradient(135deg, #1a2f47 0%, #0d1b2a 100%);
     }
+
+    /* ── FIX: If a featured post has a cover image, show it ── */
+    .featured-image img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      z-index: 1;
+    }
+
     .featured-image-pattern {
       position: absolute; inset: 0; opacity: .06;
       background-image: repeating-linear-gradient(45deg, #fff 0, #fff 1px, transparent 0, transparent 50%);
@@ -158,6 +170,7 @@
       background: rgba(201,168,76,.15); border: 1px solid rgba(201,168,76,.3);
       color: var(--gold-light); font-size: .66rem; font-weight: 600; letter-spacing: .16em; text-transform: uppercase;
       padding: 5px 14px; border-radius: 999px;
+      z-index: 2;
     }
     .featured-body {
       padding: 48px 44px; display: flex; flex-direction: column; justify-content: center; gap: 0;
@@ -212,15 +225,31 @@
       transition: transform .5s cubic-bezier(.4,0,.2,1);
     }
     .blog-card:hover .card-image-inner { transform: scale(1.04); }
+
+    /* ── FIX: Show the first image from post content as card thumbnail ── */
+    .card-image-wrap img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      z-index: 1;
+      transition: transform .5s cubic-bezier(.4,0,.2,1);
+    }
+    .blog-card:hover .card-image-wrap img { transform: scale(1.04); }
+
     .card-image-pattern {
       position: absolute; inset: 0; opacity: .04;
       background-image: repeating-linear-gradient(45deg, #fff 0, #fff 1px, transparent 0, transparent 50%);
       background-size: 20px 20px;
+      z-index: 2;
     }
     .card-image-accent {
       position: absolute; bottom: 0; left: 0; right: 0; height: 2px;
       background: var(--gold); transform: scaleX(0); transform-origin: left;
       transition: transform .3s ease;
+      z-index: 3;
     }
     .blog-card:hover .card-image-accent { transform: scaleX(1); }
 
@@ -426,13 +455,28 @@ function formatDate(iso) {
   return new Date(iso).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
 }
 
+/**
+ * Extract the first <img> src from an HTML string.
+ * Used to show a thumbnail on blog cards when the post has images.
+ */
+function extractFirstImage(html) {
+  if (!html) return null;
+  const match = html.match(/<img[^>]+src=["']([^"']+)["']/i);
+  return match ? match[1] : null;
+}
+
 function renderFeatured(post) {
   const container = document.getElementById('featured-container');
   if (!post) { container.innerHTML = ''; return; }
+
+  // Use the first image from content as the featured image if available
+  const coverImg = extractFirstImage(post.content);
+
   container.innerHTML = `
     <a class="featured-card reveal" href="/ADMIN/public/post.html?slug=${post.slug}">
       <div class="featured-image">
         <div class="featured-image-inner" style="background:${getCategoryGradient(post.category)}"></div>
+        ${coverImg ? `<img src="${coverImg}" alt="${post.title}" loading="lazy" />` : ''}
         <div class="featured-image-pattern"></div>
         <div class="featured-image-accent"></div>
         <span class="featured-badge">✦ Featured</span>
@@ -455,10 +499,15 @@ function renderFeatured(post) {
 function renderCard(post, index) {
   const delays = ['', 'reveal-delay-1', 'reveal-delay-2'];
   const delay = delays[index % 3];
+
+  // Extract thumbnail from post content images
+  const thumbImg = extractFirstImage(post.content);
+
   return `
   <a class="blog-card reveal ${delay}" href="/ADMIN/public/post.html?slug=${post.slug}">
     <div class="card-image-wrap">
       <div class="card-image-inner" style="background:${getCategoryGradient(post.category)}"></div>
+      ${thumbImg ? `<img src="${thumbImg}" alt="${post.title}" loading="lazy" />` : ''}
       <div class="card-image-pattern"></div>
       <div class="card-image-accent"></div>
     </div>
