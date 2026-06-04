@@ -200,27 +200,47 @@
   let saveTimeout = null;
 
   // ─── Quill init ─────────────────────────────────────────────
-  const quill = new Quill('#quill-editor', {
-    theme: 'snow',
-    placeholder: 'Write something brilliant…',
-    modules: {
-      toolbar: [
+ const quill = new Quill('#quill-editor', {
+  theme: 'snow',
+  modules: {
+    toolbar: {
+      container: [
         [{ header: [1, 2, 3, false] }],
-        ['bold', 'italic', 'underline', 'strike'],
-        [{ color: [] }, { background: [] }],
-        [{ list: 'ordered' }, { list: 'bullet' }],
-        ['blockquote', 'code-block'],
-        ['link', 'image'],
-        ['clean'],
+        ['bold', 'italic', 'underline'],
+        ['image']   // keep image button
       ],
-    },
-  });
+      handlers: {
+        image: imageHandler
+      }
+    }
+  }
+});
 
-  quill.on('text-change', () => {
-    const len = quill.getText().trim().length;
-    document.getElementById('char-count').textContent = `${len.toLocaleString()} characters`;
-    scheduleAutoSave();
-  });
+  async function imageHandler() {
+  const input = document.createElement('input');
+  input.setAttribute('type', 'file');
+  input.setAttribute('accept', 'image/*');
+  input.click();
+
+  input.onchange = async () => {
+    const file = input.files[0];
+    if (!file) return;
+
+    const formData = new FormData();
+    formData.append('file', file);
+
+    // 👇 you must have an upload endpoint
+    const res = await fetch('https://api.abovetherestadvisors.com/upload', {
+      method: 'POST',
+      body: formData
+    });
+
+    const data = await res.json();
+
+    const range = quill.getSelection();
+    quill.insertEmbed(range.index, 'image', data.url);
+  };
+}
 
   // ─── Auto-save ───────────────────────────────────────────────
   function scheduleAutoSave() {
