@@ -23,26 +23,6 @@
     .ql-editor { min-height: 400px; line-height: 1.7; padding: 20px 24px; }
     .ql-editor p, .ql-editor h1, .ql-editor h2, .ql-editor h3 { margin-bottom: .75rem; }
 
-    /* ── FIX: Images inside the editor should display properly ── */
-    .ql-editor img {
-      max-width: 100%;
-      height: auto;
-      border-radius: 6px;
-      display: block;
-      margin: 12px 0;
-      cursor: pointer;
-    }
-
-    /* Image upload button styling */
-    .ql-image-upload {
-      background: none;
-      border: none;
-      cursor: pointer;
-      padding: 3px 5px;
-      color: #444;
-      font-size: 13px;
-    }
-
     /* Sidebar panel */
     .panel-section { margin-bottom: 20px; }
     .panel-section:last-child { margin-bottom: 0; }
@@ -73,16 +53,7 @@
     .preview-content ul,.preview-content ol { margin: 0 0 1.25rem 1.5rem; }
     .preview-content li { margin-bottom: .4rem; }
     .preview-content blockquote { border-left: 3px solid var(--accent); padding-left: 20px; font-style: italic; color: var(--ink-muted); margin: 1.5rem 0; }
-
-    /* ── FIX: Images in preview must display ── */
-    .preview-content img {
-      max-width: 100%;
-      height: auto;
-      border-radius: 8px;
-      display: block;
-      margin: 16px auto;
-    }
-
+    .preview-content img { max-width: 100%; border-radius: 8px; }
     .preview-content a { color: var(--accent); }
 
     /* Status bar */
@@ -92,16 +63,6 @@
     .autosave-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--success); }
     .autosave-dot.saving { background: var(--warning); animation: pulse .8s ease-in-out infinite; }
     @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: .3; } }
-
-    /* Image upload progress toast */
-    .img-upload-toast {
-      position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
-      background: var(--ink); color: #fff; padding: 10px 20px; border-radius: 8px;
-      font-size: .8125rem; z-index: 9999; display: none; align-items: center; gap: 10px;
-    }
-    .img-upload-toast.show { display: flex; }
-    .img-upload-spinner { width: 14px; height: 14px; border: 2px solid rgba(255,255,255,.3); border-top-color: #fff; border-radius: 50%; animation: spin .7s linear infinite; }
-    @keyframes spin { to { transform: rotate(360deg); } }
 
     @media (max-width: 1100px) { .editor-layout { grid-template-columns: 1fr; } }
   </style>
@@ -227,15 +188,6 @@
   </div>
 </div>
 
-<!-- Image upload progress toast -->
-<div class="img-upload-toast" id="img-upload-toast">
-  <div class="img-upload-spinner"></div>
-  <span>Uploading image…</span>
-</div>
-
-<!-- Hidden file input for image uploads -->
-<input type="file" id="image-file-input" accept="image/*" style="display:none;" />
-
 <script src="admin.js"></script>
 <script>
   if (!requireAuth()) throw new Error('Not authenticated');
@@ -247,117 +199,22 @@
   let slugManuallyEdited = false;
   let saveTimeout = null;
 
-  const API_BASE = 'https://api.abovetherestadvisors.com';
-
   // ─── Quill init ─────────────────────────────────────────────
   const quill = new Quill('#quill-editor', {
     theme: 'snow',
     placeholder: 'Write something brilliant…',
     modules: {
-      toolbar: {
-        container: [
-          [{ header: [1, 2, 3, false] }],
-          ['bold', 'italic', 'underline', 'strike'],
-          [{ color: [] }, { background: [] }],
-          [{ list: 'ordered' }, { list: 'bullet' }],
-          ['blockquote', 'code-block'],
-          ['link', 'image'],   // 'image' button triggers our custom handler
-          ['clean'],
-        ],
-        handlers: {
-          // ── CUSTOM IMAGE HANDLER ──────────────────────────────
-          // Instead of Quill's default base64-only dialog, we open
-          // a file picker so the admin can choose a local file.
-          // The file is either uploaded to the server (if the API
-          // supports it) or embedded as a base64 data URL as fallback.
-          image: function () {
-            document.getElementById('image-file-input').click();
-          }
-        }
-      }
+      toolbar: [
+        [{ header: [1, 2, 3, false] }],
+        ['bold', 'italic', 'underline', 'strike'],
+        [{ color: [] }, { background: [] }],
+        [{ list: 'ordered' }, { list: 'bullet' }],
+        ['blockquote', 'code-block'],
+        ['link', 'image'],
+        ['clean'],
+      ],
     },
   });
-
-  // ── Handle file selected from the hidden input ────────────────
-  document.getElementById('image-file-input').addEventListener('change', async function (e) {
-    const file = e.target.files[0];
-    if (!file) return;
-    // Reset so the same file can be picked again if needed
-    e.target.value = '';
-
-    // Validate file type & size (10 MB limit)
-    if (!file.type.startsWith('image/')) {
-      showToast('Please select a valid image file', 'warning');
-      return;
-    }
-    if (file.size > 10 * 1024 * 1024) {
-      showToast('Image must be smaller than 10 MB', 'warning');
-      return;
-    }
-
-    showImgToast(true);
-
-    try {
-      // ── Try server upload first ────────────────────────────
-      // POST to /admin/upload-image expecting { url: "https://..." }
-      // If your backend doesn't have this endpoint yet, it will
-      // fall through to the base64 fallback below.
-      let imageUrl = null;
-
-      try {
-        const formData = new FormData();
-        formData.append('file', file);
-
-        const uploadRes = await authFetch('/admin/upload-image', {
-          method: 'POST',
-          // Don't set Content-Type — let the browser set it for FormData
-          headers: {},
-          body: formData,
-        });
-
-        if (uploadRes && uploadRes.ok) {
-          const uploadData = await uploadRes.json();
-          // Accept either { url } or { image_url } from your API
-          imageUrl = uploadData.url || uploadData.image_url || null;
-        }
-      } catch (_) {
-        // Server upload failed or endpoint doesn't exist yet — fall through
-      }
-
-      // ── Fallback: embed as base64 data URL ─────────────────
-      if (!imageUrl) {
-        imageUrl = await fileToBase64(file);
-      }
-
-      // Insert the image at the current cursor position in Quill
-      const range = quill.getSelection(true);
-      quill.insertEmbed(range.index, 'image', imageUrl, Quill.sources.USER);
-      // Move cursor after the inserted image
-      quill.setSelection(range.index + 1, Quill.sources.SILENT);
-
-      showToast('Image inserted', 'success');
-    } catch (err) {
-      console.error('Image insert error:', err);
-      showToast('Failed to insert image', 'error');
-    } finally {
-      showImgToast(false);
-    }
-  });
-
-  /** Convert a File object to a base64 data URL */
-  function fileToBase64(file) {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.onload = () => resolve(reader.result);
-      reader.onerror = reject;
-      reader.readAsDataURL(file);
-    });
-  }
-
-  function showImgToast(show) {
-    const el = document.getElementById('img-upload-toast');
-    el.classList.toggle('show', show);
-  }
 
   quill.on('text-change', () => {
     const len = quill.getText().trim().length;
@@ -451,6 +308,7 @@
       showToast(publish ? 'Post published!' : 'Draft saved!', 'success');
 
       if (!editId) {
+        // Redirect to edit mode after creation
         setTimeout(() => { location.href = `editor.html?id=${saved.id}`; }, 1000);
       }
     } catch (e) {
@@ -467,7 +325,6 @@
     const data = collectFormData();
     document.getElementById('preview-title').textContent = data.title || 'Untitled';
     document.getElementById('preview-meta').textContent = `${data.category} · ${data.read_time} min read · ${data.author}`;
-    // Set innerHTML so images and all rich content render correctly
     document.getElementById('preview-content').innerHTML = data.content;
     document.getElementById('preview-overlay').classList.add('open');
     document.body.style.overflow = 'hidden';
@@ -508,9 +365,9 @@
       slugManuallyEdited = true;
       document.getElementById('slug-preview').textContent = blog.slug;
 
-      // dangerouslyPasteHTML preserves <img> tags from stored content
       quill.clipboard.dangerouslyPasteHTML(blog.content || '');
 
+      // Update publish button
       const publishBtn = document.getElementById('publish-btn');
       if (blog.published) {
         publishBtn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="15" height="15"><polyline points="22 2 15 22 11 13 2 9 22 2"/></svg> Update';
