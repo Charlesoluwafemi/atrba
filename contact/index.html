@@ -8,6 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="_shared.css">
+<link href="https://assets.calendly.com/assets/external/widget.css" rel="stylesheet">
 <style>
 body{padding-top:68px}
 .contact-grid{display:grid;grid-template-columns:1fr 1.2fr;gap:4rem;align-items:start}
@@ -36,7 +37,6 @@ select.form-input{appearance:none;cursor:pointer}
 @media(max-width:640px){.form-row{grid-template-columns:1fr}}
 </style>
 </head>
-<script src="https://assets.calendly.com/assets/external/widget.js" async></script>
 <body>
 <link rel="stylesheet" href="../components/navbar.css">
 <script src="../components/navbar-loader.js" data-root="/"></script>
@@ -65,13 +65,9 @@ select.form-input{appearance:none;cursor:pointer}
             <p>60 minutes. No pitch. An honest conversation about your business, your challenges, and whether ATRBA is the right fit. Most clients leave with actionable clarity regardless of whether we engage.</p>
             <div class="calendly-box">
               <p style="font-size:.82rem;color:var(--slate);margin-bottom:1rem">Select a date and time that works for you.</p>
-              <a href="#" class="calendly-btn"
-
-   onclick="Calendly.initPopupWidget({url: 'https://calendly.com/atrceo2023/30min'}); return false;">
-
+              <button class="calendly-btn" onclick="openCalendly()">
   📅 &nbsp;Schedule Your Call
-
-</a>
+</button>
               <p style="font-size:.72rem;color:var(--slate);margin-top:.75rem">Calendly integration — 60-minute strategy session</p>
             </div>
           </div>
@@ -288,7 +284,15 @@ function resetForm() {
   document.getElementById('revenue').selectedIndex = 0;
   document.getElementById('service').selectedIndex = 0;
 }
-
+function openCalendly() {
+  if (window.Calendly) {
+    Calendly.initPopupWidget({
+      url: 'https://calendly.com/atrceo2023/30min'
+    });
+  } else {
+    alert("Calendly is still loading. Please try again in a second.");
+  }
+}
 function observeReveal() {
   var els = document.querySelectorAll('.reveal:not(.visible)');
   if (!('IntersectionObserver' in window)) { els.forEach(function(el){ el.classList.add('visible'); }); return; }
@@ -302,5 +306,6 @@ function observeReveal() {
 window.addEventListener('load', observeReveal);
 window.addEventListener('scroll', observeReveal, { passive: true });
 </script>
+<script src="https://assets.calendly.com/assets/external/widget.js"></script>
 </body>
 </html>
