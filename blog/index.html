@@ -437,6 +437,8 @@
 </footer>
 
 <script>
+// ─── API Base ─────────────────────────────────────────────────
+// FIX: Single source of truth for the API origin, used by every fetch call.
 const API_BASE = 'https://api.abovetherestadvisors.com';
 
 const CATEGORY_GRADIENTS = {
@@ -456,35 +458,63 @@ function formatDate(iso) {
 }
 
 /**
- * Extract the first <img> src from an HTML string.
- * Used to show a thumbnail on blog cards when the post has images.
+ * FIX — Extract the first image URL from an HTML string.
+ *
+ * The original regex only matched src values wrapped in " or '.
+ * This version uses the browser's own HTML parser (DOMParser) which
+ * handles all attribute quoting styles, malformed markup, and
+ * self-closing tags reliably — no regex edge cases.
+ *
+ * It also filters out base64 data URIs: those are never valid persistent
+ * image URLs (they were only meant for the local editor session) so we
+ * skip them and look for the next real URL.
  */
 function extractFirstImage(html) {
   if (!html) return null;
-  const match = html.match(/<img[^>]+src=["']([^"']+)["']/i);
-  return match ? match[1] : null;
+  try {
+    const doc = new DOMParser().parseFromString(html, 'text/html');
+    const imgs = doc.querySelectorAll('img[src]');
+    for (const img of imgs) {
+      const src = img.getAttribute('src') || '';
+      // Skip empty srcs and base64 blobs — they won't load on the public site
+      if (!src || src.startsWith('data:')) continue;
+      // FIX: Normalise relative paths to absolute URLs using API_BASE
+      // so thumbnails resolve correctly regardless of the page's own origin.
+      if (src.startsWith('http://') || src.startsWith('https://')) return src;
+      return `${API_BASE}${src.startsWith('/') ? '' : '/'}${src}`;
+    }
+  } catch (_) {
+    // DOMParser unavailable (shouldn't happen in any modern browser)
+    // — fall back to a simple regex that skips data URIs.
+    const match = html.match(/<img[^>]+src=["'](?!data:)([^"']+)["']/i);
+    if (match) {
+      const src = match[1];
+      if (src.startsWith('http://') || src.startsWith('https://')) return src;
+      return `${API_BASE}${src.startsWith('/') ? '' : '/'}${src}`;
+    }
+  }
+  return null;
 }
 
 function renderFeatured(post) {
   const container = document.getElementById('featured-container');
   if (!post) { container.innerHTML = ''; return; }
 
-  // Use the first image from content as the featured image if available
   const coverImg = extractFirstImage(post.content);
 
   container.innerHTML = `
-    <a class="featured-card reveal" href="/ADMIN/public/post.html?slug=${post.slug}">
+    <a class="featured-card reveal" href="/ADMIN/public/post.html?slug=${encodeURIComponent(post.slug)}">
       <div class="featured-image">
         <div class="featured-image-inner" style="background:${getCategoryGradient(post.category)}"></div>
-        ${coverImg ? `<img src="${coverImg}" alt="${post.title}" loading="lazy" />` : ''}
+        ${coverImg ? `<img src="${coverImg}" alt="${escapeAttr(post.title)}" loading="lazy" />` : ''}
         <div class="featured-image-pattern"></div>
         <div class="featured-image-accent"></div>
         <span class="featured-badge">✦ Featured</span>
       </div>
       <div class="featured-body">
-        <p class="featured-category">${post.category || 'General'}</p>
-        <h2 class="featured-title">${post.title}</h2>
-        <p class="featured-excerpt">${post.excerpt || ''}</p>
+        <p class="featured-category">${escapeHtml(post.category || 'General')}</p>
+        <h2 class="featured-title">${escapeHtml(post.title)}</h2>
+        <p class="featured-excerpt">${escapeHtml(post.excerpt || '')}</p>
         <div class="featured-meta">
           <span class="featured-meta-item">${formatDate(post.created_at)}</span>
           <span class="featured-meta-dot"></span>
@@ -500,27 +530,40 @@ function renderCard(post, index) {
   const delays = ['', 'reveal-delay-1', 'reveal-delay-2'];
   const delay = delays[index % 3];
 
-  // Extract thumbnail from post content images
   const thumbImg = extractFirstImage(post.content);
 
   return `
-  <a class="blog-card reveal ${delay}" href="/ADMIN/public/post.html?slug=${post.slug}">
+  <a class="blog-card reveal ${delay}" href="/ADMIN/public/post.html?slug=${encodeURIComponent(post.slug)}">
     <div class="card-image-wrap">
       <div class="card-image-inner" style="background:${getCategoryGradient(post.category)}"></div>
-      ${thumbImg ? `<img src="${thumbImg}" alt="${post.title}" loading="lazy" />` : ''}
+      ${thumbImg ? `<img src="${thumbImg}" alt="${escapeAttr(post.title)}" loading="lazy" />` : ''}
       <div class="card-image-pattern"></div>
       <div class="card-image-accent"></div>
     </div>
     <div class="card-body">
-      <p class="card-category">${post.category || 'General'}</p>
-      <h3 class="card-title">${post.title}</h3>
-      <p class="card-excerpt">${post.excerpt || 'Read the full post...'}</p>
+      <p class="card-category">${escapeHtml(post.category || 'General')}</p>
+      <h3 class="card-title">${escapeHtml(post.title)}</h3>
+      <p class="card-excerpt">${escapeHtml(post.excerpt || 'Read the full post...')}</p>
       <div class="card-footer">
         <span class="card-date">${formatDate(post.created_at)}</span>
         <span class="card-read-time">⏱ ${post.read_time} min</span>
       </div>
     </div>
   </a>`;
+}
+
+// ─── Helpers ─────────────────────────────────────────────────
+// FIX: Escape user-supplied text before injecting into HTML to prevent
+// XSS via malicious post titles / excerpts.
+function escapeHtml(str) {
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
+function escapeAttr(str) {
+  return String(str).replace(/"/g, '&quot;').replace(/'/g, '&#39;');
 }
 
 let allBlogs = [];
@@ -567,12 +610,24 @@ function observeReveal() {
 
 async function init() {
   try {
+    // FIX: Use absolute API_BASE URLs for all public blog fetches.
     const [blogsRes, featuredRes] = await Promise.all([
       fetch(`${API_BASE}/blogs`),
       fetch(`${API_BASE}/blogs/featured`),
     ]);
+
+    if (!blogsRes.ok) throw new Error(`Blogs API error: ${blogsRes.status}`);
     allBlogs = await blogsRes.json();
-    const featured = await featuredRes.json();
+
+    // FIX: Guard against the featured endpoint returning a non-array
+    // (some backends return a single object or null when no featured post
+    // exists).  We always normalise to an array before indexing.
+    let featured = [];
+    if (featuredRes.ok) {
+      const raw = await featuredRes.json();
+      featured = Array.isArray(raw) ? raw : (raw ? [raw] : []);
+    }
+
     renderFeatured(featured[0] || allBlogs[0] || null);
     filterAndRender();
   } catch (err) {
