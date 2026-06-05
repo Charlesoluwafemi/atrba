@@ -145,7 +145,7 @@
       background: linear-gradient(135deg, #1a2f47 0%, #0d1b2a 100%);
     }
 
-    /* ── FIX: If a featured post has a cover image, show it ── */
+    /* Cover image fills the featured card image slot */
     .featured-image img {
       position: absolute;
       inset: 0;
@@ -226,7 +226,7 @@
     }
     .blog-card:hover .card-image-inner { transform: scale(1.04); }
 
-    /* ── FIX: Show the first image from post content as card thumbnail ── */
+    /* Cover image fills the card thumbnail slot */
     .card-image-wrap img {
       position: absolute;
       inset: 0;
@@ -438,7 +438,6 @@
 
 <script>
 // ─── API Base ─────────────────────────────────────────────────
-// FIX: Single source of truth for the API origin, used by every fetch call.
 const API_BASE = 'https://api.abovetherestadvisors.com';
 
 const CATEGORY_GRADIENTS = {
@@ -458,17 +457,19 @@ function formatDate(iso) {
 }
 
 /**
- * FIX — Extract the first image URL from an HTML string.
- *
- * The original regex only matched src values wrapped in " or '.
- * This version uses the browser's own HTML parser (DOMParser) which
- * handles all attribute quoting styles, malformed markup, and
- * self-closing tags reliably — no regex edge cases.
- *
- * It also filters out base64 data URIs: those are never valid persistent
- * image URLs (they were only meant for the local editor session) so we
- * skip them and look for the next real URL.
+ * Returns the cover image URL for a post.
+ * Priority: post.cover_image (dedicated field set in editor) →
+ *           first non-base64 <img> found in post.content (legacy fallback).
  */
+function getPostImage(post) {
+  // 1. Prefer the dedicated cover_image field saved by the editor
+  if (post.cover_image && post.cover_image.trim()) {
+    return post.cover_image.trim();
+  }
+  // 2. Legacy fallback: scrape first real image from content HTML
+  return extractFirstImage(post.content);
+}
+
 function extractFirstImage(html) {
   if (!html) return null;
   try {
@@ -476,16 +477,11 @@ function extractFirstImage(html) {
     const imgs = doc.querySelectorAll('img[src]');
     for (const img of imgs) {
       const src = img.getAttribute('src') || '';
-      // Skip empty srcs and base64 blobs — they won't load on the public site
       if (!src || src.startsWith('data:')) continue;
-      // FIX: Normalise relative paths to absolute URLs using API_BASE
-      // so thumbnails resolve correctly regardless of the page's own origin.
       if (src.startsWith('http://') || src.startsWith('https://')) return src;
       return `${API_BASE}${src.startsWith('/') ? '' : '/'}${src}`;
     }
   } catch (_) {
-    // DOMParser unavailable (shouldn't happen in any modern browser)
-    // — fall back to a simple regex that skips data URIs.
     const match = html.match(/<img[^>]+src=["'](?!data:)([^"']+)["']/i);
     if (match) {
       const src = match[1];
@@ -500,7 +496,8 @@ function renderFeatured(post) {
   const container = document.getElementById('featured-container');
   if (!post) { container.innerHTML = ''; return; }
 
-  const coverImg = extractFirstImage(post.content);
+  // ── Use dedicated cover_image, fall back to content scrape ──
+  const coverImg = getPostImage(post);
 
   container.innerHTML = `
     <a class="featured-card reveal" href="/ADMIN/public/post.html?slug=${encodeURIComponent(post.slug)}">
@@ -530,7 +527,8 @@ function renderCard(post, index) {
   const delays = ['', 'reveal-delay-1', 'reveal-delay-2'];
   const delay = delays[index % 3];
 
-  const thumbImg = extractFirstImage(post.content);
+  // ── Use dedicated cover_image, fall back to content scrape ──
+  const thumbImg = getPostImage(post);
 
   return `
   <a class="blog-card reveal ${delay}" href="/ADMIN/public/post.html?slug=${encodeURIComponent(post.slug)}">
@@ -553,8 +551,6 @@ function renderCard(post, index) {
 }
 
 // ─── Helpers ─────────────────────────────────────────────────
-// FIX: Escape user-supplied text before injecting into HTML to prevent
-// XSS via malicious post titles / excerpts.
 function escapeHtml(str) {
   return String(str)
     .replace(/&/g, '&amp;')
@@ -610,7 +606,6 @@ function observeReveal() {
 
 async function init() {
   try {
-    // FIX: Use absolute API_BASE URLs for all public blog fetches.
     const [blogsRes, featuredRes] = await Promise.all([
       fetch(`${API_BASE}/blogs`),
       fetch(`${API_BASE}/blogs/featured`),
@@ -619,9 +614,6 @@ async function init() {
     if (!blogsRes.ok) throw new Error(`Blogs API error: ${blogsRes.status}`);
     allBlogs = await blogsRes.json();
 
-    // FIX: Guard against the featured endpoint returning a non-array
-    // (some backends return a single object or null when no featured post
-    // exists).  We always normalise to an array before indexing.
     let featured = [];
     if (featuredRes.ok) {
       const raw = await featuredRes.json();
