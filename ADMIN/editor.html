@@ -235,7 +235,8 @@
         // Use raw fetch here — authFetch adds Content-Type:application/json which
         // breaks multipart/form-data. We set only the Authorization header manually.
         const token = localStorage.getItem('admin_token');
-        const res = await fetch('/upload-image', {
+        const apiBase = (typeof API_BASE !== 'undefined' ? API_BASE : '').replace(/\/$/, '');
+        const res = await fetch(`${apiBase}/upload-image`, {
           method: 'POST',
           headers: { 'Authorization': `Bearer ${token}` },
           body: formData,
