@@ -27,6 +27,43 @@
     .panel-section { margin-bottom: 20px; }
     .panel-section:last-child { margin-bottom: 0; }
 
+    /* Cover image preview */
+    .cover-preview-wrap {
+      border: 1.5px dashed var(--rule);
+      border-radius: var(--radius);
+      overflow: hidden;
+      position: relative;
+      background: var(--paper-warm);
+      min-height: 120px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .cover-preview-wrap img {
+      width: 100%;
+      height: 140px;
+      object-fit: cover;
+      display: block;
+    }
+    .cover-preview-empty {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      padding: 24px;
+      color: var(--ink-faint);
+      font-size: .8125rem;
+      text-align: center;
+    }
+    .cover-preview-empty svg { width: 28px; height: 28px; stroke: var(--ink-faint); fill: none; stroke-width: 1.5; }
+    .cover-clear-btn {
+      position: absolute; top: 8px; right: 8px;
+      background: rgba(15,14,13,.6); color: #fff; border: none;
+      border-radius: 50%; width: 24px; height: 24px; font-size: .75rem;
+      cursor: pointer; display: flex; align-items: center; justify-content: center;
+      line-height: 1;
+    }
+
     /* Preview overlay */
     .preview-overlay {
       position: fixed; inset: 0; background: rgba(15,14,13,.6); z-index: 9990;
@@ -122,6 +159,25 @@
 
       <!-- Settings sidebar -->
       <div>
+        <!-- ─── Cover Image ──────────────────────────────── -->
+        <div class="card" style="margin-bottom:16px;">
+          <div class="card-header"><h3 class="card-title">Cover Image</h3></div>
+          <div class="card-body">
+            <div id="cover-preview-wrap" class="cover-preview-wrap">
+              <div class="cover-preview-empty" id="cover-empty">
+                <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+                <span>No cover yet.<br>Upload an image in the editor<br>and it will appear here.</span>
+              </div>
+            </div>
+            <input type="hidden" id="cover_image" value="" />
+            <!-- Manual upload button for cover only -->
+            <button class="btn btn-ghost btn-sm" style="margin-top:10px;width:100%;font-size:.8rem;" onclick="triggerCoverUpload()">
+              Upload cover image
+            </button>
+            <input type="file" id="cover-file-input" accept="image/*" style="display:none" onchange="uploadCoverFile(this)" />
+          </div>
+        </div>
+
         <div class="card" style="margin-bottom:16px;">
           <div class="card-header"><h3 class="card-title">Settings</h3></div>
           <div class="card-body" style="display:flex;flex-direction:column;gap:18px;">
@@ -216,9 +272,85 @@
     },
   });
 
+  // ─── Cover image helpers ─────────────────────────────────────
+  function setCoverImage(url) {
+    document.getElementById('cover_image').value = url;
+    const wrap = document.getElementById('cover-preview-wrap');
+    // Remove existing img if any
+    const existing = wrap.querySelector('img');
+    if (existing) existing.remove();
+    const emptyDiv = document.getElementById('cover-empty');
+    if (emptyDiv) emptyDiv.style.display = 'none';
+
+    const img = document.createElement('img');
+    img.src = url;
+    img.alt = 'Cover image';
+
+    // Clear button
+    let clearBtn = wrap.querySelector('.cover-clear-btn');
+    if (!clearBtn) {
+      clearBtn = document.createElement('button');
+      clearBtn.className = 'cover-clear-btn';
+      clearBtn.title = 'Remove cover';
+      clearBtn.textContent = '✕';
+      clearBtn.onclick = clearCoverImage;
+      wrap.appendChild(clearBtn);
+    }
+    wrap.insertBefore(img, clearBtn);
+  }
+
+  function clearCoverImage() {
+    document.getElementById('cover_image').value = '';
+    const wrap = document.getElementById('cover-preview-wrap');
+    const img = wrap.querySelector('img');
+    if (img) img.remove();
+    const clearBtn = wrap.querySelector('.cover-clear-btn');
+    if (clearBtn) clearBtn.remove();
+    const emptyDiv = document.getElementById('cover-empty');
+    if (emptyDiv) emptyDiv.style.display = '';
+  }
+
+  function triggerCoverUpload() {
+    document.getElementById('cover-file-input').click();
+  }
+
+  async function uploadCoverFile(input) {
+    const file = input.files[0];
+    if (!file) return;
+    const url = await uploadImageFile(file);
+    if (url) setCoverImage(url);
+    input.value = '';
+  }
+
+  // ─── Shared image upload function ────────────────────────────
+  async function uploadImageFile(file) {
+    const formData = new FormData();
+    formData.append('file', file);
+    try {
+      const token = localStorage.getItem('admin_token');
+      const apiBase = (typeof API_BASE !== 'undefined' ? API_BASE : '').replace(/\/$/, '');
+      const res = await fetch(`${apiBase}/upload-image`, {
+        method: 'POST',
+        headers: { 'Authorization': `Bearer ${token}` },
+        body: formData,
+      });
+      if (!res || !res.ok) {
+        const err = await res?.json().catch(() => ({}));
+        showToast(err.detail || 'Image upload failed', 'error');
+        return null;
+      }
+      const { url } = await res.json();
+      return url;
+    } catch (e) {
+      showToast('Image upload failed', 'error');
+      return null;
+    }
+  }
+
   // ─── Image upload handler ────────────────────────────────────
   // Intercepts the toolbar image button; uploads to /upload-image
   // instead of embedding base64, then inserts the returned permanent URL.
+  // Also sets it as the cover image if no cover has been set yet.
   quill.getModule('toolbar').addHandler('image', () => {
     const input = document.createElement('input');
     input.setAttribute('type', 'file');
@@ -228,32 +360,20 @@
       const file = input.files[0];
       if (!file) return;
 
-      const formData = new FormData();
-      formData.append('file', file);
+      const url = await uploadImageFile(file);
+      if (!url) return;
 
-      try {
-        // Use raw fetch here — authFetch adds Content-Type:application/json which
-        // breaks multipart/form-data. We set only the Authorization header manually.
-        const token = localStorage.getItem('admin_token');
-        const apiBase = (typeof API_BASE !== 'undefined' ? API_BASE : '').replace(/\/$/, '');
-        const res = await fetch(`${apiBase}/upload-image`, {
-          method: 'POST',
-          headers: { 'Authorization': `Bearer ${token}` },
-          body: formData,
-        });
+      // Insert into editor body
+      const range = quill.getSelection(true);
+      quill.insertEmbed(range.index, 'image', url, Quill.sources.USER);
+      quill.setSelection(range.index + 1, Quill.sources.SILENT);
 
-        if (!res || !res.ok) {
-          const err = await res?.json().catch(() => ({}));
-          showToast(err.detail || 'Image upload failed', 'error');
-          return;
-        }
-
-        const { url } = await res.json();
-        const range = quill.getSelection(true);
-        quill.insertEmbed(range.index, 'image', url, Quill.sources.USER);
-        quill.setSelection(range.index + 1, Quill.sources.SILENT);
-      } catch (e) {
-        showToast('Image upload failed', 'error');
+      // ── Auto-set as cover image if none is set yet ──────────
+      // This is the key fix: the first image uploaded becomes the cover,
+      // which blog.html and post.html read from post.cover_image directly
+      // instead of scraping it out of the HTML content.
+      if (!document.getElementById('cover_image').value) {
+        setCoverImage(url);
       }
     };
   });
@@ -309,6 +429,8 @@
       read_time: parseInt(document.getElementById('read_time').value) || 5,
       author: document.getElementById('author').value.trim() || 'Admin',
       featured: document.getElementById('featured').checked,
+      // ── NEW: dedicated cover image field sent to the API ──
+      cover_image: document.getElementById('cover_image').value || null,
     };
   }
 
@@ -407,6 +529,11 @@
       slugManuallyEdited = true;
       document.getElementById('slug-preview').textContent = blog.slug;
 
+      // ── Restore cover image if the post already has one ──
+      if (blog.cover_image) {
+        setCoverImage(blog.cover_image);
+      }
+
       quill.clipboard.dangerouslyPasteHTML(blog.content || '');
 
       // Update publish button
@@ -434,6 +561,7 @@
           quill.clipboard.dangerouslyPasteHTML(d.content || '');
           currentSlug = d.slug;
           document.getElementById('slug-preview').textContent = d.slug || 'auto-generated';
+          if (d.cover_image) setCoverImage(d.cover_image);
         }
       } catch (_) {}
     }
