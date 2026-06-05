@@ -5,7 +5,7 @@
 
 const API_BASE = 'https://api.abovetherestadvisors.com';
 
-const RESOURCES_API = 'http://localhost:8001';
+const RESOURCES_API = 'https://resources.abovetherestadvisors.com';
 
 function resourcesFetch(url, options = {}) {
   const token = localStorage.getItem('admin_token');
