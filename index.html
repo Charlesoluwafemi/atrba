@@ -766,7 +766,17 @@ window.addEventListener('load', observeReveal);
     requestAnimationFrame(draw);
   }
 
-  window.addEventListener('load', () => { init(); requestAnimationFrame(draw); });
+  window.addEventListener('load', () => {
+  const startParticles = () => {
+    init();
+    requestAnimationFrame(draw);
+  };
+
+  // wait until browser finishes first paint
+  requestIdleCallback
+    ? requestIdleCallback(startParticles)
+    : setTimeout(startParticles, 1200);
+});
   window.addEventListener('resize', init);
 })();
 </script>
