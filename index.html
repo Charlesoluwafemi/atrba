@@ -10,7 +10,7 @@
 <!-- Fonts -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-
+<link rel="preload" href="video1.mp4" as="video" type="video/mp4">
 <!-- Shared styles -->
 <link rel="stylesheet" href="_shared.css">
 
@@ -321,11 +321,8 @@ body {
     muted
     loop
     playsinline
-    webkit-playsinline
     class="hero-video"
-    fetchpriority="high"
-    preload="auto"
-  >
+    preload="auto">
     <source src="video1.mp4" type="video/mp4">
   </video>
 
