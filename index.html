@@ -6,11 +6,11 @@
 <title>ATRBA — Engineering the EDGE of Business Transformation</title>
 <meta name="description" content="Above The Rest Business Advisors — the multidisciplinary advisory firm that builds operational infrastructure, deploys AI systems, and opens international markets for growth-stage founders.">
 <meta name="theme-color" content="#0C1425">
-
+<link rel="preconnect" href="https://www.abovetherestadvisors.com">
 <!-- Fonts -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-<link rel="preload" href="video1.mp4" as="media">
+<link rel="preload" href="video1.mp4" as="video" type="video/mp4">
 <!-- Shared styles -->
 <link rel="stylesheet" href="_shared.css">
 
@@ -18,7 +18,7 @@
 <link rel="stylesheet" href="./components/navbar.css">
 
 <!-- Navbar loader — NO defer, NO async so it runs before paint -->
-<script src="./components/navbar-loader.js" data-root="/"></script>
+<script src="./components/navbar-loader.js" data-root="/" defer></script>
 
 <style>
 /* ══════════════════════════════════════════════════════
@@ -72,15 +72,6 @@ body {
     );
 }
 
-/* ── Particle canvas ── */
-#particles-canvas {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 2;
-  pointer-events: none;
-}
 
 /* ── Hero content sits above video + overlay ── */
 .hero-content {
@@ -317,20 +308,18 @@ body {
 
   <!-- Background video -->
   <video
-    autoplay
-    muted
-    loop
-    playsinline
-    class="hero-video"
-    preload="auto">
+  autoplay
+  muted
+  loop
+  playsinline
+  preload="auto"
+  fetchpriority="high"
+  class="hero-video">
     <source src="video1.mp4" type="video/mp4">
   </video>
 
   <!-- Gradient overlay -->
   <div class="hero-overlay" aria-hidden="true"></div>
-
-  <!-- Particle canvas -->
-  <canvas id="particles-canvas" aria-hidden="true"></canvas>
 
   <!-- Content -->
   <div class="hero-content">
@@ -720,65 +709,8 @@ function observeReveal() {
   }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
   els.forEach(el => obs.observe(el));
 }
-window.addEventListener('load', observeReveal);
+requestIdleCallback ? requestIdleCallback(observeReveal) : window.addEventListener('load', observeReveal);
 
-/* ── PARTICLES (desktop only) ── */
-(function () {
-  if (window.innerWidth <= 768) return;
-
-  const canvas = document.getElementById('particles-canvas');
-  if (!canvas) return;
-  const ctx = canvas.getContext('2d');
-  let w, h, particles = [];
-
-  function resize() { w = canvas.width = canvas.offsetWidth; h = canvas.height = canvas.offsetHeight; }
-
-  function Particle() {
-    this.x  = Math.random() * w;
-    this.y  = Math.random() * h;
-    this.vx = (Math.random() - 0.5) * 0.3;
-    this.vy = (Math.random() - 0.5) * 0.3;
-    this.r  = Math.random() * 1.5 + 0.5;
-    this.a  = Math.random() * 0.35 + 0.08;
-  }
-  Particle.prototype.update = function () {
-    this.x += this.vx; this.y += this.vy;
-    if (this.x < 0 || this.x > w) this.vx *= -1;
-    if (this.y < 0 || this.y > h) this.vy *= -1;
-  };
-
-  function init() {
-    resize();
-    particles = [];
-    const n = Math.min(70, Math.floor(w * h / 14000));
-    for (let i = 0; i < n; i++) particles.push(new Particle());
-  }
-
-  function draw() {
-    ctx.clearRect(0, 0, w, h);
-    particles.forEach(p => {
-      p.update();
-      ctx.beginPath();
-      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-      ctx.fillStyle = `rgba(201,147,58,${p.a})`;
-      ctx.fill();
-    });
-    requestAnimationFrame(draw);
-  }
-
-  window.addEventListener('load', () => {
-  const startParticles = () => {
-    init();
-    requestAnimationFrame(draw);
-  };
-
-  // wait until browser finishes first paint
-  requestIdleCallback
-    ? requestIdleCallback(startParticles)
-    : setTimeout(startParticles, 1200);
-});
-  window.addEventListener('resize', init);
-})();
 </script>
 
 </body>
