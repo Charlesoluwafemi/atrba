@@ -1,1 +1,4 @@
+User-agent: *
+Allow: /
 
+Sitemap: https://www.abovetherestadvisors.com//sitemap.xml
